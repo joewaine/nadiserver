@@ -91,7 +91,7 @@ axios(url)
 
     statsTable.each(function () {
       const rank = $(this).find('section').attr('id');
-
+      const description = $(this).find('p').text().trim()
       const href = $(this).find('Consumer-reservationCallToAction')
       const titleName = $(this).find('section h3 a').text();
       console.log(titleName);
@@ -111,7 +111,8 @@ axios(url)
         createdLink,
         title,
         veg,
-        image
+        image,
+        description
       });
     });
 
@@ -144,6 +145,8 @@ axios(url)
         statsTable.each(function () {
           const rank = $(this).find('section').attr('id');
     
+          const description = $(this).find('p').text().trim()
+
           const href = $(this).find('Consumer-reservationCallToAction')
           const titleName = $(this).find('section h3 a').text();
           let createdLink = rank.replace('offering-','');
@@ -160,7 +163,8 @@ axios(url)
             createdLink,
             title,
             veg,
-            image
+            image,
+            description
           });
         });
     
