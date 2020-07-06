@@ -107,12 +107,24 @@ axios(url)
       image = './assets/img/2.jpg'
       }
 
+
+
+      console.log($(this).parent().attr('id'));
+
+      let delivery = false
+
+      if($(this).parent().attr('id') === 'delivery-panel'){
+        delivery = true
+      }
+
+
       tockMeals.push({
         createdLink,
         title,
         veg,
         image,
-        description
+        description,
+        delivery
       });
     });
 
@@ -140,6 +152,7 @@ axios(url)
         const html = response.data;
         const $ = cheerio.load(html)
         const statsTable = $('.ProfileBody-content ul.Consumer-reservationsList li');
+        
         const tockMeals = [];
     
         statsTable.each(function () {
@@ -159,13 +172,28 @@ axios(url)
           veg = true
           image = './assets/img/2.jpg'
           }
+
+
+          console.log($(this).parent().attr('id'));
+
+
+          let delivery = false
+
+          if($(this).parent().attr('id') === 'delivery-panel'){
+            delivery = true
+          }
+
           tockMeals.push({
             createdLink,
             title,
             veg,
             image,
-            description
+            description,
+            delivery
           });
+
+
+          
         });
     
         // this.$store.commit('updateTockMeals', { tockMeals })
