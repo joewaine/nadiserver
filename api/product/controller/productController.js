@@ -102,6 +102,7 @@ axios(url)
 
       let veg = false
       let image = './assets/img/1.jpg'
+
       if(title.includes('veg') || title.includes('Veg')){
       veg = true
       image = './assets/img/2.jpg'
@@ -168,6 +169,7 @@ axios(url)
           createdLink = url + 'experience/' + createdLink
           let veg = false
           let image = './assets/img/1.jpg'
+    
           if(title.includes('veg') || title.includes('Veg')){
           veg = true
           image = './assets/img/2.jpg'

@@ -9,6 +9,11 @@ router.post("/register", userController.registerNewUser);
 router.post("/login", userController.loginUser);
 router.post("/addproduct", userController.addProduct);
 router.get('/:id', userController.getUserProducts);
+
+
+
+
+router.get('/email/:email', userController.getUserInfo);
       
 module.exports = router;
 

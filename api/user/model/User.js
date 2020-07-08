@@ -75,5 +75,27 @@ userSchema.statics.findByUserId = async (id) => {
   return user
 }
 
+
+
+
+
+
+
+//this method search for a user by email
+userSchema.statics.findByUserEmail = async (email) => {
+  const user = await User.findOne({ email });
+  console.log(user)
+  if (!user) {
+    throw new Error({ error: "Invalid login details" });
+  }
+
+  return user;
+};
+
+
+
+
+
+
 const User = mongoose.model("User", userSchema);
 module.exports = User;

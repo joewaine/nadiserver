@@ -34,15 +34,14 @@ exports.addProduct = async (req, res) => {
       let data = await user.save();
       const token = await user.generateAuthToken(); // here it is calling the method that we created in the model
     res.status(201).json({ user, token });
-    // console.log(user)
+
   } catch (err) {
     res.status(400).json({ err: err });
   }
 };
 
 exports.loginUser = async (req, res) => {
-  // console.log(123)
-  // console.log(req.body)
+
   try {
     const email = req.body.email;
     const password = req.body.password;
@@ -70,4 +69,36 @@ exports.getUserProducts = async (req, res) => {
     res.status(400).json({ err: err });
   }
 };
+
+
+
+exports.getUserInfo = async (req, res) => {
+
+  try {
+
+   const user = await User.findByUserEmail(req.params.email)
+     res.status(201).json({ user });
+   } catch (err) {
+
+
+    const user = new User({
+      name: 'new user',
+      email: req.params.email,
+      password: 'password'
+    });
+    let data = await user.save();
+    const token = await user.generateAuthToken(); // here it is calling the method that we created in the model
+    res.status(201).json({ data, token });
+
+
+
+    //  res.status(400).json({ err: err });
+   }
+ };
+ 
+
+
+
+
+
 
