@@ -94,7 +94,7 @@ axios(url)
       const description = $(this).find('p').text().trim()
       const href = $(this).find('Consumer-reservationCallToAction')
       const titleName = $(this).find('section h3 a').text();
-      console.log(titleName);
+      // console.log(titleName);
       let createdLink = rank.replace('offering-','');
       const title = titleName.replace('Family Meal ','');
 
@@ -110,7 +110,7 @@ axios(url)
 
 
 
-      console.log($(this).parent().attr('id'));
+      // console.log($(this).parent().attr('id'));
 
       let delivery = false
 
@@ -131,7 +131,7 @@ axios(url)
 
     // this.$store.commit('updateTockMeals', { tockMeals })
 
-    console.log(tockMeals);
+    // console.log(tockMeals);
 
     res.status(201).json({ tockMeals });
   })
@@ -164,7 +164,7 @@ axios(url)
           const href = $(this).find('Consumer-reservationCallToAction')
           const titleName = $(this).find('section h3 a').text();
           let createdLink = rank.replace('offering-','');
-          console.log(titleName);
+          // console.log(titleName);
           const title = titleName.replace('Family Meal ','');
           createdLink = url + 'experience/' + createdLink
           let veg = false
@@ -176,7 +176,7 @@ axios(url)
           }
 
 
-          console.log($(this).parent().attr('id'));
+          // console.log($(this).parent().attr('id'));
 
 
           let delivery = false
@@ -200,7 +200,7 @@ axios(url)
     
         // this.$store.commit('updateTockMeals', { tockMeals })
     
-        console.log(tockMeals);
+        // console.log(tockMeals);
     
         res.status(201).json({ tockMeals });
       })

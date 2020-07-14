@@ -10,6 +10,12 @@ router.post("/login", userController.loginUser);
 router.post("/addproduct", userController.addProduct);
 router.get('/:id', userController.getUserProducts);
 
+router.get("/gettestimonials/:email", userController.getTestimonials);
+
+
+
+
+router.post("/submittestimonial", userController.submitTestimonial);
 
 
 

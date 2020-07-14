@@ -22,18 +22,107 @@ exports.registerNewUser = async (req, res) => {
   }
 };
 
-exports.addProduct = async (req, res) => {
+
+
+
+
+
+
+//get testimonials
+
+exports.getTestimonials = async (req, res) => {
+
+
+
+
+try{
+  const user = await User.findByUserEmail(req.params.email)
+  
+const usertestimonials = user.testimonials
+
+res.status(201).json({ usertestimonials });
+
+}catch{
+  res.status(400).json({ err: err });
+}
+
+
+}
+
+//get testimonials
+
+
+
+
+
+
+// submit testimonial
+
+exports.submitTestimonial = async (req, res) => {
+
+
+
+  const testimonialInfo = {
+    title: req.body.title,
+    body: req.body.body,
+    name: req.body.name
+  }
+
+
   try {
-      await User.findByIdAndUpdate(
-      { _id: req.body.id },
+      await User.findOneAndUpdate(
+        {email: req.body.email},
+      { $push: { testimonials: testimonialInfo } }
+      );
+
+
+
+  const user = await User.findByUserEmail(req.body.email)
+  
+// console.log(user)
+
+    res.status(201).json({ user });
+
+
+
+  } catch (err) {
+    res.status(400).json({ err: err });
+  }
+};
+
+
+
+// submit testimonial
+
+
+
+
+
+
+
+
+
+
+
+exports.addProduct = async (req, res) => {
+  // console.log('addproduct')
+  // console.log(req.body.email)
+  // console.log(req.body.name)
+  try {
+      await User.findOneAndUpdate(
+        {email: req.body.email},
       { $push: { products: req.body.name } }
       );
 
-      const user = await User.findByUserId(req.body.id)
-   
-      let data = await user.save();
-      const token = await user.generateAuthToken(); // here it is calling the method that we created in the model
-    res.status(201).json({ user, token });
+
+
+  const user = await User.findByUserEmail(req.body.email)
+  
+// console.log(user)
+
+    res.status(201).json({ user });
+
+
 
   } catch (err) {
     res.status(400).json({ err: err });
@@ -52,7 +141,7 @@ exports.loginUser = async (req, res) => {
         .json({ error: "Login failed! Check authentication credentials" });
     }
     const token = await user.generateAuthToken();
-    console.log(res)
+    // console.log(res)
     res.status(201).json({ user, token });
   } catch (err) {
     res.status(400).json({ err: err });

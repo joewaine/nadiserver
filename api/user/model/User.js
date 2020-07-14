@@ -18,6 +18,10 @@ const userSchema = mongoose.Schema({
     type: Array,
     required: [false, 'not required']
   },
+  testimonials: {
+    type: Array,
+    required: [false, 'not required']
+  },
   tokens: [
     {
       token: {
