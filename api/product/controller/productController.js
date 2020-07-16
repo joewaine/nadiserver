@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
 
 exports.addProduct = async (req, res) => {
 
-console.log(req.body)
+// console.log(req.body)
 
     try {
         const product = new Product({
@@ -78,7 +78,7 @@ exports.tockMeals = async function (req,res) {
 
 
 
-console.log('tocky meals')
+console.log('tock meals mamnoon restaurant')
 
 
 let url = 'https://www.exploretock.com/mamnoonrestaurant/';
@@ -86,20 +86,32 @@ axios(url)
   .then(response => {
     const html = response.data;
     const $ = cheerio.load(html)
-    const statsTable = $('.ProfileBody-content ul.Consumer-reservationsList li');
+    const statsTable = $('.ProfileBody-content ul.Consumer-reservationsList > li');
     const tockMeals = [];
+
+console.log(statsTable.length)
 
     statsTable.each(function () {
       const rank = $(this).find('section').attr('id');
+      console.log('rank: ' + rank)
       const description = $(this).find('p').text().trim()
+      console.log('description: ' + description)
       const href = $(this).find('Consumer-reservationCallToAction')
+      console.log('href: ' + href);
       const titleName = $(this).find('section h3 a').text();
-      // console.log(titleName);
-      let createdLink = rank.replace('offering-','');
-      const title = titleName.replace('Family Meal ','');
+      console.log('titleName: ' + titleName);
+      let createdLink = null;
 
+      if(rank){
+
+      createdLink = rank.replace('offering-','');
       createdLink = url + 'experience/' + createdLink
 
+    }
+
+      const title = titleName.replace('Family Meal ','');
+
+    
       let veg = false
       let image = './assets/img/1.jpg'
 
@@ -146,27 +158,46 @@ axios(url)
 
   exports.tockStreetMeals = async function (req,res) {
 
-
     let url = 'https://www.exploretock.com/mamnoonstreet/';
     axios(url)
       .then(response => {
         const html = response.data;
         const $ = cheerio.load(html)
-        const statsTable = $('.ProfileBody-content ul.Consumer-reservationsList li');
+        const statsTable = $('.ProfileBody-content ul.Consumer-reservationsList > li');
         
         const tockMeals = [];
-    
+
         statsTable.each(function () {
           const rank = $(this).find('section').attr('id');
-    
+          console.log('rank: ' + rank)
           const description = $(this).find('p').text().trim()
-
+          console.log('description: ' + description)
           const href = $(this).find('Consumer-reservationCallToAction')
+          console.log('href: ' + href)
           const titleName = $(this).find('section h3 a').text();
-          let createdLink = rank.replace('offering-','');
-          // console.log(titleName);
+    
+          console.log('title: ' + titleName);
+
+
+
+
+// ###
+let createdLink = null;
+
+if(rank){
+
+createdLink = rank.replace('offering-','');
+createdLink = url + 'experience/' + createdLink
+
+}
+
+// ###
+
+
+          
           const title = titleName.replace('Family Meal ','');
-          createdLink = url + 'experience/' + createdLink
+
+        
           let veg = false
           let image = './assets/img/1.jpg'
     
@@ -174,6 +205,21 @@ axios(url)
           veg = true
           image = './assets/img/2.jpg'
           }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
           // console.log($(this).parent().attr('id'));
