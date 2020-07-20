@@ -6,10 +6,16 @@ const bodyParser = require("body-parser");
 const fetch = require("node-fetch");
 const btoa = require('btoa');
 require('dotenv').config();
+
+
+
+
+
 // const $ = require("jquery");
 
 const axios = require('axios');
-
+const parseString = require('xml2js').parseString;
+const qs = require('qs');
 
 const mongoose = require("mongoose");
 const config = require("./config/db");
