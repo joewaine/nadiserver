@@ -79,7 +79,7 @@ userSchema.statics.findByUserId = async (id) => {
   if(!user) {
     throw new Error({ error: "Invalid id" });
   }
-  // console.log(user)
+  // // console.log(user)
   return user
 }
 
@@ -92,7 +92,7 @@ userSchema.statics.findByUserId = async (id) => {
 //this method search for a user by email
 userSchema.statics.findByUserEmail = async (email) => {
   const user = await User.findOne({ email });
-  console.log(user)
+  // console.log(user)
   if (!user) {
     throw new Error({ error: "Invalid login details" });
   }

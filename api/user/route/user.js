@@ -13,8 +13,12 @@ router.get('/:id', userController.getUserProducts);
 
 
 
+router.post('/deletetestimonial', userController.deleteTestimonial);
+
 router.post("/usegiftcard", userController.useGiftCard);
 router.post("/lookupgiftcard", userController.lookUpGiftCard);
+
+
 router.get("/gettestimonials/:email", userController.getTestimonials);
 
 router.post("/submittestimonial", userController.submitTestimonial);

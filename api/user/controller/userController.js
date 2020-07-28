@@ -1,4 +1,3 @@
-
 const axios = require('axios');
 const User = require("../model/User");
 const parseString = require('xml2js').parseString;
@@ -9,7 +8,7 @@ const parseString = require('xml2js').parseString;
 exports.registerNewUser = async (req, res) => {
   try {
     let isUser = await User.find({ email: req.body.email });
-    // console.log(isUser);
+    // // console.log(isUser);
     if (isUser.length >= 1) {
       return res.status(409).json({
         message: "email already in use"
@@ -28,46 +27,33 @@ exports.registerNewUser = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 //get testimonials
 
 exports.getTestimonials = async (req, res) => {
-
-
-
-
+console.log(req.params.email)
 try{
   const user = await User.findByUserEmail(req.params.email)
-  
-const usertestimonials = user.testimonials
-
-res.status(201).json({ usertestimonials });
-
-}catch{
+  const usertestimonials = user.testimonials
+  console.log(usertestimonials)
+  res.status(201).json({ usertestimonials });
+  } catch {
   res.status(400).json({ err: err });
 }
 
-
 }
-
-//get testimonials
-
-// submit testimonial
 
 exports.submitTestimonial = async (req, res) => {
 
 
 
   const testimonialInfo = {
+    _id: String.fromCharCode(65 + Math.floor(Math.random() * 26)) + Date.now(),
     title: req.body.title,
     body: req.body.body,
     name: req.body.name
   }
+
+
 
 
   try {
@@ -80,7 +66,7 @@ exports.submitTestimonial = async (req, res) => {
 
   const user = await User.findByUserEmail(req.body.email)
   
-// console.log(user)
+console.log(user)
 
     res.status(201).json({ user });
 
@@ -106,9 +92,7 @@ exports.submitTestimonial = async (req, res) => {
 
 
 exports.addProduct = async (req, res) => {
-  // console.log('addproduct')
-  // console.log(req.body.email)
-  // console.log(req.body.name)
+
   try {
       await User.findOneAndUpdate(
         {email: req.body.email},
@@ -119,7 +103,6 @@ exports.addProduct = async (req, res) => {
 
   const user = await User.findByUserEmail(req.body.email)
   
-// console.log(user)
 
     res.status(201).json({ user });
 
@@ -142,7 +125,7 @@ exports.loginUser = async (req, res) => {
         .json({ error: "Login failed! Check authentication credentials" });
     }
     const token = await user.generateAuthToken();
-    // console.log(res)
+    // // console.log(res)
     res.status(201).json({ user, token });
   } catch (err) {
     res.status(400).json({ err: err });
@@ -153,7 +136,7 @@ exports.loginUser = async (req, res) => {
 exports.getUserProducts = async (req, res) => {
  try {
   const user = await User.findByUserId(req.params.id)
-    // console.log(user)
+    // // console.log(user)
     res.status(201).json({ user });
   } catch (err) {
     res.status(400).json({ err: err });
@@ -163,6 +146,7 @@ exports.getUserProducts = async (req, res) => {
 
 
 exports.getUserInfo = async (req, res) => {
+
 
   try {
 
@@ -238,7 +222,7 @@ exports.getUserInfo = async (req, res) => {
    axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       
       let resData = response.data
-      console.log(resData)
+      // // console.log(resData)
       let resSendData = null
 
       parseString(resData, function (err, result) {
@@ -249,21 +233,38 @@ exports.getUserInfo = async (req, res) => {
       res.status(201).json({ resSendData });
 
   }).catch(err => {
-    console.log(err)
+    // // console.log(err)
        response.status(400).json({ err: err });
   });
   
  };
 
 
+ exports.deleteTestimonial = async (req, res) => {
 
+console.log(req.body)
+// { testimonialId: 'J1595357659508', userEmail: 'joe.waine@gmail.com' }
+
+//   const testimonialDelete = await User.update(
+//     {'email': req.body.userEmail }, 
+//     { $pull: { "testimonials" : { _id: req.body.testimonialId } } },
+// false,
+// true 
+// )
+
+const testimonialDelete = await User.update(
+  { },
+  { $pull: { "testimonials" : { _id: req.body.testimonialId } } },
+  { multi: true }
+)
+
+res.status(201).json({ testimonialDelete });
+
+ }
 
 
 
  exports.useGiftCard = async (req, res) => {
-
-
-  console.log(req.body.useAmount)
 
   var today = new Date();
   var dd = today.getDate();
@@ -313,18 +314,16 @@ ${req.body.cardNumber}
    axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       
       let resData = response.data
-      console.log(resData)
       let resSendData = null
 
       parseString(resData, function (err, result) {
       resSendData = result['Trans'];
     });
 
-
       res.status(201).json({ resSendData });
 
   }).catch(err => {
-    console.log(err)
+
        response.status(400).json({ err: err });
   });
   

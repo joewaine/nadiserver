@@ -1,39 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("../controller/productController");
-const request = require('request');
-const fetch = require("node-fetch");
-const btoa = require('btoa');
+const upserveController = require("../controller/upserveController")
+
 
 
 router.post("/addproduct", productController.addProduct);
 
 router.get('/allproducts', productController.getProducts);
 
-
-
 router.post('/:id', productController.deleteProduct);
-      
+
+router.get('/snipcartproducts', productController.snipCartProducts);
 
 
-router.get('/snipcartproducts', productController.snipCartProducts)
+router.get('/mamnoonitems', upserveController.mamnoonItems);
 
-
-
-router.get('/tockmeals', productController.tockMeals)
-
-
-router.get('/tockstreetmeals', productController.tockStreetMeals)
-
-
-
-
-
-
-
-
-
-
+router.get('/streetitems', upserveController.streetItems);
 
 
 module.exports = router;

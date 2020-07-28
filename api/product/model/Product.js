@@ -12,11 +12,12 @@ const productSchema = mongoose.Schema({
   price: {
     type: String,
     required: [true, "Please include price"]
+  },
+  _id: {
+    type: String,
+    required: [false]
   }
 });
-
-
-
 
 productSchema.statics.findByProductId = async (id) => {
     let _id = id;
@@ -25,11 +26,9 @@ productSchema.statics.findByProductId = async (id) => {
     if(!product) {
         throw new Error({ error: "Invalid product id" });
       }
-      console.log(product)
+      // console.log(product)
       return product
-
 }
-
 
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
