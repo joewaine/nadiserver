@@ -36,7 +36,7 @@ exports.getProducts = async (req, res) => {
  };
  
 exports.snipCartProducts = async function (req,res) {
-
+console.log(13531353153)
 // const secret = "S_OTY0NzY5YjEtYjAxNy00YWNiLTkzMDAtNWMxYjQ3YjQ5YmY0NjM3MjgxMTUxMjMyMDY3ODE2"
 
 

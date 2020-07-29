@@ -14,9 +14,9 @@ router.post('/:id', productController.deleteProduct);
 router.get('/snipcartproducts', productController.snipCartProducts);
 
 
-router.get('/mamnoonitems', upserveController.mamnoonItems);
+// router.get('/mamnoonitems', upserveController.mamnoonItems);
 
-router.get('/streetitems', upserveController.streetItems);
+// router.get('/streetitems', upserveController.streetItems);
 
 
 module.exports = router;
