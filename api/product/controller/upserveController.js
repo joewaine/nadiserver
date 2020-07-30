@@ -1,12 +1,8 @@
 const Product = require("../model/Product");
 const fetch = require("node-fetch");
-// const btoa = require('btoa');
 
 exports.mamnoonItems = async (req, res) => {
   
-// const secret = "{{{}}}"
-
-console.log(1234)
 try {
   const request = await fetch('https://api.breadcrumb.com/ws/v2/items.json', {
       headers: {

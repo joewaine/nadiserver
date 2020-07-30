@@ -34,23 +34,96 @@ exports.removeAllTocks = async (req, res) => {
 
 exports.updateTockOfferings = async (req, res) => {
 
+console.log('UPDATE:')
+console.log(req.body.updateTockItem)
 
-console.log(req.body)
+let updateObject = {
+  _id: req.body.updateTockItem._id,
+}
+
+if(req.body.updateTockItem.item === 'title'){
+  updateObject.title = req.body.updateTockItem.text
+}else if(req.body.updateTockItem.item === 'description'){
+  updateObject.description = req.body.updateTockItem.text
+}else if(req.body.updateTockItem.item === 'image'){
+  updateObject.image = req.body.updateTockItem.text
+}
+
+
+console.log('UPDATE to tock')
+console.log(updateObject)
 
 try {
   await Tock
-  .insertMany(req.body.update)
+  .findOneAndUpdate({_id: req.body.updateTockItem._id},updateObject)
   .then(function(){
-    console.log('delete all tocks')
+    console.log('from offering update')
   })
   res.status(201).json({ status: 201 });
 } catch (err) {
   res.status(400).json({ err: err });
 }
 
-
-
 };
+
+
+exports.tockFromMongo = async function (req, res){
+  try {
+    const tocks = await Tock.find({})
+    console.log(tocks)
+    res.status(200).json({ tocks });
+  } catch (err) {
+   res.status(400).json({ err: err });
+ }
+}
+
+exports.tockToMongo = async function (req, res) {
+
+let entry = null
+if(req.body.inventoryTockAdd){
+ entry = req.body.inventoryTockAdd
+}else if(req.body.inventoryTockAddStreet){
+ entry = req.body.inventoryTockAddStreet
+}
+
+
+try {
+
+  await Tock
+  .insertMany(entry)
+  .then(function(){
+    // console.log('delete all tocks')
+    res.status(200).json({ status: 201 });
+  })
+
+} catch (err) {
+    res.status(400).json({ err: err });
+}
+
+
+
+}
+
+
+
+// ///
+// console.log(tockMeals)
+
+//       try {
+//         await Tock
+//         .insertMany([
+//           {_id: 163298, createdLink: 'fee fee fee'},
+//           {_id: 163304, createdLink: 'fee fee fee'},
+//           {_id: 143322, createdLink: 'fee fee fee'}
+//         ])
+//         .then(function(){
+//           console.log('delete all tocks')
+//         })
+//       } catch (err) {
+//           res.status(400).json({ err: err });
+//       }
+
+// ///
 
 exports.tockMeals = async function (req, res) {
   let url
@@ -100,43 +173,10 @@ exports.tockMeals = async function (req, res) {
           _id
         });
 
-
-
-        
-
-
       });
       res.status(201).json({ tockMeals });
-
-
-
-
-
-
-
-
     })
     .catch(console.error);
 }
 
 
-
-exports.createExistingItems = async (req, res) => {  
-  
-try {
-  await Tock
-  .insertMany([
-    {_id: 163298, createdLink: 'fee fee fee'},
-    {_id: 163304, createdLink: 'fee fee fee'},
-    {_id: 143322, createdLink: 'fee fee fee'}
-  ])
-  .then(function(){
-    console.log('delete all tocks')
-  })
-} catch (err) {
-    res.status(400).json({ err: err });
-}
-  
-  
-  
-  };
