@@ -46,7 +46,7 @@ app.use(morgan("dev")); // configire morgan
 app.get("/", (req, res) => {
   // res.send(JSON.stringify({ Hello: 'medddaeeen solider'}));
   // res.send(cors);
-  res.send(cors());
+ res.send(JSON.stringify({ Hello: 'dont give up on me'}));
 });
 
 const userRoutes = require("./api/user/route/user"); //bring in our user routes
