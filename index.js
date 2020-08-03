@@ -44,8 +44,8 @@ app.use(bodyParser.json());
 app.use(morgan("dev")); // configire morgan
 
 app.get("/", (req, res) => {
-  res.send(JSON.stringify({ Hello: 'medddaeeen solider'}));
-  res.send(cors);
+  // res.send(JSON.stringify({ Hello: 'medddaeeen solider'}));
+  // res.send(cors);
   res.send(cors());
 });
 
