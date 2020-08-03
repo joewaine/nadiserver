@@ -5,8 +5,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const fetch = require("node-fetch");
 const btoa = require('btoa');
-const tockController = require("./api/tock/controller/tockController");
-const upserveController = require("./api/product/controller/upserveController");
 const cron = require('node-cron');
  
 
@@ -41,6 +39,9 @@ mongoose
     // console.log({ database_error: err });
   });
 
+
+console.log(cors())
+
 app.use(cors());
 
 
@@ -70,9 +71,6 @@ app.listen(PORT, () => {
 // cron.schedule('0-59/5 * * * * *', () => {
 //   // tockController.logMongoTock()
 // });
-
-// tockController.removeAllTocks()
-// tockController.tockMeals()
 
 
 
