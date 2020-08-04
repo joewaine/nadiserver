@@ -84,7 +84,7 @@ exports.tockToMongo = async function (req, res) {
 
 
   try {
-    const joe = 'joe'
+    const joe = 'joe music is tight'
 
     res.json(joe)
   } catch (error) {
