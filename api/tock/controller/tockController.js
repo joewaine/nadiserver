@@ -86,7 +86,7 @@ exports.tockToMongo = async function (req, res) {
   try {
     const joe = 'joe music is tight'
 
-    res.json(joe)
+    res.json(req.body)
   } catch (error) {
     // Passes errors into the error handler
     return next(error)
