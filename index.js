@@ -29,9 +29,9 @@ app.use(cors());
 mongoose.set("useCreateIndex", true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useUnifiedTopology', true);
-
+// .connect(config.database, { useNewUrlParser: true })
 mongoose
-  .connect(config.database, { useNewUrlParser: true })
+.connect('mongodb+srv://joe:MontBlanc7098!!@cluster0-9hdl4.mongodb.net/authapp?retryWrites=true&w=majority', { useNewUrlParser: true })
   .then(() => {
     // console.log("Database is connected");
   })
