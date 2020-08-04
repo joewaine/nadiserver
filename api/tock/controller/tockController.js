@@ -81,44 +81,34 @@ exports.tockFromMongo = async function (req, res){
 
 exports.tockToMongo = async function (req, res) {
 
+  // try {
+  //   const joe = 'joe music is tight'
 
+  //   res.json(req.body)
+  // } catch (error) {
+  //   // Passes errors into the error handler
+  //   return next(error)
+  // }
 
-  try {
-    const joe = 'joe music is tight'
-
-    res.json(req.body)
-  } catch (error) {
-    // Passes errors into the error handler
-    return next(error)
-  }
-
-
-// let entry = null
-// if(req.body.inventoryTockAdd){
-//  entry = req.body.inventoryTockAdd
-// }else if(req.body.inventoryTockAddStreet){
-//  entry = req.body.inventoryTockAddStreet
-// }
-
-
-// try {
-
-//   await Tock
-//   .insertMany(entry)
-//   .then(function(){
-//     // console.log('delete all tocks')
-//     res.status(200).json({ status: 201 });
-//   })
-
-// } catch (err) {
-//     res.status(400).json({ err: err });
-// }
-
-
-
+let entry = null
+if(req.body.inventoryTockAdd){
+ entry = req.body.inventoryTockAdd
+}else if(req.body.inventoryTockAddStreet){
+ entry = req.body.inventoryTockAddStreet
 }
 
+try {
+  await Tock
+  .insertMany(entry)
+  .then(function(){
+    // console.log('delete all tocks')
+    res.status(200).json({ status: 201 });
+  })
 
+} catch (err) {
+    res.status(400).json({ err: err });
+}
+}
 
 // ///
 // console.log(tockMeals)
