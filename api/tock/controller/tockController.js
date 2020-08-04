@@ -68,8 +68,10 @@ try {
 
 
 exports.tockFromMongo = async function (req, res){
+  
   try {
     const tocks = await Tock.find({})
+    console.log('tocks')
     console.log(tocks)
     res.status(200).json({ tocks });
   } catch (err) {

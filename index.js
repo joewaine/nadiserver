@@ -13,11 +13,13 @@ const qs = require('qs');
 const mongoose = require("mongoose");
 const config = require("./config/db");
 const app = express();
-app.use(cors({
-  origin: 'https://www.nadimama.com'
-}));
+// app.use(cors({
+//   origin: 'https://www.nadimama.com'
+// }));
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
+app.use(cors());
 
 
 
@@ -62,6 +64,11 @@ app.use("/product", productRoutes);
 const tockRoutes = require("./api/tock/route/tock"); //bring in our tock routes
 
 app.use("/tock", tockRoutes);
+
+
+app.use('/api', createProxyMiddleware({ target: 'http://young-hamlet-03679.herokuapp.com/', changeOrigin: true }));
+
+
 app.listen(PORT, () => {
   // console.log(`App is running on ${PORT}`);
 });
