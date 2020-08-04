@@ -89,7 +89,7 @@ console.log(req)
   try {
     const joe = 'the feelings right and the musics tight'
 
-    res.json(req)
+    res.json(joe)
   } catch (error) {
     // Passes errors into the error handler
     return next(error)
