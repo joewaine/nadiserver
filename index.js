@@ -20,7 +20,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
 // app.use(cors());
-
+app.options('*', cors())
 
 app.use(function (req, res, next) {
 
