@@ -149,8 +149,8 @@ exports.getUserInfo = async (req, res) => {
 
 
   try {
-    const user = 'req params email'
-  //  const user = await User.findByUserEmail(req.params.email)
+    // const user = 'req params email'
+   const user = await User.findByUserEmail(req.params.email)
      res.status(201).json({ user });
    } catch (err) {
 
