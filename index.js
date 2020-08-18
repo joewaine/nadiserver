@@ -20,7 +20,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
 // app.use(cors());
-app.options('*', cors())
+// app.options('*', cors())
 
 app.use(function (req, res, next) {
 
@@ -84,7 +84,7 @@ const tockRoutes = require("./api/tock/route/tock"); //bring in our tock routes
 app.use("/tock", tockRoutes);
 
 
-app.use('/api', createProxyMiddleware({ target: 'http://young-hamlet-03679.herokuapp.com/', changeOrigin: true }));
+// app.use('/api', createProxyMiddleware({ target: 'http://young-hamlet-03679.herokuapp.com/', changeOrigin: true }));
 
 
 app.listen(PORT, () => {

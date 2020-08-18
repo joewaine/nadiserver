@@ -7,6 +7,11 @@ router.post("/addproduct", productController.addProduct);
 router.get('/allproducts', productController.getProducts);
 router.post('/:id', productController.deleteProduct);
 
+
+
+
+router.get('/upserve', upserveController.mamnoonItems);
+
 module.exports = router;
 
 

@@ -78,18 +78,7 @@ console.log(user)
 };
 
 
-
 // submit testimonial
-
-
-
-
-
-
-
-
-
-
 
 exports.addProduct = async (req, res) => {
 
@@ -290,9 +279,9 @@ res.status(201).json({ testimonialDelete });
       <FmtType>ClientWeb</FmtType>
       <FmtVer>1.0.0</FmtVer>
       <Uid>A7FEDD8B-BF2C-4D63-917D-4C1130ABFE4E</Uid>
-      <Client>73</Client>
-      <ClientCode>2EC26589-258A-448E-A1DA-AA0F443C5152</ClientCode>
-      <Location>1</Location>
+      <Client>1047</Client>
+      <ClientCode>B5C7A5CD-CAFB-4BE7-90F5-1A5ACB29292A</ClientCode>
+      <Location>99992</Location>
       <Server>123</Server>
       <TransDate>${today}</TransDate>
       <TransTime>${currentTimeSliced}</TransTime>
@@ -311,8 +300,9 @@ ${req.body.cardNumber}
     var config = {
    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
   };
-   axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+  //  axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       
+    axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       let resData = response.data
       let resSendData = null
 

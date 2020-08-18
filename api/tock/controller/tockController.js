@@ -96,10 +96,14 @@ if(req.body.inventoryTockAdd){
 }else if(req.body.inventoryTockAddStreet){
  entry = req.body.inventoryTockAddStreet
 }
+console.log(entry.length)
+
+
 
 try {
+
   await Tock
-  .insertMany(entry)
+  .insertMany(entry,{ ordered: false })
   .then(function(){
     // console.log('delete all tocks')
     res.status(200).json({ status: 201 });
@@ -110,8 +114,12 @@ try {
 }
 }
 
-// ///
-// console.log(tockMeals)
+
+
+
+
+
+
 
 //       try {
 //         await Tock
@@ -143,6 +151,7 @@ exports.tockMeals = async function (req, res) {
       const $ = cheerio.load(html)
       const statsTable = $('.ProfileBody-content ul.Consumer-reservationsList > li');
       const tockMeals = [];
+      let dateNum = 1;
       statsTable.each(function () {
         const rank = $(this).find('section').attr('id');
         const description = $(this).find('p').text().trim()
@@ -174,9 +183,10 @@ exports.tockMeals = async function (req, res) {
           image,
           description,
           delivery,
-          _id
+          _id,
+          date: `Monday / July / ${dateNum}`
         });
-
+        dateNum++
       });
       res.status(201).json({ tockMeals });
     })
@@ -184,3 +194,37 @@ exports.tockMeals = async function (req, res) {
 }
 
 
+
+
+
+
+
+
+
+// ,function(err,result) {
+
+//   // console.log('err:')
+//   // console.log(err)
+
+
+//   if(err){
+
+//   }
+//   if(result){
+//     console.log(result)
+//   }
+
+//   // console.log(' insert many result')
+//   // console.log(result)
+//   // // if (result.hasWriteError()) {
+//   // //   // Log something just for the sake of it
+//   // //   console.log('Has Write Errors:');
+//   // //   log(result.getWriteErrors());
+
+//   // //   // Check to see if something else other than a duplicate key, then throw
+//   // //   if (result.getWriteErrors().some( error => error.code != 11000 ))
+//   // //     reject(err);
+//   // // }
+//   // // resolve(result);    // Otherwise resolve
+
+// }
