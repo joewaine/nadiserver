@@ -11,6 +11,7 @@ router.post('/:id', productController.deleteProduct);
 
 
 router.get('/upserve', upserveController.mamnoonItems);
+router.get('/upserveolo', upserveController.mamnoonItemsPullMenu);
 
 module.exports = router;
 

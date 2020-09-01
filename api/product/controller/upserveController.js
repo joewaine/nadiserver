@@ -30,6 +30,42 @@ try {
 }
 }
 
+
+
+
+// pull menu from OLO
+// pull menu from OLO
+// pull menu from OLO
+// pull menu from OLO
+
+
+exports.mamnoonItemsPullMenu = async (req, res) => {
+  
+  try {
+    const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
+        headers: {
+            'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+            'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+            'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`  
+        }
+    })
+    if (request.ok) { 
+      const body = await request.json();
+      console.log(body)
+      res.status(201).json({ body });
+    }
+  } catch (err) {
+   res.status(400).json({ err: err });
+  }
+  }
+
+
+// pull menu from OLO
+// pull menu from OLO
+// pull menu from OLO
+// pull menu from OLO
+
+
 exports.streetItems = async (req, res) => {
   
     const secret = "{}"

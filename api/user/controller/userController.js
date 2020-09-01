@@ -208,7 +208,7 @@ exports.getUserInfo = async (req, res) => {
     var config = {
    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
   };
-   axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+   axios.post('https://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       
       let resData = response.data
       // // console.log(resData)
@@ -302,7 +302,7 @@ ${req.body.cardNumber}
   };
   //  axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       
-    axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+    axios.post('https://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
       let resData = response.data
       let resSendData = null
 
