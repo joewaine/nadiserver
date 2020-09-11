@@ -55,3 +55,39 @@ try {
  res.status(400).json({ err: err });
 }
 }
+
+
+exports.postOnlineOrder = async (req, res) => {
+  console.log(req)
+}
+
+exports.postOnlineOrderold = async (req, res) => {
+  
+  axios.post('https://hq.breadcrumb.com/ws/v1/orders', req,
+      {
+      headers: {
+        'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+        'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+        'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
+    
+    }})
+         .then(function (res) {
+            console.log(res)
+         })
+         .catch(function (error) {
+           console.log(error)
+         });
+    
+    
+             
+           
+
+
+  
+
+
+
+          
+        }
+        
+       

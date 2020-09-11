@@ -13,6 +13,12 @@ const qs = require('qs');
 const mongoose = require("mongoose");
 const config = require("./config/db");
 const app = express();
+const nodemailer = require('nodemailer');
+
+
+
+var sdk = require("emergepay-sdk");
+
 // app.use(cors({
 //   origin: 'https://www.nadimama.com'
 // }));
@@ -80,23 +86,170 @@ const productRoutes = require("./api/product/route/product"); //bring in our pro
 app.use("/product", productRoutes);
 
 const tockRoutes = require("./api/tock/route/tock"); //bring in our tock routes
+const e = require("express");
 
 app.use("/tock", tockRoutes);
 
 
-// app.use('/api', createProxyMiddleware({ target: 'http://young-hamlet-03679.herokuapp.com/', changeOrigin: true }));
 
+//Ensure that you replace these with valid values before trying to issue a request
+var oid = "1517492274";
+var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aWQiOjMwNywib2lkIjoxNTE3NDkyMjc0LCJ0b2tlbl91c2UiOiJvcnQiLCJybmQiOjEyOTgyMzk1ODYuMDY0MjgyNCwiZ3JvdXBzIjpbIk9yZ0FQSVVzZXJzIl0sImlhdCI6MTU5OTI1ODg3MH0.zaMi_DDPspTKW6fl2utCGKXwdQT-Q39DKrFOhXxCHA4";
+var environmentUrl = "https://api.emergepay-sandbox.chargeitpro.com/virtualterminal/v1";
+// var environmentUrl = "https://nadimama.com/mamnoon";
+var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environmentUrl: environmentUrl });
+
+
+// orgs/1517492274/transactions/start
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
+//The client side can hit this endpoint by issuing a POST request to
+//localhost:5555/start-transaction
+//base_amount and external_tran_id are required in the fields array.
+app.post("/start-transaction", function (req, res) {
+// console.log(req.body)
+let amount = req.body.charges.total / 100
+
+let config = {
+    transactionType: sdk.TransactionType.CreditSale,
+    // method: "hostedFields",
+    method: "modal",
+    fields: [
+        {
+            id: "base_amount",
+            value: amount.toString()
+        },
+        {
+            id: "external_tran_id",
+            value: emergepay.getExternalTransactionId()
+        }
+    ]
+};
+
+
+  
+    emergepay.startTransaction(config)
+    .then(function (transactionToken) {
+      // console.log('success')
+      // console.log(transactionToken)
+        res.send({
+            transactionToken: transactionToken
+        });
+    })
+    .catch(function (err) {
+      console.log('error')
+        res.send(err.message);
+    });
+});
+
+console.log(PORT);
+
+
+// emerge pay stuff
+// emerge pay stuff
+// emerge pay stuff
 
 app.listen(PORT, () => {
   // console.log(`App is running on ${PORT}`);
 });
 
-// show all items
-// cron.schedule('0-59/5 * * * * *', () => {
-//   // tockController.logMongoTock()
-// });
+
+let postOnlineOrder = async (req, res) => {
+  
+  
 
 
+  
+console.log(345)
+  
+  axios.post('https://hq.breadcrumb.com/ws/v1/orders', req,
+  {
+  headers: {
+    'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+    'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+    'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
+
+}})
+     .then(function (res) {
+        console.log(res.data)
+     })
+     .catch(function (error) {
+       console.log(error)
+     });
+
+
+         
+       }
+       
+
+       var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'joe@mamnoonrestaurant.com',
+          pass: 'Montebello7098!!'
+        }
+      });
+
+
+
+
+      app.post("/oloorder", function (req, res) {
+ 
+             axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
+              {
+              headers: {
+                'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+                'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+                'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
+            
+            }})
+                 .then(function (response) {
+
+                  let resData = response.data
+                  
+                  if(resData.result === 'success'){
+                    res.send(req.body)
+
+
+                    var mailOptions = {
+                      from: 'joe@mamnoonrestaurant.com',
+                      to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com, tkroll@gravitypayments.com',
+                      // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+                      subject: 'Your Mamnoon Order Has Been Received!',
+                      html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
+                    };
+                    
+                    transporter.sendMail(mailOptions, function(error, info){
+                      if (error) {
+                        console.log(error);
+                      } else {
+                        console.log('Email sent: ' + info.response);
+                      }
+                    });
+
+
+                  }else{
+                    res.send('result not success')
+                  }
+
+           
+                 })
+                 .catch(function (error) {
+                   console.log(error)
+                 });
+    
+
+
+          
+        });
+
+
+
+
+        
 
 
 
