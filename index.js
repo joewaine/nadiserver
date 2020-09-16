@@ -111,8 +111,19 @@ app.use(cors());
 //base_amount and external_tran_id are required in the fields array.
 app.post("/start-transaction", function (req, res) {
 // console.log(req.body)
-let amount = req.body.charges.total / 100
+let amount = Number(req.body.charges.total)
+console.log(req.body.charges.tip.amount)
 
+
+let tiptoAdd = Number(req.body.charges.tip.amount)
+
+
+let finalAmount = amount + tiptoAdd
+
+
+let finalCash = finalAmount/100
+console.log(tiptoAdd)
+// amount = amount + tiptoAdd
 let config = {
     transactionType: sdk.TransactionType.CreditSale,
     // method: "hostedFields",
@@ -120,7 +131,7 @@ let config = {
     fields: [
         {
             id: "base_amount",
-            value: amount.toString()
+            value: finalCash.toString()
         },
         {
             id: "external_tran_id",
@@ -209,14 +220,14 @@ console.log(345)
                  .then(function (response) {
 
                   let resData = response.data
-                  
+                  console.log(response)
                   if(resData.result === 'success'){
                     res.send(req.body)
 
 
                     var mailOptions = {
                       from: 'joe@mamnoonrestaurant.com',
-                      to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com, tkroll@gravitypayments.com',
+                      to: 'joe.waine@gmail.com',
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
                       subject: 'Your Mamnoon Order Has Been Received!',
                       html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
@@ -230,26 +241,65 @@ console.log(345)
                       }
                     });
 
-
                   }else{
                     res.send('result not success')
                   }
-
-           
-                 })
+               })
                  .catch(function (error) {
                    console.log(error)
                  });
-    
-
-
-          
-        });
+              
+      });
 
 
 
-
-        
-
+let currentChecks = []
 
 
+let seeIfTicketsClosedOut = async function(){
+  console.log("do here")
+
+
+  /////
+  try {
+    const request = await fetch('https://api.breadcrumb.com/ws/v2/checks.json?date=20200911', {
+      headers: {
+        'X-Breadcrumb-Username': `joe-waine_mamnoon-llc`,
+        'X-Breadcrumb-Password': 'sbkh_Qgs4HMB',
+        'X-Breadcrumb-API-Key': `6110e294b8984840d2c10472bbed3453`  
+      }
+    })
+    if (request.ok) { 
+      const body = await request.json();
+      for(let i = 0;i<body.objects.length;i++){
+        console.log(body.objects[i])
+        // console.log(body.objects[i].status)
+      }
+
+      // res.status(201).json({ body });
+    }
+  } catch (err) {
+  //  res.status(400).json({ err: err });
+   console.log('error')
+  }
+//////
+
+
+
+}
+
+
+  
+  
+
+
+
+
+
+
+      cron.schedule('* * * * *', () => {
+        console.log('running a task every minute');
+
+
+        seeIfTicketsClosedOut()
+      });
