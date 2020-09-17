@@ -224,10 +224,9 @@ console.log(345)
                   if(resData.result === 'success'){
                     res.send(req.body)
 
-
                     var mailOptions = {
                       from: 'joe@mamnoonrestaurant.com',
-                      to: 'joe.waine@gmail.com',
+                      to: req.body.fulfillment_info.customer.email,
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
                       subject: 'Your Mamnoon Order Has Been Received!',
                       html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
