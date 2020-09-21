@@ -117,8 +117,8 @@ console.log(req.body.charges.tip.amount)
 
 let tiptoAdd = Number(req.body.charges.tip.amount)
 
-
-let finalAmount = amount + tiptoAdd
+// let finalAmount = amount + tiptoAdd
+let finalAmount = amount
 
 
 let finalCash = finalAmount/100
@@ -222,7 +222,65 @@ console.log(345)
                   let resData = response.data
                   console.log(response)
                   if(resData.result === 'success'){
+
+
+                    // xxx
                     res.send(req.body)
+
+
+                      let htmlBody = '<ul>'
+
+                      for(let i = 0;i<req.body.charges.items.length;i++){
+
+                        htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price).toFixed(2)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+                        
+
+                      }
+                      
+                      htmlBody = htmlBody + '</ul>'
+
+
+
+                      // "name":"961 Lebanese Pale Ale","price":800,quantity":1
+
+
+                    var mailOptions = {
+                      from: 'joe@mamnoonrestaurant.com',
+                      to: req.body.fulfillment_info.customer.email,
+                      // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+                      subject: 'Your Mamnoon Order Has Been Received!',
+                      html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
+                    };
+                    
+                    transporter.sendMail(mailOptions, function(error, info){
+                      if (error) {
+                        console.log(error);
+                      } else {
+                        console.log('Email sent: ' + info.response);
+                      }
+                    });
+// xxx
+                  }else{
+                    res.send('result not success')
+
+                    res.send(req.body)
+
+
+                      let htmlBody = '<ul>'
+
+                      for(let i = 0;i<req.body.charges.items.length;i++){
+
+                        htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price).toFixed(2)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+                        
+
+                      }
+                      
+                      htmlBody = htmlBody + '</ul>'
+
+console.log(htmlBody)
+
+                      // "name":"961 Lebanese Pale Ale","price":800,quantity":1
+
 
                     var mailOptions = {
                       from: 'joe@mamnoonrestaurant.com',
@@ -240,8 +298,8 @@ console.log(345)
                       }
                     });
 
-                  }else{
-                    res.send('result not success')
+
+
                   }
                })
                  .catch(function (error) {
@@ -296,9 +354,9 @@ let seeIfTicketsClosedOut = async function(){
 
 
 
-      cron.schedule('* * * * *', () => {
-        console.log('running a task every minute');
+      // cron.schedule('* * * * *', () => {
+      //   console.log('running a task every minute');
 
 
-        seeIfTicketsClosedOut()
-      });
+      //   seeIfTicketsClosedOut()
+      // });
