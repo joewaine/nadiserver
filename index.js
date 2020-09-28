@@ -110,20 +110,9 @@ app.use(cors());
 //localhost:5555/start-transaction
 //base_amount and external_tran_id are required in the fields array.
 app.post("/start-transaction", function (req, res) {
-// console.log(req.body)
 let amount = Number(req.body.charges.total)
-console.log(req.body.charges.tip.amount)
-
-
-let tiptoAdd = Number(req.body.charges.tip.amount)
-
-// let finalAmount = amount + tiptoAdd
 let finalAmount = amount
-
-
 let finalCash = finalAmount/100
-console.log(tiptoAdd)
-// amount = amount + tiptoAdd
 let config = {
     transactionType: sdk.TransactionType.CreditSale,
     // method: "hostedFields",
@@ -132,6 +121,18 @@ let config = {
         {
             id: "base_amount",
             value: finalCash.toString()
+        },
+        {
+          id: "billing_name",
+          value: req.body.billing.billing_name
+        },
+        {
+        id: "billing_address",
+        value: req.body.billing.billing_address
+        },
+        {
+            id: "billing_postal_code",
+            value: req.body.billing.billing_postal_code
         },
         {
             id: "external_tran_id",
@@ -208,15 +209,13 @@ console.log(345)
 
 
       app.post("/oloorder", function (req, res) {
- 
+
              axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
-              {
-              headers: {
+              {headers: {
                 'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
                 'X-Breadcrumb-Password': 'uQM8mseTvnTX',
                 'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
-            
-            }})
+                }})
                  .then(function (response) {
 
                   let resData = response.data
@@ -232,7 +231,7 @@ console.log(345)
 
                       for(let i = 0;i<req.body.charges.items.length;i++){
 
-                        htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price).toFixed(2)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+                        htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price) +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
                         
 
                       }
@@ -249,7 +248,8 @@ console.log(345)
                       to: req.body.fulfillment_info.customer.email,
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
                       subject: 'Your Mamnoon Order Has Been Received!',
-                      html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
+                      // html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
+                      
                     };
                     
                     transporter.sendMail(mailOptions, function(error, info){
