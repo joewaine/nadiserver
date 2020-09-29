@@ -248,7 +248,7 @@ console.log(345)
                       to: req.body.fulfillment_info.customer.email,
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
                       subject: 'Your Mamnoon Order Has Been Received!',
-                      // html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
+                      html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
                       
                     };
                     
@@ -287,7 +287,7 @@ console.log(htmlBody)
                       to: req.body.fulfillment_info.customer.email,
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
                       subject: 'Your Mamnoon Order Has Been Received!',
-                      html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
+                      html: '<pre>'+JSON.stringify(req.body)+'</pre>'
                     };
                     
                     transporter.sendMail(mailOptions, function(error, info){
