@@ -115,6 +115,7 @@ let finalAmount = amount
 let finalCash = finalAmount/100
 let config = {
     transactionType: sdk.TransactionType.CreditSale,
+    // transactionType: sdk.TransactionType.CreditAuth,
     // method: "hostedFields",
     method: "modal",
     fields: [
@@ -137,6 +138,10 @@ let config = {
         {
             id: "external_tran_id",
             value: emergepay.getExternalTransactionId()
+        },
+        {
+          id: "tip_amount",
+          value: "5.00"
         }
     ]
 };
@@ -169,7 +174,7 @@ console.log(PORT);
 
 
 
-emergepay.retrieveTransaction("fd69d44a-d4eb-4872-a00d-91328ac9da80")
+emergepay.retrieveTransaction("d492296a-2ecd-4c64-8768-b186869257f7")
 .then(function(response) {
     var transactionResponse = response.data;
     console.log(transactionResponse)
