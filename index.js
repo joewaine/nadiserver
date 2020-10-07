@@ -110,7 +110,11 @@ app.use(cors());
 //localhost:5555/start-transaction
 //base_amount and external_tran_id are required in the fields array.
 app.post("/start-transaction", function (req, res) {
-let amount = Number(req.body.charges.total)
+let amount = Number(req.body.charges.preTotal)
+let tipAmount = Number(req.body.charges.tip.amount)
+let formattedTipAmount = tipAmount/100
+
+console.log(req.body.charges.tip)
 let finalAmount = amount
 let finalCash = finalAmount/100
 let config = {
@@ -141,7 +145,7 @@ let config = {
         },
         {
           id: "tip_amount",
-          value: "5.00"
+          value: formattedTipAmount.toString()
         }
     ]
 };
