@@ -26,7 +26,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
 // var corsOptions = {
-//   origin: ['http://localhost:4000', 'https://young-hamlet-03679.herokuapp.com'],
+//   origin: ['https://young-hamlet-03679.herokuapp.com', 'https://young-hamlet-03679.herokuapp.com'],
 //   credentials: true,
 //   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] };
 // app.use(cors(corsOptions));
