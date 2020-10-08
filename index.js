@@ -55,12 +55,12 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useUnifiedTopology', true);
 // .connect(config.database, { useNewUrlParser: true })
 mongoose
-.connect('mongodb+srv://joe:MontBlanc7098!!@cluster0-9hdl4.mongodb.net/authapp?retryWrites=true&w=majority', { useNewUrlParser: true })
+.connect('mongodb+srv://joe:EiHitV6llWp73fa3@cluster0-9hdl4.mongodb.net/authapp?retryWrites=true&w=majority', { useNewUrlParser: true })
   .then(() => {
-    // console.log("Database is connected");
+    console.log("Database is connected");
   })
   .catch(err => {
-    // console.log({ database_error: err });
+    console.log({ database_error: err });
   });
 
 
@@ -84,6 +84,11 @@ app.use("/user", userRoutes);
 
 const productRoutes = require("./api/product/route/product"); //bring in our product routes
 app.use("/product", productRoutes);
+
+
+
+const orderRoutes = require("./api/order/route/order"); //bring in our product routes
+app.use("/order", orderRoutes);
 
 const tockRoutes = require("./api/tock/route/tock"); //bring in our tock routes
 const e = require("express");
@@ -166,26 +171,17 @@ let config = {
     });
 });
 
-console.log(PORT);
-
-
-
-
-
-
+// console.log(PORT);
 
 // retrieval method
-
-
-
-emergepay.retrieveTransaction("d492296a-2ecd-4c64-8768-b186869257f7")
-.then(function(response) {
-    var transactionResponse = response.data;
-    console.log(transactionResponse)
-})
-.catch(function(error) {
-    throw error;
-});
+// emergepay.retrieveTransaction("d492296a-2ecd-4c64-8768-b186869257f7")
+// .then(function(response) {
+//     var transactionResponse = response.data;
+//     console.log(transactionResponse)
+// })
+// .catch(function(error) {
+//     throw error;
+// });
 
 // retrieval method
 
@@ -513,3 +509,37 @@ console.log(htmlBody)
          
  });
 
+
+
+
+
+ //The client side can hit this endpoint by issuing a POST request to
+//localhost:5555/start-transaction
+//base_amount and external_tran_id are required in the fields array.
+app.post("/issue-return", function (req, res) {
+  var amount = "0.01";
+  var config = {
+      transactionType: sdk.TransactionType.CreditReturn,
+      method: "modal",
+      fields: [
+          {
+              id: "base_amount",
+              value: amount
+          },
+          {
+              id: "external_tran_id",
+              value: 'd492296a-2ecd-4c64-8768-b186869257f7'
+          },
+      ]
+  };
+
+  emergepay.startTransaction(config)
+  .then(function (transactionToken) {
+      res.send({
+          transactionToken: transactionToken
+      });
+  })
+  .catch(function (err) {
+      res.send(err.message);
+  });
+});
