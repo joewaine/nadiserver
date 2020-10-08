@@ -15,6 +15,11 @@ const config = require("./config/db");
 const app = express();
 const nodemailer = require('nodemailer');
 
+const Order = require("./api/order/model/Order");
+
+
+
+
 
 
 var sdk = require("emergepay-sdk");
@@ -117,6 +122,37 @@ var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environme
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+
+
+
+
+//add order
+
+console.log(Order)
+
+
+app.post("/addorder", async (req, res) => {
+  console.log('add to mongo emerge pay back end')
+  // console.log(JSON.stringify(req.body))
+  try {
+      const order = new Order({
+        payInfo: req.body.payInfo,
+        orderInfo: req.body.orderInfo
+      });
+      console.log(order)
+      let data = await order.save();
+      res.status(201).json({ data });
+
+
+
+
+    } catch (err) {
+      res.status(400).json({ err: err });
+    }
+});
+
+//add order
 
 //The client side can hit this endpoint by issuing a POST request to
 //localhost:5555/start-transaction
