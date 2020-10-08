@@ -18,8 +18,28 @@ const nodemailer = require('nodemailer');
 const Order = require("./api/order/model/Order");
 
 
+const anywhere = require("express-cors-anywhere");
+
+const port = PORT || 3000;
+ 
 
 
+
+ 
+(async () => {
+  const { data, status } = await axios({
+    url: "http://localhost:3000/cors-anywhere/https://young-hamlet-03679.herokuapp.com/addorder",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      some: "data",
+    },
+  });
+  /* data returned is from https://some-example-api/some-example-endpoint */
+  console.log({ data });
+});
 
 
 var sdk = require("emergepay-sdk");
