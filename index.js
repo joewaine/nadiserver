@@ -37,7 +37,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 // app.use(cors(corsOptions));
 
 
-app.use(cors());
+// app.use(cors());
 // app.options('*', cors())
 
 // app.use(function (req, res, next) {
@@ -138,7 +138,7 @@ console.log(Order)
 
 app.use(function(req, res, next) {
   // res.header("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Origin", "https://nadimama.com"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
