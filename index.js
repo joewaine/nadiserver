@@ -31,40 +31,7 @@ const Order = require("./api/order/model/Order");
 
 var sdk = require("emergepay-sdk");
 
-// app.use(cors({
-//   origin: 'https://www.nadimama.com'
-// }));
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
-// app.use(cors());
-// var corsOptions = {
-//   origin: ['https://young-hamlet-03679.herokuapp.com', 'https://young-hamlet-03679.herokuapp.com'],
-//   credentials: true,
-//   methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'] };
-// app.use(cors(corsOptions));
-
-
-// app.use(cors());
-// app.options('*', cors())
-
-// app.use(function (req, res, next) {
-
-//   // Website you wish to allow to connect
-//   res.header('Access-Control-Allow-Origin', '*');
-
-//   // Request methods you wish to allow
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//   // Request headers you wish to allow
-//   res.header('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.header('Access-Control-Allow-Credentials', true);
-
-//   // Pass to next layer of middleware
-//   next();
-// });
 
 
 
@@ -138,42 +105,6 @@ app.use(express.urlencoded({ extended: true }));
 
 console.log(Order)
 
-
-
-
-
-
-// app.use(function(req, res, next) {
-//   // res.header("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-
-
-
-app.post("/addorder", cors(), async (req, res) => {
-  console.log(req.headers)
-  console.log(req.body)
-  console.log('add to mongo emerge pay back end')
-  // console.log(JSON.stringify(req.body))
-  try {
-      const order = new Order({
-        payInfo: req.body.payInfo,
-        orderInfo: req.body.orderInfo
-      });
-      console.log(order)
-      let data = await order.save();
-      res.status(201).json({ data });
-
-
-
-
-    } catch (err) {
-      res.status(400).json({ err: err });
-    }
-});
 
 //add order
 
@@ -296,9 +227,6 @@ console.log(345)
           pass: 'Montebello7098!!'
         }
       });
-
-
-
 
       app.post("/oloorder", function (req, res) {
 

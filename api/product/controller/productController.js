@@ -2,6 +2,7 @@ const Product = require("../model/Product");
 const fetch = require("node-fetch");
 const btoa = require('btoa');
 
+
 exports.addProduct = async (req, res) => {
   
     try {
