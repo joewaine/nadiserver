@@ -138,7 +138,7 @@ console.log(Order)
 let axiosConfig = {
   headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "https://www.nadimama.com",
   }
 };
 
@@ -151,7 +151,10 @@ let axiosConfig = {
 
 
 
-app.post("/addorder", cors(), async (req, res) => {
+app.post("/addorder",   headers: {
+  'Content-Type': 'application/json;charset=UTF-8',
+  "Access-Control-Allow-Origin": "https://www.nadimama.com",
+}, async (req, res) => {
   console.log(req.headers)
   console.log(req.body)
   console.log('add to mongo emerge pay back end')
