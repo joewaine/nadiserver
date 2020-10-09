@@ -29,7 +29,7 @@ var sdk = require("emergepay-sdk");
 // }));
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-
+app.use(cors());
 // var corsOptions = {
 //   origin: ['https://young-hamlet-03679.herokuapp.com', 'https://young-hamlet-03679.herokuapp.com'],
 //   credentials: true,
@@ -76,7 +76,7 @@ mongoose
   });
 
 
-console.log(cors)
+// console.log(cors)
 
 
 
@@ -121,7 +121,7 @@ var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environme
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+// app.use(cors());
 
 
 
