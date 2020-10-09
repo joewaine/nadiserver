@@ -1,7 +1,14 @@
-const express = require("express");
+const cors = require('cors');
+const express = require('express');
+const app = express();
+app.use(cors());
+app.options('*', cors());
+
+
+
+
 const PORT = process.env.PORT || 4000;
 const morgan = require("morgan");
-const cors = require("cors");
 const bodyParser = require("body-parser");
 const fetch = require("node-fetch");
 const btoa = require('btoa');
@@ -12,7 +19,7 @@ const parseString = require('xml2js').parseString;
 const qs = require('qs');
 const mongoose = require("mongoose");
 const config = require("./config/db");
-const app = express();
+
 const nodemailer = require('nodemailer');
 
 const Order = require("./api/order/model/Order");
@@ -29,7 +36,7 @@ var sdk = require("emergepay-sdk");
 // }));
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-app.use(cors());
+// app.use(cors());
 // var corsOptions = {
 //   origin: ['https://young-hamlet-03679.herokuapp.com', 'https://young-hamlet-03679.herokuapp.com'],
 //   credentials: true,

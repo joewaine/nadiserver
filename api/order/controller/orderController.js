@@ -16,15 +16,18 @@ exports.addOrder = async (req, res) => {
         });
         console.log(order)
         let data = await order.save();
-        res.status(201).json({ data });
+        // res.status(201).json({ data });
+        // res.send(201)
 
-
-
+        res.json({ data });
 
       } catch (err) {
         res.status(400).json({ err: err });
       }
 };
+
+
+
 
 
 
