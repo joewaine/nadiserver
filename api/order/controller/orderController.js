@@ -8,6 +8,7 @@ const axios = require('axios');
 exports.addOrder = async (req, res) => {
     console.log('add to mongo emerge pay back end')
     // console.log(JSON.stringify(req.body))
+    console.log(req.headers)
     try {
         const order = new Order({
           payInfo: req.body.payInfo,
