@@ -18,7 +18,7 @@ exports.addOrder = async (req, res) => {
         let data = await order.save();
         // res.status(201).json({ data });
         // res.send(201)
-
+        res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
         res.json({ data });
 
       } catch (err) {
