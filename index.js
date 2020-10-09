@@ -135,12 +135,6 @@ console.log(Order)
 
 
 
-let axiosConfig = {
-  headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-      "Access-Control-Allow-Origin": "*",
-  }
-};
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
@@ -151,7 +145,7 @@ let axiosConfig = {
 
 
 
-app.post("/addorder", async (req, res) => {
+app.post("/addorder", cors(), async (req, res) => {
   console.log(req.headers)
   console.log(req.body)
   console.log('add to mongo emerge pay back end')
