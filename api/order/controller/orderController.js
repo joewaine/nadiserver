@@ -36,7 +36,9 @@ console.log(req.params.email)
 
   try {
     // const user = 'req params email'
-   const user = await Order.findByOrderEmail(req.params.email)
+  //  const user = await Order.findByOrderEmail(req.params.email)
+   const user = await Order.findByOrderEmail('joe.waine@gmail.com')
+
   res.status(201).json({ user });
    } catch (err) {
 
