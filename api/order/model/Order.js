@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 
 
 const orderSchema = mongoose.Schema({
+  email: {
+    type: String,
+    required: [true]
+  },
   payInfo: {
     type: Object,
     required: [true]
@@ -24,6 +28,28 @@ const orderSchema = mongoose.Schema({
 //       // console.log(order)
 //       return order
 // }
+
+
+
+
+
+
+
+//this method search for a order by email
+orderSchema.statics.findByOrderEmail = async (email) => {
+  const order = await Order.find({ email });
+  // console.log(order)
+  if (!order) {
+    throw new Error({ error: "Invalid login details" });
+  }
+
+  return order;
+};
+
+
+
+
+
 
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
