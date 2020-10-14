@@ -510,7 +510,7 @@ app.post("/issue-return", function (req, res) {
   var amount = "0.01";
   var config = {
       // transactionType: sdk.TransactionType.CreditReturn,
-      transactionType: "CreditReturn"
+      transactionType: "CreditReturn",
       method: "modal",
       fields: [
           {
