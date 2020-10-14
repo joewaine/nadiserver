@@ -24,6 +24,16 @@ exports.addOrder = async (req, res) => {
         res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
         res.json({ data });
 
+
+// intercept OPTIONS method
+if ('OPTIONS' == req.method) {
+  res.send(200);
+} else {
+  next();
+}
+
+
+
       } catch (err) {
         res.status(400).json({ err: err });
       }
