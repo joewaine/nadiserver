@@ -213,10 +213,7 @@ console.log(345)
      .catch(function (error) {
        console.log(error)
      });
-
-
-         
-       }
+      }
        
 
        var transporter = nodemailer.createTransport({
