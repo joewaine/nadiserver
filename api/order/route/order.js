@@ -33,7 +33,7 @@ router.post("/addorder", jsonParser, orderController.addOrder);
 // router.get('/allorders', orderController.getOrders);
 // router.post('/:id', orderController.deleteOrder);
 
-router.get("/:email", orderController.retrieveOrders);
+router.get("/email/:email", orderController.retrieveOrders);
 
 // retrieveOrders
 // .header("Access-Control-Allow-Origin", "*");
