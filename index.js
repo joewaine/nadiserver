@@ -150,8 +150,6 @@ let config = {
         }
     ]
 };
-
-
   
     emergepay.startTransaction(config)
     .then(function (transactionToken) {
@@ -510,7 +508,8 @@ app.post("/issue-return", function (req, res) {
   var amount = "0.01";
   var config = {
       // transactionType: sdk.TransactionType.CreditReturn,
-      transactionType: "CreditReturn",
+      transactionType: sdk.TransactionType.CreditReturn,
+      // transactionType: "CreditReturn",
       method: "modal",
       fields: [
           {
@@ -519,25 +518,14 @@ app.post("/issue-return", function (req, res) {
           },
           {
               id: "external_tran_id",
-              value: 'd492296a-2ecd-4c64-8768-b186869257f7'
-          },
-          {
-            id: "billing_name",
-            value: "joseph p waine"
-          },
-          {
-            id: "billing_address",
-            value: "1508 Melrose Avenue 5D"
-          },
-          {
-            id: "billing_postal_code",
-            value: "98122"
-          },
+            value: emergepay.getExternalTransactionId()
+          }
       ]
   };
 
   emergepay.startTransaction(config)
   .then(function (transactionToken) {
+    console.log(res)
       res.send({
           transactionToken: transactionToken
       });
