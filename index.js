@@ -440,25 +440,30 @@ html: htmlBody
 
 
 
-// app.post("/issue-tokenized-return", function (req, res) {
-//Ensure that you supply a valid uniqueTransId before trying to run the tokenized payment.
-// emergepay.tokenizedRefundTransaction({
-//   uniqueTransId: "b107023c48f141c7b2f0a36dc06469e5-a109feb7f21d4ec7ac9af5febaff7531",
-//   externalTransactionId: emergepay.getExternalTransactionId(),
-//   amount: "0.01",
-//   //optional values
-//   // cashierId: "",
-//   // billingName: "",
-//   // billingAddress: "",
-//   // billingPostalCode: "",
-//   // transactionReference: ""
-// })
-// .then(function(response) {
-//   var data = response.data;
-//   console.log(data)
-// })
-// .catch(function(error) {
-//   throw error;
-// })
+app.post("/issue-tokenized-return", function (req, res) {
 
-// });
+
+  
+
+
+// Ensure that you supply a valid uniqueTransId before trying to run the tokenized payment.
+emergepay.tokenizedRefundTransaction({
+  uniqueTransId: req.body.uniqueTransId,
+  externalTransactionId: emergepay.getExternalTransactionId(),
+  amount: "0.01",
+  //optional values
+  // cashierId: "",
+  // billingName: "",
+  // billingAddress: "",
+  // billingPostalCode: "",
+  // transactionReference: ""
+})
+.then(function(response) {
+  var data = response.data;
+  console.log(data)
+})
+.catch(function(error) {
+  throw error;
+})
+
+});
