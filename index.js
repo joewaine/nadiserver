@@ -461,6 +461,10 @@ emergepay.tokenizedRefundTransaction({
 .then(function(response) {
   var data = response.data;
   console.log(data)
+
+  res.send({data});
+
+
 })
 .catch(function(error) {
   throw error;
