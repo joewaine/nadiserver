@@ -35,6 +35,10 @@ router.post("/addorder", jsonParser, orderController.addOrder);
 
 router.get("/email/:email", orderController.retrieveOrders);
 
+
+router.get("/orderhistory", orderController.allOrders)
+
+
 // retrieveOrders
 // .header("Access-Control-Allow-Origin", "*");
 

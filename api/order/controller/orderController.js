@@ -47,3 +47,19 @@ console.log(req.params.email)
 
   }
  };
+
+
+
+ exports.allOrders = async (req, res) => {
+  console.log(req.params.email)
+  
+    try {
+      // const user = 'req params email'
+    //  const user = await Order.findByOrderEmail(req.params.email)
+     const user = await Order.find()
+  
+    res.status(201).json({ user });
+     } catch (err) {
+  
+    }
+   };
