@@ -147,64 +147,105 @@ app.listen(PORT, () => {
         }
       });
 
-      app.post("/oloorder", function (req, res) {
-console.log(req.body)
-             axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
-              {headers: {
-                'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
-                'X-Breadcrumb-Password': 'uQM8mseTvnTX',
-                'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
-                }})
-                 .then(function (response) {
+app.post("/oloorder", function (req, res) {
+  console.log(req.body)
+  axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
+    {
+      headers: {
+        'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+        'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+        'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
+      }
+    })
+    .then(function (response) {
 
-                  let resData = response.data
-                  console.log(response)
-                  if(resData.result === 'success'){
-                    res.send(req.body)
-                      let htmlBody = '<ul>'
-                      for(let i = 0;i<req.body.charges.items.length;i++){
-                        htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price) +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
-                        
-                      }
-                      
-                    htmlBody = htmlBody + '</ul>'
+      let resData = response.data
+      console.log(response)
+      if (resData.result === 'success') {
+        res.send(req.body)
+        let htmlBody = '<ul>'
+        for (let i = 0; i < req.body.charges.items.length; i++) {
+          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$' + JSON.stringify(req.body.charges.items[i].price) + '</b>&nbsp;x&nbsp;' + JSON.stringify(req.body.charges.items[i].quantity) + '</li>'
 
-                    var mailOptions = {
-                      from: 'joe@mamnoonrestaurant.com',
-                      to: req.body.fulfillment_info.customer.email,
-                      subject: 'Your Mamnoon Order Has Been Received!',
-                      html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
-                    };
-                    
-                    transporter.sendMail(mailOptions, function(error, info){
-                      if (error) {
-                        console.log(error);
-                      } else {
-                        console.log('Email sent: ' + info.response);
-                      }
-                    });
-                  }
-               })
-                 .catch(function (error) {
-                   console.log(error)
+        }
 
+        htmlBody = htmlBody + '</ul>'
 
+        var mailOptions = {
+          from: 'joe@mamnoonrestaurant.com',
+          to: req.body.fulfillment_info.customer.email,
+          subject: 'Your Mamnoon Order Has Been Received!',
+          html: '<pre>' + JSON.stringify(req.body.charges.items) + '</pre>'
+        };
 
-                 });
-              
-      });
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
 
 
 
+    });
+
+});
 
 
 
+app.post("/oloorderstreet", function (req, res) {
+  console.log(req.body)
+  axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
+    {
+      headers: {
+        'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-street`,
+        'X-Breadcrumb-Password': 'TJzwaP8uguyy',
+        'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
+      }
+    })
+    .then(function (response) {
+
+      let resData = response.data
+      console.log(response)
+      if (resData.result === 'success') {
+        res.send(req.body)
+        let htmlBody = '<ul>'
+        for (let i = 0; i < req.body.charges.items.length; i++) {
+          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$' + JSON.stringify(req.body.charges.items[i].price) + '</b>&nbsp;x&nbsp;' + JSON.stringify(req.body.charges.items[i].quantity) + '</li>'
+
+        }
+
+        htmlBody = htmlBody + '</ul>'
+
+        var mailOptions = {
+          from: 'joe@mamnoonrestaurant.com',
+          to: req.body.fulfillment_info.customer.email,
+          subject: 'Your Mamnoon Order Has Been Received!',
+          html: '<pre>' + JSON.stringify(req.body.charges.items) + '</pre>'
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
 
 
 
+    });
 
-
-
+});
 
 
 
@@ -245,14 +286,6 @@ let seeIfTicketsClosedOut = async function(){
 }
 
 
-  
-  
-
-
-
-
-
-
       // cron.schedule('* * * * *', () => {
       //   console.log('running a task every minute');
 
@@ -260,116 +293,9 @@ let seeIfTicketsClosedOut = async function(){
       //   seeIfTicketsClosedOut()
       // });
 
-
-
-
-
-
       //online order street
       //online order street
       //online order street
-
-      app.post("/oloorderstreet", function (req, res) {
-
-        axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
-         {headers: {
-           'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-street`,
-           'X-Breadcrumb-Password': 'TJzwaP8uguyy',
-           'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
-           }})
-            .then(function (response) {
-
-             let resData = response.data
-             console.log(response)
-             if(resData.result === 'success'){
-
-
-               // xxx
-               res.send(req.body)
-
-
-                 let htmlBody = '<ul>'
-
-                 for(let i = 0;i<req.body.charges.items.length;i++){
-
-                   htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price) +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
-                   
-
-                 }
-                 
-                 htmlBody = htmlBody + '</ul>'
-
-
-
-                 // "name":"961 Lebanese Pale Ale","price":800,quantity":1
-
-
-               var mailOptions = {
-                 from: 'joe@mamnoonrestaurant.com',
-                 to: req.body.fulfillment_info.customer.email,
-                 // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-                 subject: 'Your Mamnoon Order Has Been Received!',
-                 html: '<pre>'+JSON.stringify(req.body.charges.items)+'</pre>'
-                 
-               };
-               
-               transporter.sendMail(mailOptions, function(error, info){
-                 if (error) {
-                   console.log(error);
-                 } else {
-                   console.log('Email sent: ' + info.response);
-                 }
-               });
-// xxx
-             }else{
-               res.send('result not success')
-
-               res.send(req.body)
-
-
-                 let htmlBody = '<ul>'
-
-                 for(let i = 0;i<req.body.charges.items.length;i++){
-
-                   htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price).toFixed(2)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
-                   
-
-                 }
-                 
-                 htmlBody = htmlBody + '</ul>'
-
-console.log(htmlBody)
-
-                 // "name":"961 Lebanese Pale Ale","price":800,quantity":1
-
-
-               var mailOptions = {
-                 from: 'joe@mamnoonrestaurant.com',
-                 to: req.body.fulfillment_info.customer.email,
-                 // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-                 subject: 'Your Mamnoon Order Has Been Received!',
-                 html: '<pre>'+JSON.stringify(req.body)+'</pre>'
-               };
-               
-               transporter.sendMail(mailOptions, function(error, info){
-                 if (error) {
-                   console.log(error);
-                 } else {
-                   console.log('Email sent: ' + info.response);
-                 }
-               });
-
-
-
-             }
-          })
-            .catch(function (error) {
-              console.log(error)
-            });
-         
- });
-
-
 
 
 
@@ -430,13 +356,13 @@ html: htmlBody
 };
 
 // email send test
-// transporter.sendMail(mailOptions, function(error, info){
-// if (error) {
-//   console.log(error);
-// } else {
-//   console.log('Email sent: ' + info.response);
-// }
-// });
+transporter.sendMail(mailOptions, function(error, info){
+if (error) {
+  console.log(error);
+} else {
+  console.log('Email sent: ' + info.response);
+}
+});
 
 
 
@@ -450,13 +376,7 @@ app.post("/issue-tokenized-return", function (req, res) {
 emergepay.tokenizedRefundTransaction({
   uniqueTransId: req.body.uniqueTransId,
   externalTransactionId: emergepay.getExternalTransactionId(),
-  amount: "0.01",
-  //optional values
-  // cashierId: "",
-  // billingName: "",
-  // billingAddress: "",
-  // billingPostalCode: "",
-  // transactionReference: ""
+  amount: "0.01"
 })
 .then(function(response) {
   var data = response.data;
