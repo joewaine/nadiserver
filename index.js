@@ -471,3 +471,28 @@ emergepay.tokenizedRefundTransaction({
 })
 
 });
+
+
+
+
+app.get("/polling-request", function (req, res) {
+
+  console.log(req.query)
+
+
+emergepay.retrieveTransaction(req.query.externalTransactionId)
+.then(function(response) {
+    var transactionResponse = response.data;
+    console.log(transactionResponse)
+
+
+    transactionResponse
+    res.send({transactionResponse});
+
+})
+.catch(function(error) {
+    throw error;
+});
+
+
+});
