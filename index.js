@@ -113,28 +113,28 @@ app.post("/oloorder", function (req, res) {
       console.log(response)
       if (resData.result === 'success') {
         res.send(req.body)
-        let htmlBody = '<ul>'
-        for (let i = 0; i < req.body.charges.items.length; i++) {
-          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$' + JSON.stringify(req.body.charges.items[i].price) + '</b>&nbsp;x&nbsp;' + JSON.stringify(req.body.charges.items[i].quantity) + '</li>'
 
+
+        let htmlBody = `<p><h1>Your Order Has Been Placed!</h1><br>confirmation code: <b>${req.body.confirmation_code}</b><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul>`
+        for(let i = 0;i<req.body.charges.items.length;i++){
+          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-
-        htmlBody = htmlBody + '</ul>'
-
+        
+        htmlBody = htmlBody + '</ul><br>Thank you, Your friends at Mamnoon.'
+        
         var mailOptions = {
-          from: 'joe@mamnoonrestaurant.com',
-          to: req.body.fulfillment_info.customer.email,
-          subject: 'Your Mamnoon Order Has Been Received!',
-          html: '<pre>' + JSON.stringify(req.body.charges.items) + '</pre>'
+        from: 'joe@mamnoonrestaurant.com',
+        to: req.body.fulfillment_info.customer.email,
+        // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+        subject: 'Your Mamnoon Order Has Been Received!',
+        html: htmlBody 
+        
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+
+
+
+
       }
     })
     .catch(function (error) {
@@ -164,28 +164,36 @@ app.post("/oloorderstreet", function (req, res) {
       console.log(response)
       if (resData.result === 'success') {
         res.send(req.body)
-        let htmlBody = '<ul>'
-        for (let i = 0; i < req.body.charges.items.length; i++) {
-          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$' + JSON.stringify(req.body.charges.items[i].price) + '</b>&nbsp;x&nbsp;' + JSON.stringify(req.body.charges.items[i].quantity) + '</li>'
 
+
+
+        
+        let htmlBody = `<p><h1>Your Order Has Been Placed!</h1><br>confirmation code: <b>${req.body.confirmation_code}</b><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul>`
+        for(let i = 0;i<req.body.charges.items.length;i++){
+          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-
-        htmlBody = htmlBody + '</ul>'
-
+        
+        htmlBody = htmlBody + '</ul><br>Thank you, Your friends at Mamnoon.'
+        
         var mailOptions = {
-          from: 'joe@mamnoonrestaurant.com',
-          to: req.body.fulfillment_info.customer.email,
-          subject: 'Your Mamnoon Order Has Been Received!',
-          html: '<pre>' + JSON.stringify(req.body.charges.items) + '</pre>'
+        from: 'joe@mamnoonrestaurant.com',
+        to: req.body.fulfillment_info.customer.email,
+        // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+        subject: 'Your Mamnoon Order Has Been Received!',
+        html: htmlBody 
+        
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+
+
+
+
+
+
+
+
+
+
       }
     })
     .catch(function (error) {
@@ -251,21 +259,21 @@ let seeIfTicketsClosedOut = async function(){
 
 
 
-let orderObject = {"billing":{"billing_name":"joseph p waine","billing_address":"1508 Melrose Avenue 5D","billing_postal_code":"98122"},"id":"3xctadj2ect_fghcu8qvh8a_on2v1ek09x","time_placed":"2020-10-15T22:38:36.323Z","confirmation_code":"mamnoon-98lxoqjuxn","charges":{"total":1025,"preTotal":881,"addedTotal":1025,"fees":0,"taxes":81,"tip":{"amount":144,"payment_type":"Generic Online Ordering Integrated"},"items":[{"name":"Hummus","cartId":"eqhhvdjgrbl_io9rek3p4a_gsm2i1wuy34","item_id":"e1d4fa26-9fd3-4e0f-9959-06837f93089a","price":800,"price_cents":800,"quantity":1,"instructions":"","modifiers":[],"sides":[]},{"name":"Chocolate","cartId":"eqhhvdjgrbl_io9rek3p4a_gsm2i1wuy34","item_id":"e1d4fa26-9fd3-4e0f-9959-06837f93089a","price":800,"price_cents":800,"quantity":1,"instructions":"","modifiers":[],"sides":[]}]},"fulfillment_info":{"type":"delivery","estimated_fulfillment_time":"2020-10-15T22:38:36.323Z","customer":{"email":"joe.waine@gmail.com","phone":"4254429308","name":"joseph p waine"},"instructions":"","no_tableware":true,"delivery_info":{"is_managed_delivery":false,"address":{"city":"Seattle","state":"Washington","zip_code":"98122","address_line1":"1508 Melrose Avenue","address_line2":"5D"}}},"payments":{"payments":[{"payment_type":"Generic Online Ordering Integrated","amount":881}]}}
-// console.log(orderObject)
+let req.body = {"billing":{"billing_name":"joseph p waine","billing_address":"1508 Melrose Avenue 5D","billing_postal_code":"98122"},"id":"3xctadj2ect_fghcu8qvh8a_on2v1ek09x","time_placed":"2020-10-15T22:38:36.323Z","confirmation_code":"mamnoon-98lxoqjuxn","charges":{"total":1025,"preTotal":881,"addedTotal":1025,"fees":0,"taxes":81,"tip":{"amount":144,"payment_type":"Generic Online Ordering Integrated"},"items":[{"name":"Hummus","cartId":"eqhhvdjgrbl_io9rek3p4a_gsm2i1wuy34","item_id":"e1d4fa26-9fd3-4e0f-9959-06837f93089a","price":800,"price_cents":800,"quantity":1,"instructions":"","modifiers":[],"sides":[]},{"name":"Chocolate","cartId":"eqhhvdjgrbl_io9rek3p4a_gsm2i1wuy34","item_id":"e1d4fa26-9fd3-4e0f-9959-06837f93089a","price":800,"price_cents":800,"quantity":1,"instructions":"","modifiers":[],"sides":[]}]},"fulfillment_info":{"type":"delivery","estimated_fulfillment_time":"2020-10-15T22:38:36.323Z","customer":{"email":"joe.waine@gmail.com","phone":"4254429308","name":"joseph p waine"},"instructions":"","no_tableware":true,"delivery_info":{"is_managed_delivery":false,"address":{"city":"Seattle","state":"Washington","zip_code":"98122","address_line1":"1508 Melrose Avenue","address_line2":"5D"}}},"payments":{"payments":[{"payment_type":"Generic Online Ordering Integrated","amount":881}]}}
+// console.log(req.body)
 
 
 
-let htmlBody = `<p><h1>Your Order Has Been Placed!</h1><br>confirmation code: <b>${orderObject.confirmation_code}</b><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul>`
-for(let i = 0;i<orderObject.charges.items.length;i++){
-  htmlBody = htmlBody + '<li>' + JSON.stringify(orderObject.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(orderObject.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(orderObject.charges.items[i].quantity) +'</li>'
+let htmlBody = `<p><h1>Your Order Has Been Placed!</h1><br>confirmation code: <b>${req.body.confirmation_code}</b><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul>`
+for(let i = 0;i<req.body.charges.items.length;i++){
+  htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
 }
 
 htmlBody = htmlBody + '</ul><br>Thank you, Your friends at Mamnoon.'
 
 var mailOptions = {
 from: 'joe@mamnoonrestaurant.com',
-to: orderObject.fulfillment_info.customer.email,
+to: req.body.fulfillment_info.customer.email,
 // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
 subject: 'Your Mamnoon Order Has Been Received!',
 html: htmlBody 
