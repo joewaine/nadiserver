@@ -83,15 +83,15 @@ exports.addOrder = async (req, res) => {
         res.json({ data });
 
 
-        res.status(200).json({data});
+        // res.status(200).json({data});
         // res.send(200);
 
 // intercept OPTIONS method
-// if ('OPTIONS' == req.method) {
-//   res.send(200);
-// } else {
-//   next();
-// }
+if ('OPTIONS' == req.method) {
+  res.send(200);
+} else {
+  next();
+}
 
 
 
