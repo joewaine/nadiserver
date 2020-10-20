@@ -72,6 +72,7 @@ exports.issueVoid = function (req, res) {
 
 
 exports.addOrder = async (req, res) => {
+
     try {
         const order = new Order({
           email: req.body.payInfo.fulfillment_info.customer.email,
@@ -80,18 +81,18 @@ exports.addOrder = async (req, res) => {
         });
         // console.log(order)
         let data = await order.save();
-        res.json({ data });
+        // res.json({ data });
 
 
         // res.status(200).json({data});
-        // res.send(200);
+        res.status(200).json({ data });
 
 // intercept OPTIONS method
-if ('OPTIONS' == req.method) {
-  res.send(200);
-} else {
-  next();
-}
+// if ('OPTIONS' == req.method) {
+//   res.send(200);
+// } else {
+//   next();
+// }
 
 
 
@@ -119,7 +120,7 @@ console.log(req.params.email)
 
 
  exports.allOrders = async (req, res) => {
-  console.log(req.params.email)
+  // console.log(req.params.email)
   
     try {
       // const user = 'req params email'
@@ -135,16 +136,16 @@ console.log(req.params.email)
 
    exports.pollingRequest = function (req, res) {
    
-     console.log(req.query)
+    //  console.log(req.query)
    
    
    emergepay.retrieveTransaction(req.query.externalTransactionId)
    .then(function(response) {
        var transactionResponse = response.data;
-       console.log(transactionResponse)
+      //  console.log(transactionResponse)
    
    
-       transactionResponse
+      //  transactionResponse
        res.send({transactionResponse});
    
    })

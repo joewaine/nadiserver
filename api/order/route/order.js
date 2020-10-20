@@ -26,7 +26,7 @@ const axios = require('axios');
 const bodyParser = require("body-parser");
 
 
-// var jsonParser = bodyParser.json()
+var jsonParser = bodyParser.json()
 
 
 router.post("/addorder", orderController.addOrder);
