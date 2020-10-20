@@ -82,57 +82,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //The client side can hit this endpoint by issuing a POST request to
-//base_amount and external_tran_id are required in the fields array.
-app.post("/start-transaction", function (req, res) {
-let amount = Number(req.body.charges.preTotal)
-let tipAmount = Number(req.body.charges.tip.amount)
-let formattedTipAmount = tipAmount/100
 
-
-let finalAmount = amount
-let finalCash = finalAmount/100
-let config = {
-    transactionType: sdk.TransactionType.CreditSale,
-    method: "modal",
-    fields: [
-        {
-            id: "base_amount",
-            value: finalCash.toString()
-        },
-        {
-          id: "billing_name",
-          value: req.body.billing.billing_name
-        },
-        {
-        id: "billing_address",
-        value: req.body.billing.billing_address
-        },
-        {
-            id: "billing_postal_code",
-            value: req.body.billing.billing_postal_code
-        },
-        {
-            id: "external_tran_id",
-            value: emergepay.getExternalTransactionId()
-        },
-        {
-          id: "tip_amount",
-          value: formattedTipAmount.toString()
-        }
-    ]
-};
-  
-    emergepay.startTransaction(config)
-    .then(function (transactionToken) {
-        res.send({
-            transactionToken: transactionToken
-        });
-    })
-    .catch(function (err) {
-      console.log('error')
-        res.send(err.message);
-    });
-});
 
 app.listen(PORT, () => {
   console.log(`App is running on ${PORT}`);
@@ -299,39 +249,6 @@ let seeIfTicketsClosedOut = async function(){
 
 
 
- //The client side can hit this endpoint by issuing a POST request to
-//localhost:5555/start-transaction
-//base_amount and external_tran_id are required in the fields array.
-app.post("/issue-return", function (req, res) {
-  var amount = "0.01";
-  var config = {
-      // transactionType: sdk.TransactionType.CreditReturn,
-      transactionType: sdk.TransactionType.CreditReturn,
-      // transactionType: "CreditReturn",
-      method: "modal",
-      fields: [
-          {
-              id: "base_amount",
-              value: amount
-          },
-          {
-              id: "external_tran_id",
-            value: emergepay.getExternalTransactionId()
-          }
-      ]
-  };
-
-  emergepay.startTransaction(config)
-  .then(function (transactionToken) {
-    console.log(res)
-      res.send({
-          transactionToken: transactionToken
-      });
-  })
-  .catch(function (err) {
-      res.send(err.message);
-  });
-});
 
 
 let orderObject = {"billing":{"billing_name":"joseph p waine","billing_address":"1508 Melrose Avenue 5D","billing_postal_code":"98122"},"id":"3xctadj2ect_fghcu8qvh8a_on2v1ek09x","time_placed":"2020-10-15T22:38:36.323Z","confirmation_code":"mamnoon-98lxoqjuxn","charges":{"total":1025,"preTotal":881,"addedTotal":1025,"fees":0,"taxes":81,"tip":{"amount":144,"payment_type":"Generic Online Ordering Integrated"},"items":[{"name":"Hummus","cartId":"eqhhvdjgrbl_io9rek3p4a_gsm2i1wuy34","item_id":"e1d4fa26-9fd3-4e0f-9959-06837f93089a","price":800,"price_cents":800,"quantity":1,"instructions":"","modifiers":[],"sides":[]},{"name":"Chocolate","cartId":"eqhhvdjgrbl_io9rek3p4a_gsm2i1wuy34","item_id":"e1d4fa26-9fd3-4e0f-9959-06837f93089a","price":800,"price_cents":800,"quantity":1,"instructions":"","modifiers":[],"sides":[]}]},"fulfillment_info":{"type":"delivery","estimated_fulfillment_time":"2020-10-15T22:38:36.323Z","customer":{"email":"joe.waine@gmail.com","phone":"4254429308","name":"joseph p waine"},"instructions":"","no_tableware":true,"delivery_info":{"is_managed_delivery":false,"address":{"city":"Seattle","state":"Washington","zip_code":"98122","address_line1":"1508 Melrose Avenue","address_line2":"5D"}}},"payments":{"payments":[{"payment_type":"Generic Online Ordering Integrated","amount":881}]}}
@@ -355,64 +272,23 @@ html: htmlBody
 
 };
 
-// email send test
-transporter.sendMail(mailOptions, function(error, info){
-if (error) {
-  console.log(error);
-} else {
-  console.log('Email sent: ' + info.response);
-}
-});
+// // email send test
+// transporter.sendMail(mailOptions, function(error, info){
+// if (error) {
+//   console.log(error);
+// } else {
+//   console.log('Email sent: ' + info.response);
+// }
+// });
 
 
 
-app.post("/issue-tokenized-return", function (req, res) {
+
+
+
 
 
   
 
 
-// Ensure that you supply a valid uniqueTransId before trying to run the tokenized payment.
-emergepay.tokenizedRefundTransaction({
-  uniqueTransId: req.body.uniqueTransId,
-  externalTransactionId: emergepay.getExternalTransactionId(),
-  amount: "0.01"
-})
-.then(function(response) {
-  var data = response.data;
-  console.log(data)
 
-  res.send({data});
-
-
-})
-.catch(function(error) {
-  throw error;
-})
-
-});
-
-
-
-
-app.get("/polling-request", function (req, res) {
-
-  console.log(req.query)
-
-
-emergepay.retrieveTransaction(req.query.externalTransactionId)
-.then(function(response) {
-    var transactionResponse = response.data;
-    console.log(transactionResponse)
-
-
-    transactionResponse
-    res.send({transactionResponse});
-
-})
-.catch(function(error) {
-    throw error;
-});
-
-
-});

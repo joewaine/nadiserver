@@ -26,17 +26,18 @@ const axios = require('axios');
 const bodyParser = require("body-parser");
 
 
-var jsonParser = bodyParser.json()
+// var jsonParser = bodyParser.json()
 
 
-router.post("/addorder", jsonParser, orderController.addOrder);
+router.post("/addorder", orderController.addOrder);
 // router.get('/allorders', orderController.getOrders);
 // router.post('/:id', orderController.deleteOrder);
-
 router.get("/email/:email", orderController.retrieveOrders);
-
-
 router.get("/orderhistory", orderController.allOrders)
+router.post("/issue-tokenized-return", orderController.tokenizedReturn)
+router.post("/issue-void", orderController.issueVoid)
+router.get("/polling-request", orderController.pollingRequest)
+router.post("/start-transaction", orderController.startTransaction)
 
 
 // retrieveOrders
