@@ -91,13 +91,26 @@ exports.issueVoid = function (req,res) {
 exports.addOrder = async (req, res) => {
 console.log(req.body)
     try {
+
+      let uniqueTrans = 'giftcard'
+
+      if(req.body.orderInfo.uniqueTransId){
+        uniqueTrans = req.body.orderInfo.uniqueTransId
+      }
+
         const order = new Order({
           email: req.body.payInfo.fulfillment_info.customer.email,
           payInfo: req.body.payInfo,
           orderInfo: req.body.orderInfo,
           void: false,
-          uniqueTransId: req.body.orderInfo.uniqueTransId
-        });
+          uniqueTransId: uniqueTrans
+        })
+
+
+
+
+
+
         // console.log(order)
         let data = await order.save();
         // res.json({ data });
@@ -244,3 +257,133 @@ console.log(req.params.email)
         console.log(error)
       }
      };
+
+
+
+
+     exports.lookUpGiftCard = async (req, res) => {
+      console.log('look up giftcard')
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = mm + '/' + dd + '/' + yyyy;
+    
+      let currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
+      let currentTimeSliced = currentTime.replace(' ', '')
+    
+      var xmlBodyStr = `request=<?xml version="1.0"?>
+      <Trans>
+      <Header>
+          <FmtType>ClientWeb</FmtType>
+          <FmtVer>1.0.0</FmtVer>
+          <Uid>A7FEDD8B-BF2C-4D63-917D-4C1130ABFE4E</Uid>
+          <Client>1047</Client>
+          <ClientCode>B5C7A5CD-CAFB-4BE7-90F5-1A5ACB29292A</ClientCode>
+          <Location>99992</Location>
+          <Server>123</Server>
+          <TransDate>${today}</TransDate>
+          <TransTime>${currentTimeSliced}</TransTime>
+          <POSSerial>12345</POSSerial>
+      </Header>
+      <Requests>
+      <SvInquiry>
+      <CardNbr>
+      ${req.body.cardNumber}
+      </CardNbr>
+      </SvInquiry>
+      </Requests>
+      </Trans>`;
+    
+      var config = {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      };
+      axios.post('https://portal2.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+    
+        let resData = response.data
+        // // console.log(resData)
+        let resSendData = null
+    
+        parseString(resData, function (err, result) {
+          resSendData = result['Trans'];
+        });
+        res.send(201).json({ resSendData });
+      }).catch(err => {
+        // // console.log(err)
+        res.status(400).json({ err: err });
+      });
+    
+    };
+    
+
+
+
+    exports.useGiftCard = async (req, res) => {
+      console.log('use giftcard')
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      today = mm + '/' + dd + '/' + yyyy;
+    
+      let currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
+      let currentTimeSliced = currentTime.replace(' ', '')
+      var xmlBodyStr = `request=<?xml version="1.0"?>
+        <Trans>
+        <Header>
+        <FmtType>ClientWeb</FmtType>
+        <FmtVer>1.0.0</FmtVer>
+        <Uid>A7FEDD8B-BF2C-4D63-917D-4C1130ABFE4E</Uid>
+        <Client>1047</Client>
+        <ClientCode>B5C7A5CD-CAFB-4BE7-90F5-1A5ACB29292A</ClientCode>
+        <Location>99992</Location>
+        <Server>123</Server>
+        <TransDate>${today}</TransDate>
+        <TransTime>${currentTimeSliced}</TransTime>
+        <POSSerial>12345</POSSerial>
+        </Header>
+        <Requests>
+        <SvUse>
+        <CardNbr>
+        ${req.body.cardNumber}
+        </CardNbr>
+        <Amount>${req.body.useAmount}</Amount>
+        </SvUse>
+        </Requests>
+        </Trans>`;
+    
+      var config = {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      };
+      //  axios.post('http://test.portal.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+    
+
+      console.log(req.body)
+      axios.post('https://portal2.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+        let resData = response.data
+        let resSendData = null
+console.log(resData)
+        parseString(resData, function (err, result) {
+          resSendData = result['Trans'];
+        });
+    
+        res.send(201).json({ resSendData });
+    
+      }).catch(err => {
+    
+        res.status(400).json({ err: err });
+      });
+    
+    };

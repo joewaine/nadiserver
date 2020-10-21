@@ -42,6 +42,11 @@ router.post("/start-transaction", orderController.startTransaction)
 router.post("/void-transid", orderController.voidByTransID)
 
 
+
+router.post("/usegiftcard", orderController.useGiftCard);
+router.post("/lookupgiftcard", orderController.lookUpGiftCard);
+
+
 // retrieveOrders
 // .header("Access-Control-Allow-Origin", "*");
 
