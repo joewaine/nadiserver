@@ -198,16 +198,8 @@ app.post("/oloorderstreet", function (req, res) {
     .catch(function (error) {
       console.log(error)
 
-
-
     });
-
 });
-
-
-
-
-
 
 let currentChecks = []
 

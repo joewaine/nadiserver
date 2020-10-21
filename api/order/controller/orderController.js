@@ -43,9 +43,27 @@ var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environme
 
 
 
-exports.issueVoid = function (req, res) {
+let updateVoidInMongo = async (req,res) => {
+  try {
+    const user = await Order.findByUniqueTransId(req.body.uniqueTransId)
+    console.log(user)
+    res.status(201).json({ user });
+ } catch (err) {
+console.log(err)
+}
+}
 
 
+
+
+
+
+
+
+exports.issueVoid = function (req,res) {
+
+  console.log('issueVoid')
+  console.log(req.body.uniqueTransId)
   //Ensure uniqueTransId is set to the id of the transaction to void
   emergepay.voidTransaction({
     uniqueTransId: req.body.uniqueTransId,
@@ -54,11 +72,10 @@ exports.issueVoid = function (req, res) {
   })
   .then(function(response) {
     var transactionResponse = response.data;
-  
     console.log(transactionResponse)
-    
     res.send({transactionResponse});
-  
+
+
   
   })
   .catch(function(error) {
@@ -72,17 +89,19 @@ exports.issueVoid = function (req, res) {
 
 
 exports.addOrder = async (req, res) => {
-
+console.log(req.body)
     try {
         const order = new Order({
           email: req.body.payInfo.fulfillment_info.customer.email,
           payInfo: req.body.payInfo,
-          orderInfo: req.body.orderInfo
+          orderInfo: req.body.orderInfo,
+          void: false,
+          uniqueTransId: req.body.orderInfo.uniqueTransId
         });
         // console.log(order)
         let data = await order.save();
         // res.json({ data });
-
+console.log(order)
 
         // res.status(200).json({data});
         res.status(200).json({ data });
@@ -107,8 +126,6 @@ exports.retrieveOrders = async (req, res) => {
 console.log(req.params.email)
 
   try {
-    // const user = 'req params email'
-  //  const user = await Order.findByOrderEmail(req.params.email)
    const user = await Order.findByOrderEmail(req.params.email)
 
   res.status(201).json({ user });
@@ -117,17 +134,11 @@ console.log(req.params.email)
   }
  };
 
-
-
  exports.allOrders = async (req, res) => {
-  // console.log(req.params.email)
   
     try {
-      // const user = 'req params email'
-    //  const user = await Order.findByOrderEmail(req.params.email)
-     const user = await Order.find()
-  
-    res.status(201).json({ user });
+    const user = await Order.find()
+      res.status(201).json({ user });
      } catch (err) {
   
     }
@@ -137,7 +148,6 @@ console.log(req.params.email)
    exports.pollingRequest = function (req, res) {
    
     //  console.log(req.query)
-   
    
    emergepay.retrieveTransaction(req.query.externalTransactionId)
    .then(function(response) {
@@ -207,3 +217,30 @@ console.log(req.params.email)
            res.send(err.message);
        });
    }
+
+
+
+
+
+
+
+   exports.voidByTransID = async (req, res) => {
+
+    console.log('void by trans id')
+    console.log(req.body.uniqueTransId)
+    
+
+      try {
+
+        const filter = {uniqueTransId: req.body.uniqueTransId};
+        const update = {void:true};
+
+        let doc = await Order.findOneAndUpdate(filter, update, {
+          returnOriginal: false
+        });
+
+        res.status(201).json({ doc });
+       } catch (err) {
+        console.log(error)
+      }
+     };

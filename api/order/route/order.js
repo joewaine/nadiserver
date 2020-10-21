@@ -39,6 +39,8 @@ router.post("/issue-void", orderController.issueVoid)
 router.get("/polling-request", orderController.pollingRequest)
 router.post("/start-transaction", orderController.startTransaction)
 
+router.post("/void-transid", orderController.voidByTransID)
+
 
 // retrieveOrders
 // .header("Access-Control-Allow-Origin", "*");

@@ -15,6 +15,14 @@ const orderSchema = mongoose.Schema({
   orderInfo: {
     type: Object,
     required: [true]
+  },
+  void: {
+    type: Boolean,
+    required: [true]
+  },
+  uniqueTransId: {
+    type: String,
+    required: [true]
   }
 });
 
@@ -38,13 +46,16 @@ const orderSchema = mongoose.Schema({
 //this method search for a order by email
 orderSchema.statics.findByOrderEmail = async (email) => {
   const order = await Order.find({ email });
-  // console.log(order)
+  console.log(order)
   if (!order) {
     throw new Error({ error: "Invalid login details" });
   }
 
   return order;
 };
+
+
+
 
 
 
