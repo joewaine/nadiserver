@@ -96,7 +96,7 @@ auth: {
 });
 
 app.post("/oloorder", function (req, res) {
-  // console.log(req.body)
+
   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
     {
       headers: {

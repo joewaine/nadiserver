@@ -98,12 +98,20 @@ console.log(req.body)
         uniqueTrans = req.body.orderInfo.uniqueTransId
       }
 
+      let externalTrans = 'giftcard'
+
+      if(req.body.orderInfo.externalTransId){
+        externalTrans  = req.body.orderInfo.externalTransactionId
+      }
+      
+
         const order = new Order({
           email: req.body.payInfo.fulfillment_info.customer.email,
           payInfo: req.body.payInfo,
           orderInfo: req.body.orderInfo,
           void: false,
-          uniqueTransId: uniqueTrans
+          uniqueTransId: uniqueTrans,
+          externalTransId: externalTrans
         })
 
 

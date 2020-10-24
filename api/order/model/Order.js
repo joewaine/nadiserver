@@ -23,6 +23,10 @@ const orderSchema = mongoose.Schema({
   uniqueTransId: {
     type: String,
     required: [true]
+  },
+  externalTransId: {
+    type: String,
+    required: [true]
   }
 });
 
