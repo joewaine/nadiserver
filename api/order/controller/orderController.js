@@ -23,7 +23,7 @@ var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environme
     emergepay.tokenizedRefundTransaction({
       uniqueTransId: req.body.uniqueTransId,
       externalTransactionId: emergepay.getExternalTransactionId(),
-      amount: "0.01"
+      amount: req.body.amount
     })
     .then(function(response) {
       var data = response.data;
