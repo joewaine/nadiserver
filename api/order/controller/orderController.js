@@ -395,3 +395,60 @@ console.log(resData)
       });
     
     };
+
+
+
+    
+
+  
+
+
+
+    exports.updateRefundItems = async (req, res) => {
+      
+      console.log(req.body.cartId)
+      try {
+        // let doc = await Order.findById('5f97465eebb3b9108bc2a50b')
+
+      let doc = await Order.findOneAndUpdate(
+    { "_id": req.body.orderId, "payInfo.charges.items.cartId": req.body.cartId },
+    { 
+        "$set": {
+          "payInfo.charges.items.$.returned": true
+        }
+    },
+    function(err,doc) {
+  
+    }
+  );
+
+
+  console.log('you just got one')
+  res.status(201).json({ doc });
+} catch (err) {
+console.log(err)
+}
+
+
+
+
+
+
+
+// console.log(doc.payInfo.id('yfjo4wjro2_hym3c3oms3q_89zxj4cr1ho'))
+// console.log('void by trans id')
+// console.log(req.body.uniqueTransId)
+//   try {
+
+//     const filter = {uniqueTransId: req.body.uniqueTransId};
+//     const update = {void:true};
+
+//     let doc = await Order.findOneAndUpdate(filter, update, {
+//       returnOriginal: false
+//     });
+
+//     res.status(201).json({ doc });
+//    } catch (err) {
+//     console.log(error)
+//   }
+       };
