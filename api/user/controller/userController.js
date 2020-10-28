@@ -311,3 +311,56 @@ exports.deleteTestimonial = async (req, res) => {
 
 }
 // </SvInquiry>
+
+
+
+
+
+
+
+
+// giftcards
+
+
+
+exports.getGiftcards = async (req, res) => {
+  console.log(req.params.email)
+  try {
+    const user = await User.findByUserEmail(req.params.email)
+    const usergiftcards = user.giftcards
+    console.log(usergiftcards)
+    res.status(201).json({ usergiftcards });
+  } catch {
+    res.status(400).json({ err: err });
+  }
+}
+
+exports.submitGiftcard = async (req, res) => {
+  console.log(req.body)
+  const giftcardInfo = {
+    _id: String.fromCharCode(65 + Math.floor(Math.random() * 26)) + Date.now(),
+    number: req.body.number
+  }
+  try {
+    await User.findOneAndUpdate(
+      { email: req.body.email },
+      { $push: { giftcards: giftcardInfo } }
+    );
+    const user = await User.findByUserEmail(req.body.email)
+    console.log(user)
+    res.status(201).json({ user });
+  } catch (err) {
+    res.status(400).json({ err: err });
+  }
+};
+
+
+exports.deleteGiftcard = async (req, res) => {
+  console.log(req.body)
+  const giftcardDelete = await User.update(
+    {},
+    { $pull: { "giftcards": { _id: req.body.giftcardId } } },
+    { multi: true }
+  )
+  res.status(201).json({ giftcardDelete });
+}

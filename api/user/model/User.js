@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
     type: Array,
     required: [false, 'not required']
   },
-  giftcard: {
+  giftcards: {
     type: Array,
     required: [false, 'not required']
   },

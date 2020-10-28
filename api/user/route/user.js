@@ -29,6 +29,9 @@ router.post("/lookupgiftcard", userController.lookUpGiftCard);
 router.get("/gettestimonials/:email", userController.getTestimonials);
 router.post("/submittestimonial", userController.submitTestimonial);
 router.get('/email/:email', userController.getUserInfo);
-      
+router.post("/submitgiftcard", userController.submitGiftcard);
+router.post('/deletegiftcard', userController.deleteGiftcard);
+router.get("/getgiftcards/:email", userController.getGiftcards);
+
 module.exports = router;
 
