@@ -116,7 +116,7 @@ app.post("/oloorder", function (req, res) {
         res.send(req.body)
 
 
-        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Order Has Been Placed!</h1></div>
+        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Mamnoon Order Has Been Placed!</h1></div>
         <p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
@@ -127,7 +127,7 @@ app.post("/oloorder", function (req, res) {
         htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle, WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
                 
         var mailOptions = {
-        from: 'joe@mamnoonrestaurant.com',
+        from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
         subject: 'Your Mamnoon Order Has Been Received!',
@@ -174,18 +174,21 @@ app.post("/oloorderstreet", function (req, res) {
         res.send(req.body)
 
 
-        let htmlBody = `<p><h1>Your Order Has Been Placed!</h1><br>confirmation code: <b>${req.body.confirmation_code}</b><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul>`
+        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Mamnoon Street Order Has Been Placed!</h1></div>
+        <p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
-          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+          htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-        
-        htmlBody = htmlBody + '</ul><br>Thank you, Your friends at Mamnoon.'
-        
+
+
+        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
+                
         var mailOptions = {
-        from: 'joe@mamnoonrestaurant.com',
+        from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: 'Your Mamnoon Order Has Been Received!',
+        subject: 'Your Mamnoon Street Order Has Been Received!',
         html: htmlBody 
         
         };
