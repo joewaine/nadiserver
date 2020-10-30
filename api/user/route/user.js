@@ -32,6 +32,12 @@ router.get('/email/:email', userController.getUserInfo);
 router.post("/submitgiftcard", userController.submitGiftcard);
 router.post('/deletegiftcard', userController.deleteGiftcard);
 router.get("/getgiftcards/:email", userController.getGiftcards);
+router.post("/primarygiftcard", userController.primaryGiftCard);
+
+
+
+
+
 
 module.exports = router;
 

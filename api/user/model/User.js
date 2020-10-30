@@ -22,6 +22,10 @@ const userSchema = mongoose.Schema({
     type: Array,
     required: [false, 'not required']
   },
+  giftcard: {
+    type: String,
+    required: [false, 'not required']
+  },
   giftcards: {
     type: Array,
     required: [false, 'not required']

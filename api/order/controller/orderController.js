@@ -429,12 +429,6 @@ console.log(resData)
 console.log(err)
 }
 
-
-
-
-
-
-
 // console.log(doc.payInfo.id('yfjo4wjro2_hym3c3oms3q_89zxj4cr1ho'))
 // console.log('void by trans id')
 // console.log(req.body.uniqueTransId)

@@ -90,10 +90,13 @@ app.listen(PORT, () => {
 var transporter = nodemailer.createTransport({
 service: 'gmail',
 auth: {
-  user: 'joe@mamnoonrestaurant.com',
-  pass: 'Montebello7098!!'
+  user: 'orders@mamnoonrestaurant.com',
+  pass: 'orders4mama'
 }
 });
+
+
+
 
 app.post("/oloorder", function (req, res) {
 
@@ -113,13 +116,16 @@ app.post("/oloorder", function (req, res) {
         res.send(req.body)
 
 
-        let htmlBody = `<p><h1>Your Order Has Been Placed!</h1><br>confirmation code: <b>${req.body.confirmation_code}</b><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul>`
+        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Order Has Been Placed!</h1></div>
+        <p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
-          htmlBody = htmlBody + '<li>' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+          htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-        
-        htmlBody = htmlBody + '</ul><br>Thank you, Your friends at Mamnoon.'
-        
+
+
+        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle, WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
+                
         var mailOptions = {
         from: 'joe@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
@@ -229,34 +235,5 @@ let seeIfTicketsClosedOut = async function(){
    console.log('error')
   }
 //////
-
-
-
 }
-
-
-      // cron.schedule('* * * * *', () => {
-      //   console.log('running a task every minute');
-
-
-      //   seeIfTicketsClosedOut()
-      // });
-
-      //online order street
-      //online order street
-      //online order street
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
 
