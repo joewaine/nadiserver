@@ -104,38 +104,18 @@ console.log(req.body)
         externalTrans  = req.body.orderInfo.externalTransactionId
       }
       
-
         const order = new Order({
           email: req.body.payInfo.fulfillment_info.customer.email,
           payInfo: req.body.payInfo,
           orderInfo: req.body.orderInfo,
           void: false,
-          uniqueTransId: uniqueTrans,
-          externalTransId: externalTrans
+          uniqueTransId: uniqueTrans
         })
-
-
-
-
-
-
-        // console.log(order)
         let data = await order.save();
         // res.json({ data });
-console.log(order)
-
+        console.log(order)
         // res.status(200).json({data});
         res.status(200).json({ data });
-
-// intercept OPTIONS method
-// if ('OPTIONS' == req.method) {
-//   res.send(200);
-// } else {
-//   next();
-// }
-
-
-
       } catch (err) {
         res.status(400).json({ err: err });
       }
