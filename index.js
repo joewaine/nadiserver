@@ -19,8 +19,19 @@ const qs = require('qs');
 const mongoose = require("mongoose");
 const config = require("./config/db");
 
-const nodemailer = require('nodemailer');
+const moment = require('moment')
+const tz = require('moment-timezone')
 
+
+const differenceBy = require("lodash/differenceBy");
+
+// import differenceBy from 'lodash/differenceBy'
+
+
+
+const Order = require("./api/order/model/Order");
+
+const nodemailer = require('nodemailer');
 
 
 
@@ -115,26 +126,33 @@ app.post("/oloorder", function (req, res) {
       if (resData.result === 'success') {
         res.send(req.body)
 
+        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
-        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Mamnoon Order Has Been Placed!</h1></div>
-        <p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        if(req.body.fulfillment_info.type === 'delivery'){
+          htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
+        }else{
+          htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
+        }
+        
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-
-
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle, WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
+        
+        
+        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
                 
+        
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: 'Your Mamnoon Order Has Been Received!',
+        subject: `Your ${req.body.restaurant} Order Has Been Received!`,
         html: htmlBody 
         
         };
-
+        
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -169,30 +187,38 @@ app.post("/oloorderstreet", function (req, res) {
     .then(function (response) {
 
       let resData = response.data
-      console.log(response)
+      // console.log(response)
       if (resData.result === 'success') {
         res.send(req.body)
 
 
-        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Mamnoon Street Order Has Been Placed!</h1></div>
-        <p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
+
+        if(req.body.fulfillment_info.type === 'delivery'){
+          htmlBody = htmlBody + `Your Delivery Order Has Been Placed!</h1></div>`
+        }else{
+          htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
+        }
+        
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-
-
+        
+        
         htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
                 
+        
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: 'Your Mamnoon Street Order Has Been Received!',
+        subject: `Your ${req.body.restaurant} Order Has Been Received!`,
         html: htmlBody 
         
         };
-
+        
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -210,14 +236,128 @@ app.post("/oloorderstreet", function (req, res) {
     });
 });
 
-let currentChecks = []
 
 
-let seeIfTicketsClosedOut = async function(){
-  console.log("do here")
-  /////
+
+
+async function updateToStatusClosed(idToClose) {
+
+
+
   try {
-    const request = await fetch('https://api.breadcrumb.com/ws/v2/checks.json?date=20200911', {
+
+// console.log(idsToClose)
+  await Order.updateOne(
+      { upserveId: idToClose },
+      { $set: { status : "Closed" } },
+      {multi: true}
+   )
+
+  
+
+
+} catch (err) {
+  console.log(err)
+  }
+
+}
+
+async function queryOrders(closedOrders) {
+
+  try {
+
+
+
+let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open" })
+    
+console.log(docs)
+
+for(let i = 0;i<docs.length;i++){
+  sendEmail(docs[i].upserveId)
+}
+
+} catch (err) {
+  console.log(err)
+  }
+
+
+}
+
+
+
+
+
+
+async function sendEmail(upserveId) {
+
+  try {
+
+  let doc = await Order.find({ "upserveId": upserveId });
+
+  console.log('you retrievced it right')
+    // console.log(doc)
+
+
+
+
+
+
+
+    let htmlBody = `<div style="background-color: #009900;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
+
+    if(doc[0].payInfo.fulfillment_info.type === 'delivery'){
+      htmlBody = htmlBody + `Your Delivery Order Order Is Ready!</h1></div>`
+    }else{
+      htmlBody = htmlBody + `Your Pickup Order Order Is Ready!</h1></div>`
+    }
+    
+    htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+    <br><span style="font-size: 20px !important;">confirmation code: <b>${doc[0].payInfo.confirmation_code}</b></span><br/><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+    for(let i = 0;i<doc[0].payInfo.charges.items.length;i++){
+      htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(doc[0].payInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(doc[0].payInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(doc[0].payInfo.charges.items[i].quantity) +'</li>'
+    }
+    
+    
+    htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
+            
+    
+    var mailOptions = {
+    from: 'orders@mamnoonrestaurant.com',
+    to: doc[0].payInfo.fulfillment_info.customer.email,
+    // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+    subject: `Your ${doc[0].payInfo.restaurant} Order Is Ready!`,
+    html: htmlBody
+    
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    
+
+
+     updateToStatusClosed(upserveId)
+
+    
+
+} catch (err) {
+console.log(err)
+}
+
+}
+
+let existingChecks = null
+
+async function checkCheckStatus(res) {
+  // console.log('being done')
+  let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
+  // let order = '20201106'
+  try {
+    let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
       headers: {
         'X-Breadcrumb-Username': `joe-waine_mamnoon-llc`,
         'X-Breadcrumb-Password': 'sbkh_Qgs4HMB',
@@ -225,18 +365,45 @@ let seeIfTicketsClosedOut = async function(){
       }
     })
     if (request.ok) { 
-      const body = await request.json();
-      for(let i = 0;i<body.objects.length;i++){
-        console.log(body.objects[i])
-        // console.log(body.objects[i].status)
-      }
+      let body = await request.json();
 
-      // res.status(201).json({ body });
+
+     let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
+     
+    //  console.log('closedOnlineOrders')
+    //  console.log(closedOnlineOrders)
+     
+     queryOrders(closedOnlineOrders)
+
+
+
+        // for(let i = 0; i < existingChecks.length; i++){
+        //      if(body.objects[i].status !== existingChecks[i].status){
+        //           sendEmail(existingChecks[i].online_order.id)
+        //           existingChecks = [...body.objects];
+        //           // existingChecks === null
+        //           }                
+        //   }
+        // }
     }
+// console.log('success')
   } catch (err) {
-  //  res.status(400).json({ err: err });
-   console.log('error')
+  console.log(err)
+  console.log('failure')
   }
-//////
 }
 
+cron.schedule('*/10 * * * * *', () => {
+  checkCheckStatus()
+});
+
+
+
+
+
+  
+
+
+
+
+// sendEmail('7pfb14wv5c_cnr43b20zee_bqqayt379kq')

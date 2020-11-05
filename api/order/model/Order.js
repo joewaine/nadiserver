@@ -24,7 +24,11 @@ const orderSchema = mongoose.Schema({
     type: String,
     required: [true]
   },
-  externalTransId: {
+  upserveId: {
+    type: String,
+    required: [true]
+  },
+  status: {
     type: String,
     required: [true]
   }

@@ -89,7 +89,11 @@ exports.issueVoid = function (req,res) {
 
 
 exports.addOrder = async (req, res) => {
-console.log(req.body)
+// console.log(req.body)
+
+
+
+
     try {
 
       let uniqueTrans = 'giftcard'
@@ -104,12 +108,22 @@ console.log(req.body)
         externalTrans  = req.body.orderInfo.externalTransactionId
       }
       
+
+          console.log('req.body.payInfo.fulfillment_info.customer.email:'+ JSON.stringify(req.body.payInfo.fulfillment_info.customer.email));
+          console.log('req.body.payInfo'+ JSON.stringify(req.body.payInfo));
+          console.log('req.body.orderInfo:'+ JSON.stringify(req.body.orderInfo));
+          console.log('void:'+ false);
+          console.log('uniqueTrans'+ uniqueTrans);
+
+
         const order = new Order({
           email: req.body.payInfo.fulfillment_info.customer.email,
           payInfo: req.body.payInfo,
           orderInfo: req.body.orderInfo,
           void: false,
-          uniqueTransId: uniqueTrans
+          uniqueTransId: uniqueTrans,
+          upserveId: req.body.payInfo.id,
+          status: 'Open'
         })
         let data = await order.save();
         // res.json({ data });
