@@ -22,22 +22,19 @@ const config = require("./config/db");
 const moment = require('moment')
 const tz = require('moment-timezone')
 
-
-const differenceBy = require("lodash/differenceBy");
-
-// import differenceBy from 'lodash/differenceBy'
-
-
-
 const Order = require("./api/order/model/Order");
 
 const nodemailer = require('nodemailer');
 
+const twilio = require('twilio');
+
+const PNF = require('google-libphonenumber').PhoneNumberFormat;
+
+const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
 
 
 
- 
-
+let client = new twilio('AC47c2d4df4e5ae7089fdd1e148308439e', 'f28ed5eef0ac3f7bcb23d40f071974e3');
 
 var sdk = require("emergepay-sdk");
 
@@ -148,11 +145,13 @@ app.post("/oloorder", function (req, res) {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your ${req.body.restaurant} Order Has Been Received!`,
+        subject: `Your Mamnoon Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`,
         html: htmlBody 
         
         };
         
+        
+
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -160,6 +159,25 @@ app.post("/oloorder", function (req, res) {
             console.log('Email sent: ' + info.response);
           }
         });
+
+
+
+
+        const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
+        let smsNumber = phoneUtil.format(number, PNF.E164);
+        console.log(smsNumber)
+
+
+
+    // Send the text message.
+    client.messages.create({
+      to: smsNumber,
+      from: '+14159697164',
+      body: 'Your Pickup Order Is Ready!'
+    });
+
+
+
 
       }
     })
@@ -214,11 +232,15 @@ app.post("/oloorderstreet", function (req, res) {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your ${req.body.restaurant} Order Has Been Received!`,
+        subject: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`,
         html: htmlBody 
         
         };
         
+
+
+        
+
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -227,6 +249,20 @@ app.post("/oloorderstreet", function (req, res) {
           }
         });
 
+
+        console.log(req.body.fulfillment_info.customer.phone)
+      let smsNumber = phoneUtil.format(req.body.fulfillment_info.customer.phone, PNF.E164);
+
+      console.log(smsNumber)
+
+
+      
+
+    client.messages.create({
+      to: smsNumber,
+      from: '+14159697164',
+      body: `Your ${req.body.restaurant} Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
+    });
 
       }
     })
@@ -329,6 +365,9 @@ async function sendEmail(upserveId) {
     html: htmlBody
     
     };
+
+    
+
     
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
@@ -338,6 +377,19 @@ async function sendEmail(upserveId) {
       }
     });
     
+
+
+    const number = phoneUtil.parseAndKeepRawInput(doc[0].payInfo.fulfillment_info.customer.phone, 'US');
+    let smsNumber = phoneUtil.format(number, PNF.E164);
+    console.log(smsNumber)
+
+    // Send the text message.
+    client.messages.create({
+      to: smsNumber,
+      from: '+14159697164',
+      body: `Your ${doc[0].payInfo.restaurant} Pickup Order Is Ready!`
+    });
+
 
 
      updateToStatusClosed(upserveId)
