@@ -170,11 +170,13 @@ app.post("/oloorder", function (req, res) {
 
 
     // Send the text message.
+    if(req.body.sms === true){
     client.messages.create({
       to: smsNumber,
-      from: '+14159697164',
-      body: 'Your Pickup Order Is Ready!'
+      from: '+12062087871',
+      body: 'Your Mamnoon Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.'
     });
+  }
 
 
 
@@ -256,13 +258,13 @@ app.post("/oloorderstreet", function (req, res) {
       console.log(smsNumber)
 
 
-      
-
+          if(req.body.sms === true){
     client.messages.create({
-      to: smsNumber,
-      from: '+14159697164',
-      body: `Your ${req.body.restaurant} Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
+    to: smsNumber,
+    from: '+12062087871',
+    body: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
     });
+    }
 
       }
     })
@@ -384,12 +386,15 @@ async function sendEmail(upserveId) {
     console.log(smsNumber)
 
     // Send the text message.
+
+    if(doc[0].payInfo.sms === true){
+
     client.messages.create({
       to: smsNumber,
-      from: '+14159697164',
+      from: '+12062087871',
       body: `Your ${doc[0].payInfo.restaurant} Pickup Order Is Ready!`
     });
-
+  }
 
 
      updateToStatusClosed(upserveId)

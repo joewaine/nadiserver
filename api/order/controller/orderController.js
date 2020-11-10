@@ -183,6 +183,10 @@ console.log(req.params.email)
 
 
    exports.startTransaction = function (req, res) {
+
+
+console.log(req.body)
+
    let amount = Number(req.body.charges.preTotal)
    let tipAmount = Number(req.body.charges.tip.amount)
    let formattedTipAmount = tipAmount/100
@@ -220,9 +224,10 @@ console.log(req.params.email)
            }
        ]
    };
-     
+
        emergepay.startTransaction(config)
        .then(function (transactionToken) {
+         console.log(transactionToken)
            res.send({
                transactionToken: transactionToken
            });
