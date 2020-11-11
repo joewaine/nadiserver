@@ -91,9 +91,6 @@ exports.issueVoid = function (req,res) {
 exports.addOrder = async (req, res) => {
 // console.log(req.body)
 
-
-
-
     try {
 
       let uniqueTrans = 'giftcard'
@@ -109,25 +106,23 @@ exports.addOrder = async (req, res) => {
       }
       
 
-          console.log('req.body.payInfo.fulfillment_info.customer.email:'+ JSON.stringify(req.body.payInfo.fulfillment_info.customer.email));
-          console.log('req.body.payInfo'+ JSON.stringify(req.body.payInfo));
-          console.log('req.body.orderInfo:'+ JSON.stringify(req.body.orderInfo));
-          console.log('void:'+ false);
-          console.log('uniqueTrans'+ uniqueTrans);
+
 
 
         const order = new Order({
-          email: req.body.payInfo.fulfillment_info.customer.email,
+          email: req.body.orderInfo.fulfillment_info.customer.email,
           payInfo: req.body.payInfo,
           orderInfo: req.body.orderInfo,
           void: false,
           uniqueTransId: uniqueTrans,
-          upserveId: req.body.payInfo.id,
-          status: 'Open'
+          upserveId: req.body.orderInfo.id,
+          status: 'Open',
+          preOrder: req.body.orderInfo.preorder,
+          orderPosted: false
         })
         let data = await order.save();
         // res.json({ data });
-        console.log(order)
+        // console.log(order)
         // res.status(200).json({data});
         res.status(200).json({ data });
       } catch (err) {
@@ -185,15 +180,15 @@ console.log(req.params.email)
    exports.startTransaction = function (req, res) {
 
 
-console.log(req.body)
 
-   let amount = Number(req.body.charges.preTotal)
+   let amount = Number(req.body.charges.total) - Number(req.body.charges.tip.amount)
    let tipAmount = Number(req.body.charges.tip.amount)
    let formattedTipAmount = tipAmount/100
    
-   
+  
    let finalAmount = amount
    let finalCash = finalAmount/100
+
    let config = {
        transactionType: sdk.TransactionType.CreditSale,
        method: "modal",
@@ -246,8 +241,8 @@ console.log(req.body)
 
    exports.voidByTransID = async (req, res) => {
 
-    console.log('void by trans id')
-    console.log(req.body.uniqueTransId)
+    // console.log('void by trans id')
+    // console.log(req.body.uniqueTransId)
     
 
       try {
@@ -381,7 +376,7 @@ console.log(req.body)
       axios.post('https://portal2.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
         let resData = response.data
         let resSendData = null
-console.log(resData)
+// console.log(resData)
         parseString(resData, function (err, result) {
           resSendData = result['Trans'];
         });
@@ -410,10 +405,10 @@ console.log(resData)
         // let doc = await Order.findById('5f97465eebb3b9108bc2a50b')
 
       let doc = await Order.findOneAndUpdate(
-    { "_id": req.body.orderId, "payInfo.charges.items.cartId": req.body.cartId },
+    { "_id": req.body.orderId, "orderInfo.charges.items.cartId": req.body.cartId },
     { 
         "$set": {
-          "payInfo.charges.items.$.returned": true
+          "orderInfo.charges.items.$.returned": true
         }
     },
     function(err,doc) {
@@ -427,21 +422,4 @@ console.log(resData)
 } catch (err) {
 console.log(err)
 }
-
-// console.log(doc.payInfo.id('yfjo4wjro2_hym3c3oms3q_89zxj4cr1ho'))
-// console.log('void by trans id')
-// console.log(req.body.uniqueTransId)
-//   try {
-
-//     const filter = {uniqueTransId: req.body.uniqueTransId};
-//     const update = {void:true};
-
-//     let doc = await Order.findOneAndUpdate(filter, update, {
-//       returnOriginal: false
-//     });
-
-//     res.status(201).json({ doc });
-//    } catch (err) {
-//     console.log(error)
-//   }
-       };
+};

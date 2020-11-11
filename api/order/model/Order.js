@@ -31,6 +31,10 @@ const orderSchema = mongoose.Schema({
   status: {
     type: String,
     required: [true]
+  },
+  orderPosted: {
+    type: Boolean,
+    required: [true]
   }
 });
 
