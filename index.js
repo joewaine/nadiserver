@@ -176,7 +176,7 @@ app.post("/oloorder", function (req, res) {
     client.messages.create({
       to: smsNumber,
       from: '+12062087871',
-      body: 'Your Mamnoon Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.'
+      body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.'
     });
   }
 
@@ -535,39 +535,6 @@ console.log(err)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function sendEmail(upserveId) {
 
   try {
@@ -586,9 +553,9 @@ async function sendEmail(upserveId) {
     let htmlBody = `<div style="background-color: #009900;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
     if(doc[0].orderInfo.fulfillment_info.type === 'delivery'){
-      htmlBody = htmlBody + `Your Delivery Order Order Is Ready!</h1></div>`
+      htmlBody = htmlBody + `Your Delivery Order Is Ready!</h1></div>`
     }else{
-      htmlBody = htmlBody + `Your Pickup Order Order Is Ready!</h1></div>`
+      htmlBody = htmlBody + `Your Pickup Order Is Ready!</h1></div>`
     }
     
     htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
@@ -741,7 +708,7 @@ console.log(req)
     client.messages.create({
       to: smsNumber,
       from: '+12062087871',
-      body: 'Your Mamnoon Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.'
+      body: 'Your Mamnoon Pickup Order Has Been Placed! We'
     });
   }
       orderPostedTrue(req.id)
