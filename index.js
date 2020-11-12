@@ -22,6 +22,8 @@ const config = require("./config/db");
 const moment = require('moment')
 const tz = require('moment-timezone')
 
+
+
 const Order = require("./api/order/model/Order");
 
 const nodemailer = require('nodemailer');
@@ -306,7 +308,7 @@ app.post("/confirmationemail", function (req, res) {
         }
         
         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
-        <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>It will be ready on ${ moment(String(req.body.scheduled_time)).format('llll').replace(', 2020', ', at') }</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+        <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>It will be ready on ${ moment(String(req.body.scheduled_time)).tz('America/Los_Angeles').format('llll').replace(', 2020', ', at') }</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
@@ -345,7 +347,7 @@ app.post("/confirmationemail", function (req, res) {
     client.messages.create({
     to: smsNumber,
     from: '+12062087871',
-    body: `Your Order Has Been Scheduled! it will be ready on ${moment(String(req.body.scheduled_time)).format('llll').replace(', 2020', ', at') }`
+    body: `Your Order Has Been Scheduled! it will be ready on ${moment(String(req.body.scheduled_time)).tz('America/Los_Angeles').format('llll').replace(', 2020', ', at') }`
     });
     }
 
