@@ -147,7 +147,7 @@ app.post("/oloorder", function (req, res) {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Mamnoon Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`,
+        subject: `Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -236,7 +236,7 @@ app.post("/oloorderstreet", function (req, res) {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`,
+        subject: `Your Mamnoon Street Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -320,7 +320,7 @@ app.post("/confirmationemail", function (req, res) {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Order Has Been Scheduled!`,
+        subject: `Your Order Has Been Scheduled! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -406,6 +406,24 @@ try {
   }
 }
 
+
+
+async function updateToStatusAccepted(idToAccept) {
+
+  try {
+  
+    await Order.updateOne(
+        { upserveId: idToAccept },
+        { $set: { orderAccepted: true } },
+        {multi: true}
+     )
+    
+  } catch (err) {
+    console.log(err)
+    }
+  }
+
+
 async function queryOrders(closedOrders) {
 
   try {
@@ -419,6 +437,131 @@ async function queryOrders(closedOrders) {
   console.log(err)
   }
 }
+
+
+async function queryAcceptedOrders(closedOrders) {
+
+  try {
+    let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
+
+    console.log('query accepted')
+console.log(docs)
+
+    for(let i = 0;i<docs.length;i++){
+      sendAcceptanceEmail(docs[i].upserveId)
+    }
+
+} catch (err) {
+  console.log(err)
+  }
+}
+
+
+async function sendAcceptanceEmail(upserveId) {
+
+  try {
+
+  let doc = await Order.find({ "upserveId": upserveId });
+
+  console.log('you retrievced it right')
+    // console.log(doc)
+
+
+
+
+
+
+
+    let htmlBody = `<div style="background-color: #000099;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
+
+    if(doc[0].orderInfo.fulfillment_info.type === 'delivery'){
+      htmlBody = htmlBody + `Your Order Has Been Accepted.</h1></div>`
+    }else{
+      htmlBody = htmlBody + `Your Order Has Been Accepted.</h1></div>`
+    }
+    
+    htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Your ticket has been opened and your food is being prepared.<br>
+    <br><span style="font-size: 20px !important;">confirmation code: <b>${doc[0].orderInfo.confirmation_code}</b></span><br/><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+    for(let i = 0;i<doc[0].orderInfo.charges.items.length;i++){
+      htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(doc[0].orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(doc[0].orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(doc[0].orderInfo.charges.items[i].quantity) +'</li>'
+    }
+    
+    
+    htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
+            
+
+    var mailOptions = {
+    from: 'orders@mamnoonrestaurant.com',
+    to: doc[0].orderInfo.fulfillment_info.customer.email,
+    // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+    subject: `Your order has been accepted and your food is now being prepared.`,
+    html: htmlBody
+    
+    };
+
+  
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    
+    const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
+    let smsNumber = phoneUtil.format(number, PNF.E164);
+
+    if(doc[0].orderInfo.sms === true){
+
+    client.messages.create({
+      to: smsNumber,
+      from: '+12062087871',
+      body: `Your Order Has Been Accepted.`
+    });
+  }
+
+
+     updateToStatusAccepted(upserveId)
+
+    
+
+} catch (err) {
+console.log(err)
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -571,7 +714,7 @@ console.log(req)
         from: 'orders@mamnoonrestaurant.com',
         to: req.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Mamnoon Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`,
+        subject: `Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -615,8 +758,7 @@ async function placeScheduledOrders() {
 
   try {
 
-let docs = await Order.find({ "orderInfo.preorder" : true })
-
+let docs = await Order.find({ "orderInfo.preorder" : true , "orderPosted" : false })
 let outcome = docs.map(function(x){
   return {
     id: x.orderInfo.id,
@@ -633,13 +775,11 @@ for(let i = 0; i < outcome.length; i++){
   //// (minus 2700000) is 45 minutes prior
 
   let arrival = milliseconds - Date.now() - 2700000
-// console.log(arrival)
+
   if(arrival < 0){
     if(docs[i].orderPosted === false){
       postOrder(docs[i].orderInfo)
     }
-  }else{
-    // console.log('not yet')
   }
 }
 
@@ -651,7 +791,41 @@ for(let i = 0; i < outcome.length; i++){
 }
 
 
+async function acceptedOrderNotify() {
+
+  let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
+  try {
+    let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
+      headers: {
+        'X-Breadcrumb-Username': `joe-waine_mamnoon-llc`,
+        'X-Breadcrumb-Password': 'sbkh_Qgs4HMB',
+        'X-Breadcrumb-API-Key': `6110e294b8984840d2c10472bbed3453`  
+      }
+    })
+    if (request.ok) { 
+      let body = await request.json();
+
+
+     let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
+    
+console.log(accepted)
+
+     queryAcceptedOrders(accepted)
+
+    }
+  } catch (err) {
+  console.log(err)
+  console.log('failure')
+  }
+}
+
+
+
+
 cron.schedule('*/10 * * * * *', () => {
   checkCheckStatus()
   placeScheduledOrders()
+
+acceptedOrderNotify()
+
 });
