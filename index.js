@@ -139,7 +139,7 @@ app.post("/oloorder", function (req, res) {
         }
         
         
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
+        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
                 
         
         var mailOptions = {
@@ -312,9 +312,22 @@ app.post("/confirmationemail", function (req, res) {
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
         
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
-                
-        
+
+
+        let addressToInsert = ''
+
+        if(req.body.restaurant === "Mamnoon Street"){
+            addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+        }
+  
+        if(req.body.restaurant === "Mamnoon"){
+          addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+        }
+  
+  
+      htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+              
+            
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
@@ -485,9 +498,24 @@ async function sendAcceptanceEmail(upserveId) {
       htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(doc[0].orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(doc[0].orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(doc[0].orderInfo.charges.items[i].quantity) +'</li>'
     }
     
-    
-    htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
-            
+
+
+    let addressToInsert = ''
+
+    if(req.body.restaurant === "Mamnoon Street"){
+        addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+    }
+
+    if(req.body.restaurant === "Mamnoon"){
+      addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+    }
+
+
+  htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+       
+
+
+  
 
     var mailOptions = {
     from: 'orders@mamnoonrestaurant.com',
