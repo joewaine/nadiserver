@@ -502,11 +502,11 @@ async function sendAcceptanceEmail(upserveId) {
 
     let addressToInsert = ''
 
-    if(req.body.restaurant === "Mamnoon Street"){
+    if(doc[0].orderInfo.restaurant === "Mamnoon Street"){
         addressToInsert = '2020 6th Ave, Seattle, WA 98121'
     }
 
-    if(req.body.restaurant === "Mamnoon"){
+    if(doc[0].orderInfo.restaurant === "Mamnoon"){
       addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
     }
 
@@ -543,7 +543,7 @@ async function sendAcceptanceEmail(upserveId) {
     client.messages.create({
       to: smsNumber,
       from: '+12062087871',
-      body: `Your Order Has Been Accepted.`
+      body: `Your order has been accepted and your food is now being prepared.`
     });
   }
 
