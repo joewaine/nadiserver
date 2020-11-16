@@ -36,7 +36,11 @@ const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance()
 
 
 
-let client = new twilio('AC47c2d4df4e5ae7089fdd1e148308439e', 'f28ed5eef0ac3f7bcb23d40f071974e3');
+// let client = new twilio('AC47c2d4df4e5ae7089fdd1e148308439e', 'f28ed5eef0ac3f7bcb23d40f071974e3');
+let client = new twilio('AC47c2d4df4e5ae7089fdd1e148308439e', 'be0f04caeae8e2ac0e2abad0886bfccd');
+
+
+
 
 var sdk = require("emergepay-sdk");
 
@@ -86,12 +90,21 @@ app.use("/tock", tockRoutes);
 var oid = "1517492274";
 var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aWQiOjMwNywib2lkIjoxNTE3NDkyMjc0LCJ0b2tlbl91c2UiOiJvcnQiLCJybmQiOjEyOTgyMzk1ODYuMDY0MjgyNCwiZ3JvdXBzIjpbIk9yZ0FQSVVzZXJzIl0sImlhdCI6MTU5OTI1ODg3MH0.zaMi_DDPspTKW6fl2utCGKXwdQT-Q39DKrFOhXxCHA4";
 var environmentUrl = "https://api.emergepay-sandbox.chargeitpro.com/virtualterminal/v1";
+
+
+// production
+// var environmentUrl = "https://api.emergepay.chargeitpro.com/virtualterminal/v1";
+
+
+
 var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environmentUrl: environmentUrl });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //The client side can hit this endpoint by issuing a POST request to
+
+
 
 
 app.listen(PORT, () => {
@@ -170,6 +183,11 @@ app.post("/oloorder", function (req, res) {
 
 
 
+
+        console.log('Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.')
+
+
+console.log(req.body)
     // Send the text message.
     if(req.body.sms === true){
     client.messages.create({
@@ -260,7 +278,7 @@ app.post("/oloorderstreet", function (req, res) {
         
 
 
-
+console.log('send text message - mamnoon street order ready')
           if(req.body.sms === true){
     client.messages.create({
     to: smsNumber,
@@ -354,7 +372,7 @@ app.post("/confirmationemail", function (req, res) {
 
 
 
-      
+      console.log('send text message - confrimation email')
           if(req.body.sms === true){
     client.messages.create({
     to: smsNumber,
@@ -421,7 +439,7 @@ try {
 
 
 async function updateToStatusAccepted(idToAccept) {
-
+console.log('update to accepted')
   try {
   
     await Order.updateOne(
@@ -437,7 +455,7 @@ async function updateToStatusAccepted(idToAccept) {
 
 
 async function queryOrders(closedOrders) {
-
+console.log('queryorders')
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open" })
 
@@ -456,7 +474,7 @@ async function queryAcceptedOrders(closedOrders) {
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
 
-    console.log('query accepted')
+    console.log('query accepted orders')
 console.log(docs)
 
     for(let i = 0;i<docs.length;i++){
@@ -470,7 +488,7 @@ console.log(docs)
 
 
 async function sendAcceptanceEmail(upserveId) {
-
+console.log('send acceptance email')
   try {
 
   let doc = await Order.find({ "upserveId": upserveId });
@@ -538,6 +556,9 @@ async function sendAcceptanceEmail(upserveId) {
     const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
     let smsNumber = phoneUtil.format(number, PNF.E164);
 
+
+
+    console.log('order accepted food now prepared')
     if(doc[0].orderInfo.sms === true){
 
     client.messages.create({
@@ -563,7 +584,7 @@ console.log(err)
 
 
 async function sendEmail(upserveId) {
-
+console.log('sendemail')
   try {
 
   let doc = await Order.find({ "upserveId": upserveId });
@@ -629,6 +650,10 @@ async function sendEmail(upserveId) {
     const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
     let smsNumber = phoneUtil.format(number, PNF.E164);
 
+
+
+
+    console.log('send email when ready')
     if(doc[0].orderInfo.sms === true){
 
     client.messages.create({
@@ -788,6 +813,8 @@ console.log(req)
         let smsNumber = phoneUtil.format(number, PNF.E164);
 
 
+        console.log('order accepted food now prepared')
+
     // Send the text message.
     if(req.sms === true){
     client.messages.create({
@@ -893,6 +920,8 @@ async function postStreetOrder(req, res) {
           const number = phoneUtil.parseAndKeepRawInput(req.fulfillment_info.customer.phone, 'US');
           let smsNumber = phoneUtil.format(number, PNF.E164);
   
+
+          console.log('Your Mamnoon Street Pickup Order Has Been Placed!')
   
       // Send the text message.
       if(req.sms === true){
@@ -940,7 +969,7 @@ async function postStreetOrder(req, res) {
 
 
 async function placeScheduledOrders() {
-
+console.log('placeScheduledOrders')
   try {
 
 let docs = await Order.find({ "orderInfo.preorder" : true , "orderPosted" : false })
@@ -999,7 +1028,8 @@ async function acceptedOrderNotify() {
 
      let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     
-console.log(accepted)
+     console.log('accepted')
+     console.log(accepted)
 
      queryAcceptedOrders(accepted)
 

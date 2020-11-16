@@ -10,6 +10,11 @@ var sdk = require("emergepay-sdk");
 var oid = "1517492274";
 var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aWQiOjMwNywib2lkIjoxNTE3NDkyMjc0LCJ0b2tlbl91c2UiOiJvcnQiLCJybmQiOjEyOTgyMzk1ODYuMDY0MjgyNCwiZ3JvdXBzIjpbIk9yZ0FQSVVzZXJzIl0sImlhdCI6MTU5OTI1ODg3MH0.zaMi_DDPspTKW6fl2utCGKXwdQT-Q39DKrFOhXxCHA4";
 var environmentUrl = "https://api.emergepay-sandbox.chargeitpro.com/virtualterminal/v1";
+
+
+// production
+// var environmentUrl = "https://api.emergepay.chargeitpro.com/virtualterminal/v1";
+
 var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environmentUrl: environmentUrl });
 
   
@@ -117,7 +122,6 @@ exports.addOrder = async (req, res) => {
           uniqueTransId: uniqueTrans,
           upserveId: req.body.orderInfo.id,
           status: 'Open',
-          preOrder: req.body.orderInfo.preorder,
           orderPosted: false,
           orderAccepted: false
         })
