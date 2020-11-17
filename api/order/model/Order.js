@@ -42,6 +42,11 @@ const orderSchema = mongoose.Schema({
   }
 });
 
+
+
+
+
+
 // orderSchema.statics.findByOrderId = async (id) => {
 //     let _id = id;
 //     const order = await Order.findOne({ _id });

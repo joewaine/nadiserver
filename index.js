@@ -27,7 +27,7 @@ const tz = require('moment-timezone')
 const Order = require("./api/order/model/Order");
 
 const nodemailer = require('nodemailer');
-
+const nodemailer2 = require('nodemailer');
 const twilio = require('twilio');
 
 const PNF = require('google-libphonenumber').PhoneNumberFormat;
@@ -119,6 +119,14 @@ auth: {
 });
 
 
+var transporter2 = nodemailer2.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'orders@mamnoonrestaurant.com',
+    pass: 'orders4mama'
+  }
+  });
+
 
 
 app.post("/oloorder", function (req, res) {
@@ -184,16 +192,15 @@ app.post("/oloorder", function (req, res) {
 
 
 
-        console.log('Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.')
 
 
-console.log(req.body)
+
     // Send the text message.
     if(req.body.sms === true){
     client.messages.create({
       to: smsNumber,
       from: '+12062087871',
-      body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.'
+      body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared. Thank You.'
     });
   }
 
@@ -258,10 +265,6 @@ app.post("/oloorderstreet", function (req, res) {
         
         };
         
-
-
-        
-
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -270,22 +273,17 @@ app.post("/oloorderstreet", function (req, res) {
           }
         });
 
-
-
         const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
      
-        
-
-
-console.log('send text message - mamnoon street order ready')
-          if(req.body.sms === true){
-    client.messages.create({
-    to: smsNumber,
-    from: '+12062087871',
-    body: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
-    });
-    }
+        console.log('send text message - mamnoon street order ready')
+        if(req.body.sms === true){
+          client.messages.create({
+            to: smsNumber,
+            from: '+12062087871',
+            body: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
+          });
+        }
 
       }
     })
@@ -741,7 +739,6 @@ async function checkCheckStatus () {
 
 
 async function postOrder(req, res) {
-console.log(req)
   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req,
     {
       headers: {
@@ -751,79 +748,86 @@ console.log(req)
       }
     })
     .then(function (response) {
-
       let resData = response.data
       // console.log(response)
       if (resData.result === 'success') {
+
         // res.send(req)
-        console.log(resData.result)
-        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
+let j = 0
+        if(j === 0){
+                      console.log(resData.result)
+                      let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
-        if(req.fulfillment_info.type === 'delivery'){
-          htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
-        }else{
-          htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
-        }
-        
-        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
-        <br><span style="font-size: 20px !important;">confirmation code: <b>${req.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
-        for(let i = 0;i<req.charges.items.length;i++){
-          htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.charges.items[i].quantity) +'</li>'
-        }
-        
+                      if(req.fulfillment_info.type === 'delivery'){
+                        htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
+                      }else{
+                        htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
+                      }
+                      
+                      htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+                      <br><span style="font-size: 20px !important;">confirmation code: <b>${req.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+                      for(let i = 0;i<req.charges.items.length;i++){
+                        htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.charges.items[i].quantity) +'</li>'
+                      }
+                      
 
-        let addressToInsert = ''
+                      let addressToInsert = ''
 
-        if(req.restaurant === "Mamnoon Street"){
-            addressToInsert = '2020 6th Ave, Seattle, WA 98121'
-        }
-  
-        if(req.restaurant === "Mamnoon"){
-          addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
-        }
-  
-
-        
-        htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+                      if(req.restaurant === "Mamnoon Street"){
+                          addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+                      }
                 
-        
-        var mailOptions = {
-        from: 'orders@mamnoonrestaurant.com',
-        to: req.fulfillment_info.customer.email,
-        // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
-        html: htmlBody 
-        
-        };
-        
-        
+                      if(req.restaurant === "Mamnoon"){
+                        addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+                      }
+                
 
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+                      
+                      htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+                              
+                      
+                      var mailOptions2 = {
+                      from: 'orders@mamnoonrestaurant.com',
+                      to: req.fulfillment_info.customer.email,
+                      // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+                      subject: `Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+                      html: htmlBody 
+                      
+                      };
+                    
+                      const sendMail = function(mailOptions2, transporter2) {
+                        console.log()
+                        return new Promise(function(resolve, reject) {
+                          transporter2.sendMail(mailOptions2, function(error, info) {
+                            if (error) {
+                              reject(error);
+                            } else {
+                              console.log('email sent')
+                              resolve(info);
+                            }
+                          });
+                        });
+                      };
+
+                      sendMail(mailOptions2, transporter2)
+
+                      const number = phoneUtil.parseAndKeepRawInput(req.fulfillment_info.customer.phone, 'US');
+                      let smsNumber = phoneUtil.format(number, PNF.E164);
+                
+                      // Send the text message.
+                      if(req.sms === true){
+                        console.log('send text message')
+                      client.messages.create({
+                        to: smsNumber,
+                        from: '+12062087871',
+                        body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.'
+                      });
+                    }
+                    orderPostedTrue(req.id)
 
 
-
-
-        const number = phoneUtil.parseAndKeepRawInput(req.fulfillment_info.customer.phone, 'US');
-        let smsNumber = phoneUtil.format(number, PNF.E164);
-
-
-        console.log('order accepted food now prepared')
-
-    // Send the text message.
-    if(req.sms === true){
-    client.messages.create({
-      to: smsNumber,
-      from: '+12062087871',
-      body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.'
-    });
-  }
-      orderPostedTrue(req.id)
+                    j = 1
+                  }
       }
     })
     .catch(function (error) {
@@ -981,8 +985,9 @@ let outcome = docs.map(function(x){
   }
 })
 
- 
+ console.log(outcome)
 for(let i = 0; i < outcome.length; i++){
+  console.log(i)
   let date = new Date(outcome[i].scheduled_time); // some mock date
   let milliseconds = date.getTime();
 
