@@ -273,7 +273,7 @@ app.post("/oloorderstreet", function (req, res) {
           }
         });
 
-        const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
+        const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
      
         console.log('send text message - mamnoon street order ready')
