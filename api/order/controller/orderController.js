@@ -7,13 +7,20 @@ const e = require("express");
 
 var sdk = require("emergepay-sdk");
 
-var oid = "1517492274";
-var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aWQiOjMwNywib2lkIjoxNTE3NDkyMjc0LCJ0b2tlbl91c2UiOiJvcnQiLCJybmQiOjEyOTgyMzk1ODYuMDY0MjgyNCwiZ3JvdXBzIjpbIk9yZ0FQSVVzZXJzIl0sImlhdCI6MTU5OTI1ODg3MH0.zaMi_DDPspTKW6fl2utCGKXwdQT-Q39DKrFOhXxCHA4";
-var environmentUrl = "https://api.emergepay-sandbox.chargeitpro.com/virtualterminal/v1";
+
+
+//sandbox
+
+// var oid = "1517492274";
+// var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aWQiOjMwNywib2lkIjoxNTE3NDkyMjc0LCJ0b2tlbl91c2UiOiJvcnQiLCJybmQiOjEyOTgyMzk1ODYuMDY0MjgyNCwiZ3JvdXBzIjpbIk9yZ0FQSVVzZXJzIl0sImlhdCI6MTU5OTI1ODg3MH0.zaMi_DDPspTKW6fl2utCGKXwdQT-Q39DKrFOhXxCHA4";
+// var environmentUrl = "https://api.emergepay-sandbox.chargeitpro.com/virtualterminal/v1";
+
 
 
 // production
-// var environmentUrl = "https://api.emergepay.chargeitpro.com/virtualterminal/v1";
+var oid = "1535166774";
+var authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aWQiOjExMDQsIm9pZCI6MTUzNTE2Njc3NCwidG9rZW5fdXNlIjoib3J0Iiwicm5kIjoxMzcxODQ2NDQ5LjI1MzIzNzUsImdyb3VwcyI6WyJPcmdBUElVc2VycyJdLCJpYXQiOjE2MDU3OTc1NjB9.EeodYvyKoGC_Mp06KdMV8VcuoLQib5ehyPO9Rg5ylNo";
+var environmentUrl = "https://api.emergepay.chargeitpro.com/virtualterminal/v1";
 
 var emergepay = new sdk.emergepaySdk({ oid: oid, authToken: authToken, environmentUrl: environmentUrl });
 
@@ -224,6 +231,8 @@ console.log(req.params.email)
            }
        ]
    };
+console.log(config)
+
 
        emergepay.startTransaction(config)
        .then(function (transactionToken) {
