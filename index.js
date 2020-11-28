@@ -101,21 +101,13 @@ snipCartItems = correctSelect[0].online_shop.map((x)=> x.shop_item)
   }
 }
 
-
 snipCarts();
 
+app.get(`/snipcartitems/:id`, async function(req, res) {
 
+let index = req.params.id
+res.json(snipCartItems[index]);
 
-app.get("/snipcartitems", (req, res) => {
-  // res.send(JSON.stringify({ Hello: 'medddaeeen solider'}));
-  // res.send(cors);
-  // snipCarts()
-// console.log(snipCartItems)
-  res.json(snipCartItems);
-
-
-
-//  res.send(JSON.stringify({ Hello: 'dont give up on me'}));
 });
 
 
