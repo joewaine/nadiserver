@@ -101,7 +101,7 @@ snipCartItems = correctSelect[0].online_shop.map((x)=> x.shop_item)
   }
 }
 
-snipCarts();
+
 
 app.get(`/snipcartitems/:id`, async function(req, res) {
 
@@ -1104,5 +1104,5 @@ cron.schedule('*/10 * * * * *', () => {
   placeScheduledOrders()
 
 acceptedOrderNotify()
-
+snipCarts();
 });
