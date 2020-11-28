@@ -67,6 +67,59 @@ app.use(bodyParser.json());
 
 app.use(morgan("dev")); // configire morgan
 
+
+
+
+
+let snipCartItems = null
+
+async function snipCarts () {
+
+  try {
+
+
+    let request = await fetch(`https://mamnoontogo.net/wp-json/acf/v3/restaurant/188/`)
+
+console.log(request)
+
+
+
+    if (request.ok) { 
+      let body = await request.json();
+
+
+let correctSelect = body.acf.content_fields.filter(function(x){
+  return x.acf_fc_layout === 'online_shop'
+})
+snipCartItems = correctSelect[0].online_shop.map((x)=> x.shop_item)
+// return correctSelect[0].online_shop
+
+    }
+  } catch (err) {
+  console.log(err)
+  console.log('failure')
+  }
+}
+
+
+snipCarts();
+
+
+
+app.get("/snipcartitems", (req, res) => {
+  // res.send(JSON.stringify({ Hello: 'medddaeeen solider'}));
+  // res.send(cors);
+  // snipCarts()
+// console.log(snipCartItems)
+  res.json(snipCartItems);
+
+
+
+//  res.send(JSON.stringify({ Hello: 'dont give up on me'}));
+});
+
+
+
 app.get("/", (req, res) => {
   // res.send(JSON.stringify({ Hello: 'medddaeeen solider'}));
   // res.send(cors);
