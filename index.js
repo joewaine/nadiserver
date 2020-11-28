@@ -103,11 +103,25 @@ snipCartItems = correctSelect[0].online_shop.map((x)=> x.shop_item)
 
 
 
-app.get(`/snipcartitems/:id`, async function(req, res) {
+app.get(`/snipcartitems`, async function(req, res) {
 
-let index = req.params.id
-res.json(snipCartItems[index]);
+// let index = req.params.id
 
+
+let emptybuttons = ''
+
+
+
+for(let i = 0;i<snipCartItems.length;i++){
+
+
+  emptybuttons = emptybuttons + `<button data-item-id="${snipCartItems[i].id}" data-item-price="${snipCartItems[i].price}" data-item-image="${snipCartItems[i].image}" data-item-name="${snipCartItems[i].name}" data-item-description="${snipCartItems[i].description}" data-item-weight="${snipCartItems[i].weight}" data-item-url="${snipCartItems[i].url}" class="snipcart-add-item" style="margin: 0px auto;">button</button>`
+
+}
+
+
+// res.json(snipCartItems[index]);
+res.send(emptybuttons)
 });
 
 
