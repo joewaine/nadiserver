@@ -329,45 +329,14 @@ exports.submitGiftcard = async (req, res) => {
 };
 
 
-// exports.primaryGiftCard = async (req, res) => {
-//   console.log(req.body)
-//   // const giftcardInfo = {
-//   //   _id: String.fromCharCode(65 + Math.floor(Math.random() * 26)) + Date.now(),
-//   //   number: req.body.number,
-//   //   preferred: false
-//   // }
-//   // try {
-//   //   await User.findOneAndUpdate(
-//   //     { email: req.body.email },
-//   //     { $push: { giftcards: giftcardInfo } }
-//   //   );
-//   //   const user = await User.findByUserEmail(req.body.email)
-//   //   console.log(user)
-//   //   res.status(201).json({ user });
-//   // } catch (err) {
-//   //   res.status(400).json({ err: err });
-//   // }
-// };
-
-
-
 exports.getUser = async (req, res) => {
-
   try {
-
     const user = await User.findByUserEmail(req.params.email)
-    console.log(user)
-
-
-
     res.status(201).json({ user });
   } catch (err) {
     res.status(400).json({ err: err });
   }
 };
-
-
-
 
 exports.deleteGiftcard = async (req, res) => {
   console.log(req.body)
