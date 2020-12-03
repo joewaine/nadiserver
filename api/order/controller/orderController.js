@@ -114,7 +114,7 @@ exports.addOrder = async (req, res) => {
       let externalTrans = 'giftcard'
 
       if(req.body.orderInfo.externalTransId){
-        externalTrans  = req.body.orderInfo.externalTransactionId
+        externalTrans = req.body.orderInfo.externalTransactionId
       }
       
 
