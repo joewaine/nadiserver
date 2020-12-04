@@ -28,6 +28,7 @@ router.post('/:id', productController.deleteProduct);
 
 router.get('/upserveolo', upserveController.mamnoonItemsPullMenu);
 router.get('/upserveolostreet', upserveController.mamnoonItemsPullMenuStreet);
+router.get('/upserveolombar', upserveController.mamnoonItemsPullMenuMbar);
 
 
 
