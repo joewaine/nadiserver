@@ -1,6 +1,11 @@
+
+const compression = require("compression");
 const cors = require('cors');
 const express = require('express');
 const app = express();
+
+app.use(compression())
+
 app.use(cors({credentials: true, origin: true}));
 app.options('*', cors())
 
