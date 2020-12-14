@@ -4,8 +4,61 @@ const axios = require('axios');
 
 const bodyParser = require("body-parser");
 
-exports.mamnoonItemsPullMenu = async (req, res) => {
+
+
+
+let addMenuData = async (req,nameString) => {
+  console.log('doing this')
+  // console.log(typeof req)
+  try {
+    let product = await Product.findOneAndUpdate(
+      { "name": nameString },
+      { 
+          "$set": {
+            "menu": req
+          }
+      },
+      {
+        upsert: true 
+      }
+      );      
+      res.status(201).json({ product });
+console.log(product)
+
+
+    } catch (err) {
+ 
+    }
+};
+
+// let upserveMongo = async (req,res) => {
   
+//   console.log('upserve mongo')
+//   try {
+
+//     let doc = await Product.find({ "name": req.body.name });
+
+//     res.status(201).json({ doc });
+//   } catch (err) {
+//     console.log('fail')
+//   }
+// }
+
+exports.upserveMongo = async (req,res) => {
+  
+  console.log(req.params)
+  try {
+
+    let doc = await Product.find({ "name": req.params.name });
+
+    res.status(201).json({ doc });
+  } catch (err) {
+    console.log('fail')
+  }
+}
+
+
+exports.mamnoonItemsPullMenu = async (req, res) => {
   
   
   try {
@@ -20,19 +73,22 @@ exports.mamnoonItemsPullMenu = async (req, res) => {
       const body = await request.json();
       // console.log(body)
       res.status(201).json({ body });
+
+
+      addMenuData(body,'mamnoon')
+
+      // upserveMongo('mamnoon')
+
     }
   } catch (err) {
    res.status(400).json({ err: err });
   }
 }
 
-
 // pull menu from OLO
 // pull menu from OLO
 // pull menu from OLO
 // pull menu from OLO
-
-
 
 exports.mamnoonItemsPullMenuMbar = async (req, res) => {
   
@@ -47,8 +103,16 @@ exports.mamnoonItemsPullMenuMbar = async (req, res) => {
     })
     if (request.ok) { 
       const body = await request.json();
-      // console.log(body)
+
       res.status(201).json({ body });
+
+
+
+      addMenuData(body,'mbar')
+
+      // upserveMongo('mbar')
+
+
     }
   } catch (err) {
    res.status(400).json({ err: err });
@@ -75,17 +139,17 @@ exports.mamnoonItemsPullMenuStreet = async (req, res) => {
       const body = await request.json();
       // console.log(body)
       res.status(201).json({ body });
+  
+      addMenuData(body,'mamnoonstreet')
+
+      // upserveMongo('mamnoonstreet')
+
     }
   } catch (err) {
    res.status(400).json({ err: err });
   }
 }
-
-
-
 //pull items street
-
-
 // post an online order
 // post an online order
 // post an online order
@@ -114,32 +178,10 @@ exports.postOnlineOrder = async (req, res) => {
            console.log(error)
          });
     
-    
-             
-           
-
-
-  
-
-
-
-          
+        
         }
         
-        
-        
-        
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         exports.streetItems = async (req, res) => {
           
@@ -165,31 +207,4 @@ exports.postOnlineOrder = async (req, res) => {
           
           
           
-          
-          // exports.mamnoonItems = async (req, res) => {
-                                          
-                                        // try {
-                                        //   const request = await fetch('https://api.breadcrumb.com/ws/v2/items.json', {
-                                        //   // const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
-                                        //       headers: {
-                                        //           'X-Breadcrumb-Username': `joe-waine_mamnoon-llc`,
-                                        //           'X-Breadcrumb-Password': 'sbkh_Qgs4HMB',
-                                        //           // 'X-Breadcrumb-Username': `odn_mamnoon-llc`,
-                                        //           // 'X-Breadcrumb-Password': '4JrFTXQk6ZdP',
-                                        //           'X-Breadcrumb-API-Key': `6110e294b8984840d2c10472bbed3453`
-                                        //       }
-                                        //   })
-                                        //   if (request.ok) {
-                                        //     const body = await request.json();
-                                        //     console.log(body)
-                                        //     res.status(201).json({ body });
-                                        //   }
-                                        // } catch (err) {
-                                        //  res.status(400).json({ err: err });
-                                        // }
-                                        // }
-                                        
-                                        // pull menu from OLO
-                                        // pull menu from OLO
-                                        // pull menu from OLO
-                                        // pull menu from OLO
+      

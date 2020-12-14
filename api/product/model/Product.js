@@ -5,18 +5,10 @@ const productSchema = mongoose.Schema({
     type: String,
     required: [true]
   },
-  description: {
-    type: String,
-    required: [false]
+  menu: {
+    type: Object,
+    required: [true]
   },
-  price: {
-    type: String,
-    required: [true, "Please include price"]
-  },
-  _id: {
-    type: String,
-    required: [false]
-  }
 });
 
 productSchema.statics.findByProductId = async (id) => {
@@ -32,3 +24,5 @@ productSchema.statics.findByProductId = async (id) => {
 
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
+
+

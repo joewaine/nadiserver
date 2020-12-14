@@ -85,7 +85,7 @@ async function snipCarts () {
 
     let request = await fetch(`https://mamnoontogo.net/wp-json/acf/v3/restaurant/188/`)
 
-console.log(request)
+// console.log(request)
 
 
 
@@ -356,6 +356,87 @@ app.post("/oloorderstreet", function (req, res) {
 
 
 
+app.post("/oloordermbar", function (req, res) {
+  console.log(req.body)
+  axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
+    {
+      headers: {
+          'X-Breadcrumb-Username': `generic-online-ordering_mbar`,
+          'X-Breadcrumb-Password': '2yEULpqH426t',
+          'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`  
+      }
+    })
+    .then(function (response) {
+
+      let resData = response.data
+      // console.log(response)
+      if (resData.result === 'success') {
+        res.send(req.body)
+
+
+        let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
+
+        if(req.body.fulfillment_info.type === 'delivery'){
+          htmlBody = htmlBody + `Your Delivery Order Has Been Placed!</h1></div>`
+        }else{
+          htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
+        }
+        
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+        for(let i = 0;i<req.body.charges.items.length;i++){
+          htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+        }
+        
+        
+        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mbar.<br><br><i>400 Fairview Ave N 14th Floor, Seattle, WA 98109</i><br><a href="https://nadimama.com">nadimama.com</p>'
+                
+        
+        var mailOptions = {
+        from: 'orders@mamnoonrestaurant.com',
+        to: req.body.fulfillment_info.customer.email,
+        // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+        subject: `Your Mbar Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+        html: htmlBody 
+        
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
+        const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
+        let smsNumber = phoneUtil.format(number, PNF.E164);
+     
+        console.log('send text message - mbar order ready')
+        if(req.body.sms === true){
+          client.messages.create({
+            to: smsNumber,
+            from: '+12062087871',
+            body: `Your Mbar Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
+          });
+        }
+
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
+
+    });
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -395,6 +476,11 @@ app.post("/confirmationemail", function (req, res) {
         if(req.body.restaurant === "Mamnoon"){
           addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
         }
+
+        if(req.body.restaurant === "Mbar"){
+          addressToInsert = '400 Fairview Ave N 14th Floor, Seattle, WA 98109'
+        }
+
   
   
       htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${req.body.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
@@ -509,7 +595,7 @@ console.log('update to accepted')
 
 
 async function queryOrders(closedOrders) {
-console.log('queryorders')
+// console.log('queryorders')
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open" })
 
@@ -528,8 +614,8 @@ async function queryAcceptedOrders(closedOrders) {
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
 
-    console.log('query accepted orders')
-console.log(docs)
+//     console.log('query accepted orders')
+// console.log(docs)
 
     for(let i = 0;i<docs.length;i++){
       sendAcceptanceEmail(docs[i].upserveId)
@@ -1029,7 +1115,7 @@ async function postStreetOrder(req, res) {
 
 
 async function placeScheduledOrders() {
-console.log('placeScheduledOrders')
+// console.log('placeScheduledOrders')
   try {
 
 let docs = await Order.find({ "orderInfo.preorder" : true , "orderPosted" : false })
@@ -1089,8 +1175,8 @@ async function acceptedOrderNotify() {
 
      let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     
-     console.log('accepted')
-     console.log(accepted)
+    //  console.log('accepted')
+    //  console.log(accepted)
 
      queryAcceptedOrders(accepted)
 

@@ -22,14 +22,16 @@ const upserveController = require("../controller/upserveController")
 const axios = require('axios');
 const bodyParser = require("body-parser");
 router.post("/addproduct", productController.addProduct);
-router.get('/allproducts', productController.getProducts);
-router.post('/:id', productController.deleteProduct);
+// router.get('/allproducts', productController.getProducts);
+// router.post('/:id', productController.deleteProduct);
 
 
 router.get('/upserveolo', upserveController.mamnoonItemsPullMenu);
 router.get('/upserveolostreet', upserveController.mamnoonItemsPullMenuStreet);
 router.get('/upserveolombar', upserveController.mamnoonItemsPullMenuMbar);
 
+
+router.get('/upserve_mongo/:name', upserveController.upserveMongo);
 
 
 
