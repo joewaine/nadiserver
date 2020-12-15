@@ -191,11 +191,15 @@ console.log(req.params.email)
 
    exports.startTransaction = function (req, res) {
 
+    console.log(req.body)
 
 
    let amount = Number(req.body.charges.total) - Number(req.body.charges.tip.amount)
    let tipAmount = Number(req.body.charges.tip.amount)
-   let formattedTipAmount = tipAmount/100
+
+let toFixed = tipAmount/100
+
+   let formattedTipAmount = toFixed.toFixed(2)
    
   
    let finalAmount = amount
