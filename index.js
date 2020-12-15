@@ -70,7 +70,7 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(morgan("dev")); // configire morgan
+app.use(morgan("dev")); // configure morgan
 
 
 
@@ -240,10 +240,10 @@ app.post("/oloorder", function (req, res) {
 
 
 
-        console.log(req.body.fulfillment_info.customer.phone)
+
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
-        console.log(smsNumber)
+
 
 
 
