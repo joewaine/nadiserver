@@ -59,7 +59,7 @@ exports.upserveMongo = async (req,res) => {
 
 
 exports.mamnoonItemsPullMenu = async (req, res) => {
-  
+  console.log('mamnoon pull menu')
   
   try {
     const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
@@ -85,13 +85,15 @@ exports.mamnoonItemsPullMenu = async (req, res) => {
   }
 }
 
+
+
 // pull menu from OLO
 // pull menu from OLO
 // pull menu from OLO
 // pull menu from OLO
 
 exports.mamnoonItemsPullMenuMbar = async (req, res) => {
-  
+  console.log('mbar pull menu')
 
   try {
     const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
@@ -124,8 +126,7 @@ exports.mamnoonItemsPullMenuMbar = async (req, res) => {
 
 
 exports.mamnoonItemsPullMenuStreet = async (req, res) => {
-  
-  
+  console.log('mamnoon street pull menu')
   
   try {
     const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
