@@ -8,7 +8,8 @@ app.use(compression())
 
 app.use(cors({credentials: true, origin: true}));
 app.options('*', cors())
-
+var DomParser = require('dom-parser');
+var parser = new DomParser();
 
 
 const PORT = process.env.PORT || 4000;
@@ -23,6 +24,7 @@ const parseString = require('xml2js').parseString;
 const qs = require('qs');
 const mongoose = require("mongoose");
 const config = require("./config/db");
+var convert = require('xml-js');
 
 const moment = require('moment')
 const tz = require('moment-timezone')
@@ -724,9 +726,9 @@ console.log(err)
 
 
 async function sendEmail(upserveId) {
+
 console.log('sendemail')
   try {
-
   let doc = await Order.find({ "upserveId": upserveId });
 
   console.log('you retrievced it right')
@@ -804,11 +806,13 @@ console.log('sendemail')
   }
      updateToStatusClosed(upserveId)
 
-    
 
 } catch (err) {
 console.log(err)
 }
+
+
+
 
 }
 
@@ -1194,3 +1198,21 @@ cron.schedule('*/10 * * * * *', () => {
   acceptedOrderNotify()
   snipCarts()
 });
+
+
+
+  app.get(`/shippingcalculation`, async function(req,res) {
+    
+      console.log(req)
+
+
+    fetch('https://secure.shippingapis.com/shippingapi.dll?API=RateV4&XML=<RateV4Request USERID="099MAMNO1149"><Revision>2</Revision><Package ID="1ST"><Service>PRIORITY</Service><ZipOrigination>'+ req.query.ZipOrigination +'</ZipOrigination><ZipDestination>'+ req.query.ZipDestination +'</ZipDestination><Pounds>'+ req.query.Pounds +'</Pounds><Ounces>'+ req.query.Ounces +'</Ounces><Container></Container><Width></Width><Length></Length><Height></Height><Girth></Girth><Machinable>false</Machinable></Package></RateV4Request>')
+    .then(response => response.text())
+    .then(str => (parser).parseFromString(str, "text/xml"))
+  .then(str => parseString(str.rawHTML, function (err, result) {
+    // res.send(result.RateV4Response.Package[0].Postage);
+    res.send(JSON.stringify(result.RateV4Response.Package[0].Postage));
+  }) )
+
+
+  });

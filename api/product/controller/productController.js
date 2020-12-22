@@ -35,3 +35,54 @@ try {
 }
 }
  
+
+
+exports.lookUpGiftCard = async (req, res) => {
+
+
+  var xmlBodyStr = `request=<?xml version="1.0"?>
+  <Trans>
+  <Header>
+      <FmtType>ClientWeb</FmtType>
+      <FmtVer>1.0.0</FmtVer>
+      <Uid>A7FEDD8B-BF2C-4D63-917D-4C1130ABFE4E</Uid>
+      <Client>1047</Client>
+      <ClientCode>B5C7A5CD-CAFB-4BE7-90F5-1A5ACB29292A</ClientCode>
+      <Location>99992</Location>
+      <Server>123</Server>
+      <TransDate>${today}</TransDate>
+      <TransTime>${currentTimeSliced}</TransTime>
+      <POSSerial>12345</POSSerial>
+  </Header>
+  <Requests>
+  <SvInquiry>
+  <CardNbr>
+  ${req.body.cardNumber}
+  </CardNbr>
+  </SvInquiry>
+  </Requests>
+  </Trans>`;
+
+
+  var config = {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  };
+  axios.post('https://portal2.custcon.com/Partner/ProcessXml', xmlBodyStr, config).then(response => {
+
+    let resData = response.data
+    // // console.log(resData)
+    let resSendData = null
+
+    parseString(resData, function (err, result) {
+      resSendData = result['Trans'];
+    });
+    res.send(201).json({ resSendData });
+  }).catch(err => {
+    // // console.log(err)
+    res.status(400).json({ err: err });
+  });
+
+};
+
+
+
