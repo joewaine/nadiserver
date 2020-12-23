@@ -228,7 +228,7 @@ exports.postOnlineOrder = async (req, res) => {
         // updateAll()
         
               exports.shippableEdit = async (req, res) => {
-
+                console.log('shippableEdit')
 
                 try{
                   console.log('update one')
@@ -253,6 +253,7 @@ exports.postOnlineOrder = async (req, res) => {
 
               exports.updateRetailItemLbs = async (req, res) => {
 
+                console.log('updateRetailItemLbs')
 
                 try{
                   console.log('update one')
@@ -273,7 +274,7 @@ exports.postOnlineOrder = async (req, res) => {
 
 
               exports.updateRetailItemOz = async (req, res) => {
-
+                console.log('updateRetailItemOz')
 
                 try{
                   console.log('update one')
