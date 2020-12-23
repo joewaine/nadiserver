@@ -33,6 +33,11 @@ router.get('/upserveolombar', upserveController.mamnoonItemsPullMenuMbar);
 
 router.get('/upserve_mongo/:name', upserveController.upserveMongo);
 
+router.post('/shippableedit', upserveController.shippableEdit);
+
+router.post("/retaillbs", upserveController.updateRetailItemLbs);
+
+router.post("/retailoz", upserveController.updateRetailItemOz);
 
 
 
