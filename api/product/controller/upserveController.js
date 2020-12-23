@@ -29,22 +29,9 @@ updateAll()
     }
 };
 
-// let upserveMongo = async (req,res) => {
-  
-//   console.log('upserve mongo')
-//   try {
-
-//     let doc = await Product.find({ "name": req.body.name });
-
-//     res.status(201).json({ doc });
-//   } catch (err) {
-//     console.log('fail')
-//   }
-// }
-
 exports.upserveMongo = async (req,res) => {
   
-  console.log(req.params)
+  // console.log(req.params)
   try {
 
     let doc = await Product.find({ "name": req.params.name });
