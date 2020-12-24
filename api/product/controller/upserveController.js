@@ -226,10 +226,10 @@ exports.postOnlineOrder = async (req, res) => {
                           "menu.items.$.shippable": req.body.tf
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
-            
+                  res.send('success')
                 }catch (err) {
                   console.log(err)
-                  res.send('success')
+                  res.send('error')
                   }
 
               }
@@ -251,10 +251,10 @@ exports.postOnlineOrder = async (req, res) => {
                           "menu.items.$.lbs": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
-            
+                  res.send('success')
                 }catch (err) {
                   console.log(err)
-                  res.send('success')
+                  res.send('error')
                   }
 
               }
@@ -272,10 +272,10 @@ exports.postOnlineOrder = async (req, res) => {
                           "menu.items.$.oz": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
-            
+                  res.send('success')
                 }catch (err) {
                   console.log(err)
-                  res.send('success')
+                  res.send('error')
                   }
 
               }
