@@ -769,11 +769,12 @@ console.log('update to accepted')
 
 
 async function queryOrders(closedOrders) {
-// console.log('queryorders')
+console.log('queryorders')
+console.log(closedOrders)
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open" })
 
-
+console.log(docs)
       for(let i = 0;i<docs.length;i++){
       sendReadyEmail(docs[i].upserveId)
     }
@@ -788,7 +789,7 @@ async function queryAcceptedOrders(closedOrders) {
 
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
-
+console.log(docs)
 
 
     for(let i = 0;i<docs.length;i++){
@@ -1370,7 +1371,7 @@ async function acceptedOrderNotify() {
 
 cron.schedule('*/10 * * * * *', () => {
   checkCheckStatus()
-  // checkCheckStatusStreet()
+  checkCheckStatusStreet()
   placeScheduledOrders()
   acceptedOrderNotify()
   // snipCarts()
