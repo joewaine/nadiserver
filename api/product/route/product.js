@@ -39,6 +39,10 @@ router.post("/retaillbs", upserveController.updateRetailItemLbs);
 
 router.post("/retailoz", upserveController.updateRetailItemOz);
 
+router.post("/retailheight", upserveController.updateRetailItemHeight);
+router.post("/retailwidth", upserveController.updateRetailItemWidth);
+router.post("/retaillength", upserveController.updateRetailItemLength);
+router.post("/retailgirth", upserveController.updateRetailItemGirth);
 
 
 

@@ -280,3 +280,90 @@ exports.postOnlineOrder = async (req, res) => {
 
               }
 
+
+
+              exports.updateRetailItemHeight = async (req, res) => {
+                console.log('updateRetailItemHeight')
+            
+                try{
+                  console.log('update one')
+                  await Product.findOneAndUpdate(
+                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                    {
+                    $set: {
+                          "menu.items.$.height": req.body.number
+                    }
+                  },{'new': true, 'safe': true, 'upsert': true});
+                  res.send('success')
+                }catch (err) {
+                  console.log(err)
+                  res.send('error')
+                  }
+            
+              }
+
+
+
+
+              exports.updateRetailItemWidth = async (req, res) => {
+                console.log('updateRetailItemWidth')
+            
+                try{
+                  console.log('update one')
+                  await Product.findOneAndUpdate(
+                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                    {
+                    $set: {
+                          "menu.items.$.width": req.body.number
+                    }
+                  },{'new': true, 'safe': true, 'upsert': true});
+                  res.send('success')
+                }catch (err) {
+                  console.log(err)
+                  res.send('error')
+                  }
+            
+              }
+
+
+              exports.updateRetailItemLength = async (req, res) => {
+                console.log('updateRetailItemLength')
+            
+                try{
+                  console.log('update one')
+                  await Product.findOneAndUpdate(
+                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                    {
+                    $set: {
+                          "menu.items.$.length": req.body.number
+                    }
+                  },{'new': true, 'safe': true, 'upsert': true});
+                  res.send('success')
+                }catch (err) {
+                  console.log(err)
+                  res.send('error')
+                  }
+            
+              }
+
+
+
+              exports.updateRetailItemGirth = async (req, res) => {
+                console.log('updateRetailItemgirth')
+            
+                try{
+                  console.log('update one')
+                  await Product.findOneAndUpdate(
+                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                    {
+                    $set: {
+                          "menu.items.$.girth": req.body.number
+                    }
+                  },{'new': true, 'safe': true, 'upsert': true});
+                  res.send('success')
+                }catch (err) {
+                  console.log(err)
+                  res.send('error')
+                  }
+            
+              }
