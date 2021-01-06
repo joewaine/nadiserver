@@ -253,6 +253,15 @@ transporter.sendMail(mailOptions, function(error, info){
   }
 });
 
+
+
+
+
+  
+
+
+
+
 const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
 let smsNumber = phoneUtil.format(number, PNF.E164);
 
@@ -329,6 +338,38 @@ from: '+12062087871',
 body: 'Your Mamnoon Retail Order Has Been Placed! Thank You.'
 });
 }
+
+
+
+
+var mailOptions2 = {
+  from: 'orders@mamnoonrestaurant.com',
+  to: 'joe@mamnoonrestaurant.com',
+  // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+  subject: `Retail Order Received`,
+  html: htmlBody 
+  };
+  
+
+
+
+  const sendMail2 = function(mailOptions2, transporter2) {
+    console.log()
+    return new Promise(function(resolve, reject) {
+      transporter2.sendMail(mailOptions2, function(error, info) {
+        if (error) {
+          reject(error);
+        } else {
+          console.log('email sent')
+          resolve(info);
+        }
+      });
+    });
+  };
+
+  sendMail2(mailOptions2, transporter2)
+
+
 
 }
         }
