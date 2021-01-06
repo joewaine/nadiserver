@@ -130,8 +130,13 @@ exports.addOrder = async (req, res) => {
           upserveId: req.body.orderInfo.id,
           status: 'Open',
           orderPosted: false,
-          orderAccepted: false
+          orderAccepted: false,
+          shippingOrder: req.body.orderInfo.fulfillment_info.type === 'delivery' ? true : false
         })
+
+
+
+        
         let data = await order.save();
         // res.json({ data });
         // console.log(order)

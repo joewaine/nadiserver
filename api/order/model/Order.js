@@ -39,6 +39,10 @@ const orderSchema = mongoose.Schema({
   orderAccepted: {
     type: Boolean,
     required: [true]
+  },
+  shippingOrder: {
+    type: Boolean,
+    required: [true]
   }
 });
 

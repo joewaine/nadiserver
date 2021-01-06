@@ -241,7 +241,7 @@ var mailOptions = {
 from: 'orders@mamnoonrestaurant.com',
 to: req.body.fulfillment_info.customer.email,
 // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when your food is being prepared.`,
+subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when the order is being prepared.`,
 html: htmlBody 
 };
 
@@ -261,7 +261,7 @@ if(req.body.sms === true){
 client.messages.create({
 to: smsNumber,
 from: '+12062087871',
-body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when your food is being prepared. Thank You.'
+body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the order is being prepared. Thank You.'
 });
 }
 
@@ -306,7 +306,7 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when your f
   from: 'orders@mamnoonrestaurant.com',
   to: req.body.fulfillment_info.customer.email,
   // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-  subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when your food is being prepared.`,
+  subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when the order is being prepared.`,
   html: htmlBody 
   };
   
@@ -774,7 +774,8 @@ console.log(closedOrders)
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open" })
 
-console.log(docs)
+    console.log('docs in query')
+    console.log(docs)
       for(let i = 0;i<docs.length;i++){
       sendReadyEmail(docs[i].upserveId)
     }
@@ -785,12 +786,13 @@ console.log(docs)
 }
 
 
-async function queryAcceptedOrders(closedOrders) {
+async function queryOrdersToAccept(closedOrders) {
 
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
-console.log(docs)
-
+    
+    console.log('docs queryOrdersToAccept')
+    console.log(docs)
 
     for(let i = 0;i<docs.length;i++){
       sendAcceptanceEmail(docs[i].upserveId)
@@ -811,12 +813,6 @@ console.log('send acceptance email')
   console.log('you retrievced it right')
     // console.log(doc)
 
-
-
-
-
-
-
     let htmlBody = `<div style="background-color: #000099;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
     if(doc[0].orderInfo.fulfillment_info.type === 'delivery'){
@@ -831,8 +827,6 @@ console.log('send acceptance email')
       htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(doc[0].orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(doc[0].orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(doc[0].orderInfo.charges.items[i].quantity) +'</li>'
     }
     
-
-
     let addressToInsert = ''
 
     if(doc[0].orderInfo.restaurant === "Mamnoon Street"){
@@ -843,13 +837,8 @@ console.log('send acceptance email')
       addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
     }
 
-
-  htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
        
-
-
-  
-
     var mailOptions = {
     from: 'orders@mamnoonrestaurant.com',
     to: doc[0].orderInfo.fulfillment_info.customer.email,
@@ -877,15 +866,12 @@ console.log('send acceptance email')
     client.messages.create({
       to: smsNumber,
       from: '+12062087871',
-      body: `Your order has been accepted and your food is now being prepared.`
+      body: `Your order has been accepted and is now being prepared.`
     });
   }
-
-
-     updateToStatusAccepted(upserveId)
-
+   
+updateToStatusAccepted(upserveId)
     
-
 } catch (err) {
 console.log(err)
 }
@@ -913,11 +899,11 @@ console.log('sendemail')
 
     let htmlBody = `<div style="background-color: #009900;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
-    if(doc[0].orderInfo.fulfillment_info.type === 'delivery'){
-      htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Delivery Order Is Ready!</h1></div>`
-    }else{
-      htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Pickup Order Is Ready!</h1></div>`
-    }
+    // if(doc[0].orderInfo.fulfillment_info.type === 'delivery'){
+      // htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Delivery Order Is Ready!</h1></div>`
+    // }else{
+      htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Order Is Ready!</h1></div>`
+    // }
     
     htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
     <br><span style="font-size: 20px !important;">confirmation code: <b>${doc[0].orderInfo.confirmation_code}</b></span><br/><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
@@ -1042,14 +1028,8 @@ async function checkCheckStatus () {
 
 
      let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
-     
-
-    //  let closedOnline = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' })
-    // console.log('closedOnlineOrders')
-    // console.log(closedOnlineOrders)
-
-
-
+     console.log('closedOnlineOrders')
+     console.log(closedOnlineOrders)
      queryOrders(closedOnlineOrders)
 
     }
@@ -1081,6 +1061,7 @@ async function postOrder(req, res) {
         // res.send(req)
 let j = 0
         if(j === 0){
+          console.log(req)
                       console.log(resData.result)
                       let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
@@ -1146,7 +1127,7 @@ let j = 0
                       client.messages.create({
                         to: smsNumber,
                         from: '+12062087871',
-                        body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.'
+                        body: 'Your Mamnoon Order Has Been Placed! We will notify you when your food is being prepared.'
                       });
                     }
                     orderPostedTrue(req.id)
@@ -1357,10 +1338,10 @@ async function acceptedOrderNotify() {
 
      let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     
-     console.log('accepted')
-     console.log(accepted)
+    //  console.log('accepted')
+    //  console.log(accepted)
 
-     queryAcceptedOrders(accepted)
+     queryOrdersToAccept(accepted)
 
     }
   } catch (err) {
@@ -1374,7 +1355,6 @@ cron.schedule('*/10 * * * * *', () => {
   checkCheckStatusStreet()
   placeScheduledOrders()
   acceptedOrderNotify()
-  // snipCarts()
 });
 
 
