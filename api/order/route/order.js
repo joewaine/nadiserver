@@ -34,6 +34,7 @@ router.get("/email/:email", orderController.retrieveOrders);
 router.get("/orderhistory", orderController.allOrders)
 router.post("/issue-tokenized-return", orderController.tokenizedReturn)
 router.post("/issue-void", orderController.issueVoid)
+router.post("/mark-as-shipped", orderController.markAsShipped)
 router.get("/polling-request", orderController.pollingRequest)
 router.post("/start-transaction", orderController.startTransaction)
 

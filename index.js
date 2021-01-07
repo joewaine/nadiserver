@@ -311,6 +311,30 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
   
   htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
           
+
+
+
+
+
+
+
+
+
+
+  let htmlBody2 = `<div style="background-color: #ffffff;padding: 20px 0 15px;text-align: center;"><h1 style="color: #000000 !important;font-size: 1.5rem;text-align: center;">`;
+  
+
+    htmlBody2 = htmlBody2 + `RETAIL ORDER RECEIVED</h1></div>`
+
+
+  htmlBody2 = htmlBody2 + `<p style="text-align: center;margin: 0 auto;width: 100%;"><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>${req.body.fulfillment_info.delivery_info.address.address_line1}, ${req.body.fulfillment_info.delivery_info.address.address_line2}, ${req.body.fulfillment_info.delivery_info.address.city}, ${req.body.fulfillment_info.delivery_info.address.state}, ${req.body.fulfillment_info.delivery_info.address.zip_code}</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+  for(let i = 0;i<req.body.charges.items.length;i++){
+    htmlBody2 = htmlBody2 + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+  }
+  
+  htmlBody2 = htmlBody2 + '</ul>'
+          
+
   var mailOptions = {
   from: 'orders@mamnoonrestaurant.com',
   to: req.body.fulfillment_info.customer.email,
@@ -346,8 +370,8 @@ var mailOptions2 = {
   from: 'orders@mamnoonrestaurant.com',
   to: 'joe@mamnoonrestaurant.com',
   // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-  subject: `Retail Order Received`,
-  html: htmlBody 
+  subject: `Retail Order Received SHIPPING REQUIRED`,
+  html: htmlBody2 
   };
   
 

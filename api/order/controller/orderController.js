@@ -131,7 +131,8 @@ exports.addOrder = async (req, res) => {
           status: 'Open',
           orderPosted: false,
           orderAccepted: false,
-          shippingOrder: req.body.orderInfo.fulfillment_info.type === 'delivery' ? true : false
+          shippingOrder: req.body.orderInfo.fulfillment_info.type === 'delivery' ? true : false,
+          shipped: false
         })
 
 
@@ -452,3 +453,27 @@ console.log(config)
 console.log(err)
 }
 };
+
+
+
+
+exports.markAsShipped = async (req, res) => {
+
+  // console.log('void by trans id')
+  console.log(req.body.uniqueTransId)
+  
+console.log('set to shipped')
+    try {
+
+      const filter = {_id: req.body.uniqueTransId};
+      const update = {shipped:true};
+
+      let doc = await Order.findOneAndUpdate(filter, update, {
+        returnOriginal: false
+      });
+
+      res.status(201).json({ doc });
+     } catch (err) {
+      console.log(error)
+    }
+   };
