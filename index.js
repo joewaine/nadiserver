@@ -35,6 +35,7 @@ const Order = require("./api/order/model/Order");
 
 const nodemailer = require('nodemailer');
 const nodemailer2 = require('nodemailer');
+const nodemailer4 = require('nodemailer');
 const twilio = require('twilio');
 
 const PNF = require('google-libphonenumber').PhoneNumberFormat;
@@ -53,6 +54,10 @@ var sdk = require("emergepay-sdk");
 
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
+// let shippo = require('shippo')('shippo_live_b6790372812ed8e4f0c852e5f46801e3c8cddfd8');
+
+
+let shippo = require('shippo')('shippo_test_269049c928caf592075ece7cfc698e8cddeff9d5');
 
 
 //configure database and mongoose
@@ -186,7 +191,13 @@ var transporter2 = nodemailer2.createTransport({
   });
 
 
-
+  var transporter4 = nodemailer4.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'orders@mamnoonrestaurant.com',
+      pass: 'orders4mama'
+    }
+    });
 
 
   app.post("/oloorderretail", function (req, res) {
@@ -311,28 +322,7 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
   
   htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
           
-
-
-
-
-
-
-
-
-
-
-  let htmlBody2 = `<div style="background-color: #ffffff;padding: 20px 0 15px;text-align: center;"><h1 style="color: #000000 !important;font-size: 1.5rem;text-align: center;">`;
-  
-
-    htmlBody2 = htmlBody2 + `RETAIL ORDER RECEIVED</h1></div>`
-
-
-  htmlBody2 = htmlBody2 + `<p style="text-align: center;margin: 0 auto;width: 100%;"><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>${req.body.fulfillment_info.delivery_info.address.address_line1}, ${req.body.fulfillment_info.delivery_info.address.address_line2}, ${req.body.fulfillment_info.delivery_info.address.city}, ${req.body.fulfillment_info.delivery_info.address.state}, ${req.body.fulfillment_info.delivery_info.address.zip_code}</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
-  for(let i = 0;i<req.body.charges.items.length;i++){
-    htmlBody2 = htmlBody2 + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
-  }
-  
-  htmlBody2 = htmlBody2 + '</ul>'
+ 
           
 
   var mailOptions = {
@@ -366,32 +356,7 @@ body: 'Your Mamnoon Retail Order Has Been Placed! Thank You.'
 
 
 
-var mailOptions2 = {
-  from: 'orders@mamnoonrestaurant.com',
-  to: 'joe@mamnoonrestaurant.com',
-  // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-  subject: `Retail Order Received SHIPPING REQUIRED`,
-  html: htmlBody2 
-  };
-  
-
-
-
-  const sendMail2 = function(mailOptions2, transporter2) {
-    console.log()
-    return new Promise(function(resolve, reject) {
-      transporter2.sendMail(mailOptions2, function(error, info) {
-        if (error) {
-          reject(error);
-        } else {
-          console.log('email sent')
-          resolve(info);
-        }
-      });
-    });
-  };
-
-  sendMail2(mailOptions2, transporter2)
+shippoSend(req)
 
 
 
@@ -410,12 +375,264 @@ var mailOptions2 = {
 
 
 
+  async function shippoSend(req) {
+
+
+    console.log(req.body.fulfillment_info.delivery_info.address)
+
+    // console.log(JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address))
+
+    
+    var addressFrom = {
+      "name": "Nadi mama",
+      "street1": "1508 Melrose Ave",
+      "city": "Seattle",
+      "state": "WA",
+      "zip": "98122",
+      "country": "US"
+  };
+  
+
+    var addressTo = {
+      "name": req.body.fulfillment_info.customer.first_name,
+      "street1": req.body.fulfillment_info.delivery_info.address.address_line1,
+      "city": req.body.fulfillment_info.delivery_info.address.city,
+     "state": req.body.fulfillment_info.delivery_info.address.state,
+      "zip": req.body.fulfillment_info.delivery_info.address.zip_code,
+      "country": "US"
+  };
+
+  
+  let ounces = req.body.fulfillment_info.weight.oz
+  let convertedToPounds = ounces/16
+  
+    let totalItems = req.body.fulfillment_info.weight.lbs + convertedToPounds
+
+  var parcel = {
+      "length": "5",
+      "width": "5",
+      "height": "5",
+      "distance_unit": "in",
+      "weight": totalItems,
+      "mass_unit": "lb"
+  };
+
+
+
+
+
+var shipment = {
+  "address_from": addressFrom,
+  "address_to": addressTo,
+  "parcels": [parcel],
+};
+
+console.log(shipment)
+
+
+
+
+
+    let htmlBody2 = `<div style="background-color: #ffffff;padding: 20px 0 15px;text-align: center;"><h1 style="color: #000000 !important;font-size: 1.5rem;text-align: center;">`;
+  
+
+    htmlBody2 = htmlBody2 + `RETAIL ORDER RECEIVED</h1></div>`
+
+
+  htmlBody2 = htmlBody2 + `<p style="text-align: center;margin: 0 auto;width: 100%;"><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>${req.body.fulfillment_info.delivery_info.address.address_line1}, ${req.body.fulfillment_info.delivery_info.address.address_line2}, ${req.body.fulfillment_info.delivery_info.address.city}, ${req.body.fulfillment_info.delivery_info.address.state}, ${req.body.fulfillment_info.delivery_info.address.zip_code}</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+  for(let i = 0;i<req.body.charges.items.length;i++){
+    htmlBody2 = htmlBody2 + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+  }
+  
+  htmlBody2 = htmlBody2 + '</ul>'
+
+
+  shippo.transaction.create({
+    "shipment": shipment,
+    "carrier_account": "decbd7bf0e6e471b9184f2fe29a4076f",
+    "servicelevel_token": "usps_priority"
+  }, function(err, transaction) {
+    // asynchronously called
+  //  return transaction
+
+  console.log('log transaction')
+  console.log(transaction)
+  //  htmlBody2 = htmlBody2 + transaction
+
+
+
+
+   let transactionEmail = `tracking number: ${JSON.stringify(transaction.tracking_number)}<br>tracking information: ${JSON.stringify(transaction.tracking_url_provider)}<br>label: ${JSON.stringify(transaction.label_url)} <br>`
+
+   var mailOptions4 = {
+     from: 'orders@mamnoonrestaurant.com',
+     to: 'joe@mamnoonrestaurant.com',
+     // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+     subject: `label info.`,
+     html: transactionEmail
+     
+     };
+     
+     
+
+     transporter4.sendMail(mailOptions4, function(error, info){
+       if (error) {
+         console.log(error);
+       } else {
+         console.log('Email sent: ' + info.response);
+       }
+     });
+
+
+
+  });
+  
+
+
+  let transactionEmail = `tracking number: ${JSON.stringify(transaction.tracking_number)}<br>tracking information: ${JSON.stringify(transaction.tracking_url_provider)}<br>label: ${JSON.stringify(transaction.label_url)} <br>`
 
 
 
 
 
 
+
+
+  var mailOptions2 = {
+    from: 'orders@mamnoonrestaurant.com',
+    to: 'joe@mamnoonrestaurant.com',
+    // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+    subject: `Retail Order Received SHIPPING REQUIRED`,
+    html: transactionEmail
+    };
+    
+  
+  
+  
+    const sendMail2 = function(mailOptions2, transporter2) {
+      console.log()
+      return new Promise(function(resolve, reject) {
+        transporter2.sendMail(mailOptions2, function(error, info) {
+          if (error) {
+            reject(error);
+          } else {
+            console.log('email sent')
+            resolve(info);
+          }
+        });
+      });
+    };
+  
+    sendMail2(mailOptions2, transporter2)
+
+
+
+
+
+
+}
+
+
+
+async function retrieveCreatedLabel() {
+
+  var addressFrom  = {
+    "name": "sof elm",
+    "company": "Mamnoon",
+    "street1": "1508 Melrose Ave",
+    "city": "Seattle",
+    "state": "WA",
+    "zip": "98112",
+    "country": "US",
+    "phone": "+1 425 442 9989",
+    "email": "sofien@mamnoonrestaurant.com",
+};
+
+var addressTo = {
+    "name": "joe waine",
+    "company": "",
+    "street1": "116 30th Ave",
+    "street2": "",
+    "city": "Seattle",
+    "state": "WA",
+    "zip": "98144",
+    "country": "US",
+    "phone": "+1 425 442 9308",
+    "email": "joe@mamnoonrestaurant.com",
+    "metadata": "Hippos dont lie"
+};
+
+var parcel = {
+    "length": "5",
+    "width": "5",
+    "height": "5",
+    "distance_unit": "in",
+    "weight": "2",
+    "mass_unit": "lb"
+};
+
+var shipment = {
+    "address_from": addressFrom,
+    "address_to": addressTo,
+    "parcels": [parcel],
+};
+
+shippo.transaction.create({
+    "shipment": shipment,
+    "carrier_account": "decbd7bf0e6e471b9184f2fe29a4076f",
+    "servicelevel_token": "usps_priority"
+}, function(err, transaction) {
+    // asynchronously called
+    //  console.log(transaction)
+
+
+    let transactionEmail = `tracking number: ${JSON.stringify(transaction.tracking_number)}<br>tracking information: ${JSON.stringify(transaction.tracking_url_provider)}<br>label: ${JSON.stringify(transaction.label_url)} <br>`
+
+      var mailOptions4 = {
+        from: 'orders@mamnoonrestaurant.com',
+        to: 'joe@mamnoonrestaurant.com',
+        // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+        subject: `label info.`,
+        html: transactionEmail
+        
+        };
+        
+        
+
+        transporter4.sendMail(mailOptions4, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+}
+
+
+
+
+
+
+// retrieveCreatedLabel()
 
 
 
@@ -1423,12 +1640,77 @@ cron.schedule('*/10 * * * * *', () => {
 });
 
 
+  // app.get(`/shippingcalculation`, async function(req,res) {
+  //   fetch('https://secure.shippingapis.com/shippingapi.dll?API=RateV4&XML=<RateV4Request USERID="099MAMNO1149"><Revision>2</Revision><Package ID="1ST"><Service>PRIORITY</Service><ZipOrigination>'+ req.query.ZipOrigination +'</ZipOrigination><ZipDestination>'+ req.query.ZipDestination +'</ZipDestination><Pounds>'+ req.query.Pounds +'</Pounds><Ounces>'+ req.query.Ounces +'</Ounces><Container></Container><Width></Width><Length></Length><Height></Height><Girth></Girth><Machinable>false</Machinable></Package></RateV4Request>')
+  //   .then(response => response.text())
+  //   .then(str => (parser).parseFromString(str, "text/xml"))
+  //   .then(str => parseString(str.rawHTML, function (err, result) {
+  //     // res.send(result.RateV4Response.Package[0].Postage);
+  //     res.send(JSON.stringify(result.RateV4Response.Package[0].Postage));
+  // }) )
+  // });
+
+
+
   app.get(`/shippingcalculation`, async function(req,res) {
-    fetch('https://secure.shippingapis.com/shippingapi.dll?API=RateV4&XML=<RateV4Request USERID="099MAMNO1149"><Revision>2</Revision><Package ID="1ST"><Service>PRIORITY</Service><ZipOrigination>'+ req.query.ZipOrigination +'</ZipOrigination><ZipDestination>'+ req.query.ZipDestination +'</ZipDestination><Pounds>'+ req.query.Pounds +'</Pounds><Ounces>'+ req.query.Ounces +'</Ounces><Container></Container><Width></Width><Length></Length><Height></Height><Girth></Girth><Machinable>false</Machinable></Package></RateV4Request>')
-    .then(response => response.text())
-    .then(str => (parser).parseFromString(str, "text/xml"))
-    .then(str => parseString(str.rawHTML, function (err, result) {
-      // res.send(result.RateV4Response.Package[0].Postage);
-      res.send(JSON.stringify(result.RateV4Response.Package[0].Postage));
-  }) )
+
+    // console.log(JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address)
+
+    // console.log(JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address))
+
+    
+    var addressFrom = {
+      "name": "Nadi mama",
+      "street1": "1508 Melrose Ave",
+      "city": "Seattle",
+      "state": "WA",
+      "zip": "98122",
+      "country": "US"
+  };
+  
+
+    var addressTo = {
+      "name": JSON.parse(req.query.orderInfo).fulfillment_info.customer.first_name,
+      "street1": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.address_line1,
+      "city": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.city,
+     "state": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.state,
+      "zip": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.zip_code,
+      "country": "US"
+  };
+
+
+  JSON.parse(req.query.Pounds)
+  let ounces = JSON.parse(req.query.Ounces)
+  let convertedToPounds = ounces/16
+  
+
+let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
+
+  var parcel = {
+      "length": "5",
+      "width": "5",
+      "height": "5",
+      "distance_unit": "in",
+      "weight": totalItems,
+      "mass_unit": "lb"
+  };
+  
+  shippo.shipment.create({
+      "address_from": addressFrom,
+      "address_to": addressTo,
+      "parcels": [parcel],
+      "async": false
+  }, function(err, shipment){
+      // asynchronously called
+
+// console.log(shipment)
+
+      res.send(JSON.stringify(shipment));
+
   });
+  
+
+   });
+
+
+
