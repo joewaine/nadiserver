@@ -36,6 +36,7 @@ const Order = require("./api/order/model/Order");
 const nodemailer = require('nodemailer');
 const nodemailer2 = require('nodemailer');
 const nodemailer4 = require('nodemailer');
+const nodemailer5 = require('nodemailer');
 const twilio = require('twilio');
 
 const PNF = require('google-libphonenumber').PhoneNumberFormat;
@@ -199,6 +200,13 @@ var transporter2 = nodemailer2.createTransport({
     }
     });
 
+    var transporter5 = nodemailer4.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'orders@mamnoonrestaurant.com',
+        pass: 'orders4mama'
+      }
+      });
 
   app.post("/oloorderretail", function (req, res) {
     console.log('oloorder retail')
@@ -1732,3 +1740,162 @@ let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
 
 
 
+
+
+   let orderInfoObject = {
+    "_id": "5ffe0bbdf456a45deff2bb5d",
+    "email": "joe.waine@gmail.com",
+    "payInfo": {
+      "accountCardType": "VS",
+      "accountEntryMethod": "Keyed",
+      "accountExpiryDate": "0421",
+      "amount": "33.44",
+      "amountBalance": "",
+      "amountProcessed": "33.44",
+      "amountTipped": "0.00",
+      "approvalNumberResult": "130895",
+      "avsResponseCode": "Y",
+      "avsResponseText": "Address: Match & 5 Digit Zip: Match",
+      "batchNumber": "1",
+      "billingName": "joseph p waine",
+      "cashier": "",
+      "cvvResponseCode": "N",
+      "cvvResponseText": "No Match",
+      "externalTransactionId": "51443e40-51d8-4e73-8c0f-7042683eab0a",
+      "isPartialApproval": false,
+      "maskedAccount": "************9016",
+      "resultMessage": "Approved",
+      "resultStatus": "true",
+      "transactionReference": "",
+      "transactionType": "CreditSale",
+      "uniqueTransId": "fe6c412b7cee438cad0b956624f9d26a-a109feb7f21d4ec7ac9af5febaff7531"
+    },
+    "orderInfo": {
+      "tipSelected": 0,
+      "currentAmountToAddCustom": 0,
+      "sms": true,
+      "restaurant": "Mamnoon",
+      "billing": {
+        "billing_name": "joseph p waine",
+        "billing_address": "2412 West Lynn Place ",
+        "billing_postal_code": "98199"
+      },
+      "id": "lypyc2584os_hi8mlmlwilu_vmuuhzzbw6",
+      "preorder": false,
+      "scheduled_time": null,
+      "time_placed": "2021-01-12T20:50:41.606Z",
+      "confirmation_code": "mamnoon-p6u56qi5rln",
+      "charges": {
+        "shipping": "7.02",
+        "total": 2642,
+        "preTotal": 2400,
+        "fees": 0,
+        "taxes": 242,
+        "tip": {
+          "amount": 0,
+          "payment_type": "Generic Online Ordering Integrated"
+        },
+        "items": [
+          {
+            "name": "Aleppo Jar",
+            "cartId": "6wxxbg893fa_rpcx6razs5_up9o1e7i7tl",
+            "item_id": "7fefad67-c1f5-4346-ab9b-f9c5d9586476",
+            "price": 800,
+            "price_cents": 800,
+            "quantity": 3,
+            "instructions": "",
+            "modifiers": [],
+            "sides": [],
+            "lbs": 12,
+            "oz": 75,
+            "shippable": true,
+            "height": "5",
+            "width": "5",
+            "length": "5",
+            "girth": "55"
+          }
+        ]
+      },
+      "fulfillment_info": {
+        "weight": {
+          "lbs": 12,
+          "oz": 75
+        },
+        "type": "delivery",
+        "estimated_fulfillment_time": "2021-01-12T20:50:41.606Z",
+        "customer": {
+          "email": "joe.waine@gmail.com",
+          "phone": "4254429308",
+          "first_name": "joseph p waine"
+        },
+        "instructions": "",
+        "no_tableware": false,
+        "delivery_info": {
+          "is_managed_delivery": false,
+          "address": {
+            "city": "Seattle",
+            "state": "Washington",
+            "zip_code": "98199",
+            "address_line1": "2412 West Lynn Place",
+            "address_line2": ""
+          }
+        }
+      },
+      "payments": {
+        "payments": [
+          {
+            "payment_type": "Generic Online Ordering Integrated",
+            "amount": 2642
+          }
+        ]
+      }
+    },
+    "void": false,
+    "uniqueTransId": "giftcard",
+    "upserveId": "lypyc2584os_hi8mlmlwilu_vmuuhzzbw6",
+    "status": "Closed",
+    "orderPosted": false,
+    "orderAccepted": true,
+    "shippingOrder": true,
+    "shipped": true,
+    "shippingInfo": {
+      "object_state": "VALID",
+      "status": "SUCCESS",
+      "object_created": "2021-01-12T20:51:12.272Z",
+      "object_updated": "2021-01-12T20:51:13.858Z",
+      "object_id": "8251df1b92d64ac188b3a6a7b1e3bb9e",
+      "object_owner": "joe@mamnoonrestaurant.com",
+      "test": true,
+      "rate": {
+        "object_id": "85f6a43640a245c89fcadab7bc09aa0e",
+        "amount": "7.02",
+        "currency": "USD",
+        "amount_local": "7.02",
+        "currency_local": "USD",
+        "provider": "USPS",
+        "servicelevel_name": "Priority Mail",
+        "servicelevel_token": "usps_priority",
+        "carrier_account": "decbd7bf0e6e471b9184f2fe29a4076f"
+      },
+      "tracking_number": "92055901755477000000000015",
+      "tracking_status": "UNKNOWN",
+      "eta": null,
+      "tracking_url_provider": "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum=92055901755477000000000015",
+      "label_url": "https://deliver.goshippo.com/8251df1b92d64ac188b3a6a7b1e3bb9e.pdf?Expires=1642020673&Signature=EH3rpV3NBfYE4lhx3ew~XQr8x4TuohGzeenCQDKoTsdAZVOptOoDCJGPeZTz7-2VOKnd4znkfjdjV2ALr3qOIQz9kY9QogWcWKEB5izsUuW1nXz-Cl3WM0cinx1BgXtoKBLyR~5sBCVKV5moMl~autbACLNGfaBD7~0ORWmlx6bEBN~C4L7juRlv1IEPdSMYloHC7E2I2WpFbVLw2DmY0uBZWyBoP72O7sEj1Xm1eEnZmuxHeD3k8umpls7rkPLK8J7MH7QmaTn3ioz7B2fQzMsWliDHDRh0q11fY3-k9SJvNHcbvKvJq4jQwuB2-SxrotQHVFJa3SGhIEsSMZ6YEA__&Key-Pair-Id=APKAJRICFXQ2S4YUQRSQ",
+      "commercial_invoice_url": null,
+      "messages": [],
+      "order": null,
+      "metadata": "",
+      "parcel": "cee3c43e66c04a23987205d4bad2a991",
+      "billing": {
+        "payments": []
+      },
+      "qr_code_url": null
+    },
+    "__v": 0
+  }
+  
+  
+
+  
+  

@@ -7,7 +7,18 @@ const e = require("express");
 
 var sdk = require("emergepay-sdk");
 
+const nodemailer5 = require('nodemailer');
 
+
+var transporter5 = nodemailer5.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'orders@mamnoonrestaurant.com',
+    pass: 'orders4mama'
+  }
+  });
+
+  
 
 //sandbox
 
@@ -461,12 +472,12 @@ console.log(err)
 exports.markAsShipped = async (req, res) => {
 
   // console.log('void by trans id')
-  console.log(req.body.uniqueTransId)
+  console.log(req.body.uniqueId)
   
 console.log('set to shipped')
     try {
 
-      const filter = {_id: req.body.uniqueTransId};
+      const filter = {_id: req.body.uniqueId};
       const update = {shipped:true};
 
       let doc = await Order.findOneAndUpdate(filter, update, {
@@ -474,7 +485,41 @@ console.log('set to shipped')
       });
 
       res.status(201).json({ doc });
+
+
+      sendShippingConfirmationEmail(req.body.order)
+
+
      } catch (err) {
       console.log(error)
     }
    };
+
+
+   let sendShippingConfirmationEmail = async (req) => {
+console.log('send shipping confirmation')
+    let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">Your Retail Order Has Shipped!</h1></div><p style="text-align: center;margin: 0 auto;width: 100%;"><br>Your order has shipped!<br>Your Tracking Number is: ${req.shippingInfo.tracking_number}<br><a target="_blank" href="${req.shippingInfo.tracking_url_provider}">Track your package</a><br><br><span style="font-size: 20px !important;">confirmation code: <b>${req.orderInfo.confirmation_code}</b></span><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+    for(let i = 0;i<req.orderInfo.charges.items.length;i++){
+      htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.orderInfo.charges.items[i].quantity) +'</li>'
+    }
+    
+    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>'1508 Melrose Ave, Seattle, WA 98122'</i><br><a href="https://nadimama.com">nadimama.com</p>`
+    
+    var mailOptions5 = {
+      from: 'orders@mamnoonrestaurant.com',
+      to: req.email,
+      // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+      subject: `YOUR RETAIL ORDER HAS SHIPPED`,
+      html: htmlBody
+      
+      };
+      
+      transporter5.sendMail(mailOptions5, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
+  }
