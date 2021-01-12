@@ -132,7 +132,8 @@ exports.addOrder = async (req, res) => {
           orderPosted: false,
           orderAccepted: false,
           shippingOrder: req.body.orderInfo.fulfillment_info.type === 'delivery' ? true : false,
-          shipped: false
+          shipped: false,
+          shippingInfo: {order:'empty'}
         })
 
 

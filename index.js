@@ -378,7 +378,10 @@ shippoSend(req)
   async function shippoSend(req) {
 
 
-    console.log(req.body.fulfillment_info.delivery_info.address)
+
+
+
+
 
     // console.log(JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address))
 
@@ -446,7 +449,7 @@ console.log(shipment)
   
   htmlBody2 = htmlBody2 + '</ul>'
 
-
+  let transactionEmail = ''
   shippo.transaction.create({
     "shipment": shipment,
     "carrier_account": "decbd7bf0e6e471b9184f2fe29a4076f",
@@ -458,7 +461,7 @@ console.log(shipment)
   console.log('log transaction')
   console.log(transaction)
   //  htmlBody2 = htmlBody2 + transaction
-
+  addShippingInfoToOrder(req.body.id,transaction)
 
 
 
@@ -485,13 +488,12 @@ console.log(shipment)
 
 
 
+
+     transactionEmail = transactionEmail + `tracking number: ${JSON.stringify(transaction.tracking_number)}<br>tracking information: ${JSON.stringify(transaction.tracking_url_provider)}<br>label: ${JSON.stringify(transaction.label_url)} <br>`
+
+
   });
   
-
-
-  let transactionEmail = `tracking number: ${JSON.stringify(transaction.tracking_number)}<br>tracking information: ${JSON.stringify(transaction.tracking_url_provider)}<br>label: ${JSON.stringify(transaction.label_url)} <br>`
-
-
 
 
 
@@ -636,8 +638,24 @@ shippo.transaction.create({
 
 
 
+async function addShippingInfoToOrder(req,shippingInfoJSON) {
 
+  console.log(req)
+  console.log(shippingInfoJSON)
 
+  try {
+  
+    await Order.updateOne(
+        { upserveId: req },
+        { $set: { shippingInfo: shippingInfoJSON } },
+        {multi: true}
+     )
+    
+  } catch (err) {
+    console.log(err)
+}
+
+     };
 
 
 

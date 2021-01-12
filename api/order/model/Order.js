@@ -47,7 +47,11 @@ const orderSchema = mongoose.Schema({
   shipped: {
     type: Boolean,
     required: [true]
-  }
+  },
+  shippingInfo: {
+    type: Object,
+    required: [false]
+  },
 });
 
 
