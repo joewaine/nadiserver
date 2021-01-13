@@ -479,7 +479,7 @@ console.log('set to shipped')
 
       const filter = {_id: req.body.uniqueId};
       const update = {shipped:true};
-
+console.log(filter)
       let doc = await Order.findOneAndUpdate(filter, update, {
         returnOriginal: false
       });
