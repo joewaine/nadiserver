@@ -366,4 +366,28 @@ exports.postOnlineOrder = async (req, res) => {
                   res.send('error')
                   }
             
+
+              }
+
+
+
+
+              exports.visibleEdit = async (req, res) => {
+                console.log('visibleEdit')
+
+                try{
+                  console.log('update one')
+                  await Product.findOneAndUpdate(
+                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                    {
+                    $set: {
+                          "menu.items.$.visible": req.body.tf
+                    }
+                  },{'new': true, 'safe': true, 'upsert': true});
+                  res.send('success')
+                }catch (err) {
+                  console.log(err)
+                  res.send('error')
+                  }
+
               }

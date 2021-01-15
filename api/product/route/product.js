@@ -44,7 +44,7 @@ router.post("/retailwidth", upserveController.updateRetailItemWidth);
 router.post("/retaillength", upserveController.updateRetailItemLength);
 router.post("/retailgirth", upserveController.updateRetailItemGirth);
 
-
+router.post('/visibleedit', upserveController.visibleEdit);
 
 module.exports = router;
 
