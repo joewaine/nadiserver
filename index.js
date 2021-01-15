@@ -696,10 +696,8 @@ app.post("/oloorder", function (req, res) {
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-        
-        
+      
         htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
-                
         
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
@@ -709,7 +707,6 @@ app.post("/oloorder", function (req, res) {
         html: htmlBody 
         
         };
-        
         
 
         transporter.sendMail(mailOptions, function(error, info){
@@ -721,15 +718,8 @@ app.post("/oloorder", function (req, res) {
         });
 
 
-
-
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
-
-
-
-
-
 
 
 
@@ -834,10 +824,6 @@ app.post("/oloorderstreet", function (req, res) {
 
 
 
-
-
-
-
 app.post("/oloordermbar", function (req, res) {
   console.log(req.body)
   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
@@ -913,18 +899,6 @@ app.post("/oloordermbar", function (req, res) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 app.post("/confirmationemail", function (req, res) {
   console.log(req.body)
 
@@ -964,22 +938,18 @@ app.post("/confirmationemail", function (req, res) {
         }
 
   
-  
       htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${req.body.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
               
             
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
-        // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
         subject: `Your Order Has Been Scheduled! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
         
 
-
-        
 
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
@@ -992,10 +962,8 @@ app.post("/confirmationemail", function (req, res) {
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
       let smsNumber = phoneUtil.format(number, PNF.E164);
 
-
-
-      console.log('send text message - confrimation email')
-          if(req.body.sms === true){
+    console.log('send text message - confrimation email')
+  if(req.body.sms === true){
     client.messages.create({
     to: smsNumber,
     from: '+12062087871',
@@ -1003,28 +971,8 @@ app.post("/confirmationemail", function (req, res) {
     });
     }
 
- 
-
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 async function orderPostedTrue(idToClose) {
@@ -1197,7 +1145,7 @@ console.log('sendemail')
   let doc = await Order.find({ "upserveId": upserveId });
 
   console.log('you retrievced it right')
-    // console.log(doc)
+
 
 
 
@@ -1207,11 +1155,8 @@ console.log('sendemail')
 
     let htmlBody = `<div style="background-color: #009900;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
-    // if(doc[0].orderInfo.fulfillment_info.type === 'delivery'){
-      // htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Delivery Order Is Ready!</h1></div>`
-    // }else{
+
       htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Order Is Ready!</h1></div>`
-    // }
     
     htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
     <br><span style="font-size: 20px !important;">confirmation code: <b>${doc[0].orderInfo.confirmation_code}</b></span><br/><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
@@ -1456,17 +1401,6 @@ let j = 0
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 async function postStreetOrder(req, res) {
   console.log(req)
     axios.post('https://hq.breadcrumb.com/ws/v1/orders', req,
@@ -1562,31 +1496,6 @@ async function postStreetOrder(req, res) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 async function placeScheduledOrders() {
   try {
 
@@ -1624,10 +1533,7 @@ for(let i = 0; i < outcome.length; i++){
 } catch (err) {
   console.log(err)
   }
-
-
 }
-
 
 async function acceptedOrderNotify() {
 
@@ -1646,9 +1552,6 @@ async function acceptedOrderNotify() {
 
      let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     
-    //  console.log('accepted')
-    //  console.log(accepted)
-
      queryOrdersToAccept(accepted)
 
     }
@@ -1666,25 +1569,12 @@ cron.schedule('*/10 * * * * *', () => {
 });
 
 
-  // app.get(`/shippingcalculation`, async function(req,res) {
-  //   fetch('https://secure.shippingapis.com/shippingapi.dll?API=RateV4&XML=<RateV4Request USERID="099MAMNO1149"><Revision>2</Revision><Package ID="1ST"><Service>PRIORITY</Service><ZipOrigination>'+ req.query.ZipOrigination +'</ZipOrigination><ZipDestination>'+ req.query.ZipDestination +'</ZipDestination><Pounds>'+ req.query.Pounds +'</Pounds><Ounces>'+ req.query.Ounces +'</Ounces><Container></Container><Width></Width><Length></Length><Height></Height><Girth></Girth><Machinable>false</Machinable></Package></RateV4Request>')
-  //   .then(response => response.text())
-  //   .then(str => (parser).parseFromString(str, "text/xml"))
-  //   .then(str => parseString(str.rawHTML, function (err, result) {
-  //     // res.send(result.RateV4Response.Package[0].Postage);
-  //     res.send(JSON.stringify(result.RateV4Response.Package[0].Postage));
-  // }) )
-  // });
 
 
 
   app.get(`/shippingcalculation`, async function(req,res) {
 
-    // console.log(JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address)
 
-    // console.log(JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address))
-
-    
     var addressFrom = {
       "name": "Nadi mama",
       "street1": "1508 Melrose Ave",
@@ -1727,9 +1617,7 @@ let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
       "parcels": [parcel],
       "async": false
   }, function(err, shipment){
-      // asynchronously called
 
-// console.log(shipment)
 
       res.send(JSON.stringify(shipment));
 
@@ -1741,161 +1629,3 @@ let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
 
 
 
-
-   let orderInfoObject = {
-    "_id": "5ffe0bbdf456a45deff2bb5d",
-    "email": "joe.waine@gmail.com",
-    "payInfo": {
-      "accountCardType": "VS",
-      "accountEntryMethod": "Keyed",
-      "accountExpiryDate": "0421",
-      "amount": "33.44",
-      "amountBalance": "",
-      "amountProcessed": "33.44",
-      "amountTipped": "0.00",
-      "approvalNumberResult": "130895",
-      "avsResponseCode": "Y",
-      "avsResponseText": "Address: Match & 5 Digit Zip: Match",
-      "batchNumber": "1",
-      "billingName": "joseph p waine",
-      "cashier": "",
-      "cvvResponseCode": "N",
-      "cvvResponseText": "No Match",
-      "externalTransactionId": "51443e40-51d8-4e73-8c0f-7042683eab0a",
-      "isPartialApproval": false,
-      "maskedAccount": "************9016",
-      "resultMessage": "Approved",
-      "resultStatus": "true",
-      "transactionReference": "",
-      "transactionType": "CreditSale",
-      "uniqueTransId": "fe6c412b7cee438cad0b956624f9d26a-a109feb7f21d4ec7ac9af5febaff7531"
-    },
-    "orderInfo": {
-      "tipSelected": 0,
-      "currentAmountToAddCustom": 0,
-      "sms": true,
-      "restaurant": "Mamnoon",
-      "billing": {
-        "billing_name": "joseph p waine",
-        "billing_address": "2412 West Lynn Place ",
-        "billing_postal_code": "98199"
-      },
-      "id": "lypyc2584os_hi8mlmlwilu_vmuuhzzbw6",
-      "preorder": false,
-      "scheduled_time": null,
-      "time_placed": "2021-01-12T20:50:41.606Z",
-      "confirmation_code": "mamnoon-p6u56qi5rln",
-      "charges": {
-        "shipping": "7.02",
-        "total": 2642,
-        "preTotal": 2400,
-        "fees": 0,
-        "taxes": 242,
-        "tip": {
-          "amount": 0,
-          "payment_type": "Generic Online Ordering Integrated"
-        },
-        "items": [
-          {
-            "name": "Aleppo Jar",
-            "cartId": "6wxxbg893fa_rpcx6razs5_up9o1e7i7tl",
-            "item_id": "7fefad67-c1f5-4346-ab9b-f9c5d9586476",
-            "price": 800,
-            "price_cents": 800,
-            "quantity": 3,
-            "instructions": "",
-            "modifiers": [],
-            "sides": [],
-            "lbs": 12,
-            "oz": 75,
-            "shippable": true,
-            "height": "5",
-            "width": "5",
-            "length": "5",
-            "girth": "55"
-          }
-        ]
-      },
-      "fulfillment_info": {
-        "weight": {
-          "lbs": 12,
-          "oz": 75
-        },
-        "type": "delivery",
-        "estimated_fulfillment_time": "2021-01-12T20:50:41.606Z",
-        "customer": {
-          "email": "joe.waine@gmail.com",
-          "phone": "4254429308",
-          "first_name": "joseph p waine"
-        },
-        "instructions": "",
-        "no_tableware": false,
-        "delivery_info": {
-          "is_managed_delivery": false,
-          "address": {
-            "city": "Seattle",
-            "state": "Washington",
-            "zip_code": "98199",
-            "address_line1": "2412 West Lynn Place",
-            "address_line2": ""
-          }
-        }
-      },
-      "payments": {
-        "payments": [
-          {
-            "payment_type": "Generic Online Ordering Integrated",
-            "amount": 2642
-          }
-        ]
-      }
-    },
-    "void": false,
-    "uniqueTransId": "giftcard",
-    "upserveId": "lypyc2584os_hi8mlmlwilu_vmuuhzzbw6",
-    "status": "Closed",
-    "orderPosted": false,
-    "orderAccepted": true,
-    "shippingOrder": true,
-    "shipped": true,
-    "shippingInfo": {
-      "object_state": "VALID",
-      "status": "SUCCESS",
-      "object_created": "2021-01-12T20:51:12.272Z",
-      "object_updated": "2021-01-12T20:51:13.858Z",
-      "object_id": "8251df1b92d64ac188b3a6a7b1e3bb9e",
-      "object_owner": "joe@mamnoonrestaurant.com",
-      "test": true,
-      "rate": {
-        "object_id": "85f6a43640a245c89fcadab7bc09aa0e",
-        "amount": "7.02",
-        "currency": "USD",
-        "amount_local": "7.02",
-        "currency_local": "USD",
-        "provider": "USPS",
-        "servicelevel_name": "Priority Mail",
-        "servicelevel_token": "usps_priority",
-        "carrier_account": "decbd7bf0e6e471b9184f2fe29a4076f"
-      },
-      "tracking_number": "92055901755477000000000015",
-      "tracking_status": "UNKNOWN",
-      "eta": null,
-      "tracking_url_provider": "https://tools.usps.com/go/TrackConfirmAction_input?origTrackNum=92055901755477000000000015",
-      "label_url": "https://deliver.goshippo.com/8251df1b92d64ac188b3a6a7b1e3bb9e.pdf?Expires=1642020673&Signature=EH3rpV3NBfYE4lhx3ew~XQr8x4TuohGzeenCQDKoTsdAZVOptOoDCJGPeZTz7-2VOKnd4znkfjdjV2ALr3qOIQz9kY9QogWcWKEB5izsUuW1nXz-Cl3WM0cinx1BgXtoKBLyR~5sBCVKV5moMl~autbACLNGfaBD7~0ORWmlx6bEBN~C4L7juRlv1IEPdSMYloHC7E2I2WpFbVLw2DmY0uBZWyBoP72O7sEj1Xm1eEnZmuxHeD3k8umpls7rkPLK8J7MH7QmaTn3ioz7B2fQzMsWliDHDRh0q11fY3-k9SJvNHcbvKvJq4jQwuB2-SxrotQHVFJa3SGhIEsSMZ6YEA__&Key-Pair-Id=APKAJRICFXQ2S4YUQRSQ",
-      "commercial_invoice_url": null,
-      "messages": [],
-      "order": null,
-      "metadata": "",
-      "parcel": "cee3c43e66c04a23987205d4bad2a991",
-      "billing": {
-        "payments": []
-      },
-      "qr_code_url": null
-    },
-    "__v": 0
-  }
-  
-  
-
-  
-  
