@@ -264,17 +264,31 @@ subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when the
 html: htmlBody 
 };
 
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
-});
+// transporter.sendMail(mailOptions, function(error, info){
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log('Email sent: ' + info.response);
+//   }
+// });
 
 
 
+const sendMail = function(mailOptions2, transporter2) {
+  console.log()
+  return new Promise(function(resolve, reject) {
+    transporter2.sendMail(mailOptions2, function(error, info) {
+      if (error) {
+        reject(error);
+      } else {
+        console.log('email sent')
+        resolve(info);
+      }
+    });
+  });
+};
 
+sendMail(mailOptions, transporter)
 
   
 
@@ -341,13 +355,34 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
   html: htmlBody 
   };
   
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+  // transporter.sendMail(mailOptions, function(error, info){
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     console.log('Email sent: ' + info.response);
+  //   }
+  // });
+
+
+
+  const sendMail = function(mailOptions2, transporter2) {
+    console.log()
+    return new Promise(function(resolve, reject) {
+      transporter2.sendMail(mailOptions2, function(error, info) {
+        if (error) {
+          reject(error);
+        } else {
+          console.log('email sent')
+          resolve(info);
+        }
+      });
+    });
+  };
+
+  sendMail(mailOptions, transporter)
+
+
+
 
   const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
   let smsNumber = phoneUtil.format(number, PNF.E164);
@@ -486,14 +521,31 @@ console.log(shipment)
      
      
 
-     transporter4.sendMail(mailOptions4, function(error, info){
-       if (error) {
-         console.log(error);
-       } else {
-         console.log('Email sent: ' + info.response);
-       }
-     });
+    //  transporter4.sendMail(mailOptions4, function(error, info){
+    //    if (error) {
+    //      console.log(error);
+    //    } else {
+    //      console.log('Email sent: ' + info.response);
+    //    }
+    //  });
 
+
+
+     const sendMail = function(mailOptions2, transporter2) {
+      console.log()
+      return new Promise(function(resolve, reject) {
+        transporter2.sendMail(mailOptions2, function(error, info) {
+          if (error) {
+            reject(error);
+          } else {
+            console.log('email sent')
+            resolve(info);
+          }
+        });
+      });
+    };
+
+    sendMail(mailOptions4, transporter4)
 
 
 
@@ -609,13 +661,13 @@ shippo.transaction.create({
         
         
 
-        transporter4.sendMail(mailOptions4, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+        // transporter4.sendMail(mailOptions4, function(error, info){
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log('Email sent: ' + info.response);
+        //   }
+        // });
 
 
 
@@ -627,7 +679,21 @@ shippo.transaction.create({
 
 
 
+        const sendMail = function(mailOptions2, transporter2) {
+          console.log()
+          return new Promise(function(resolve, reject) {
+            transporter2.sendMail(mailOptions2, function(error, info) {
+              if (error) {
+                reject(error);
+              } else {
+                console.log('email sent')
+                resolve(info);
+              }
+            });
+          });
+        };
 
+        sendMail(mailOptions4, transporter4)
 
 
 
@@ -709,14 +775,31 @@ app.post("/oloorder", function (req, res) {
         };
         
 
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+        // transporter.sendMail(mailOptions, function(error, info){
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log('Email sent: ' + info.response);
+        //   }
+        // });
 
+
+
+        const sendMail = function(mailOptions2, transporter2) {
+          console.log()
+          return new Promise(function(resolve, reject) {
+            transporter2.sendMail(mailOptions2, function(error, info) {
+              if (error) {
+                reject(error);
+              } else {
+                console.log('email sent')
+                resolve(info);
+              }
+            });
+          });
+        };
+
+        sendMail(mailOptions, transporter)
 
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
@@ -793,13 +876,30 @@ app.post("/oloorderstreet", function (req, res) {
         
         };
         
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+        // transporter.sendMail(mailOptions, function(error, info){
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log('Email sent: ' + info.response);
+        //   }
+        // });
+
+
+        const sendMail = function(mailOptions2, transporter2) {
+          console.log()
+          return new Promise(function(resolve, reject) {
+            transporter2.sendMail(mailOptions2, function(error, info) {
+              if (error) {
+                reject(error);
+              } else {
+                console.log('email sent')
+                resolve(info);
+              }
+            });
+          });
+        };
+
+        sendMail(mailOptions, transporter)
 
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
@@ -869,13 +969,32 @@ app.post("/oloordermbar", function (req, res) {
         
         };
         
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+        // transporter.sendMail(mailOptions, function(error, info){
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log('Email sent: ' + info.response);
+        //   }
+        // });
+
+
+
+        const sendMail = function(mailOptions2, transporter2) {
+          console.log()
+          return new Promise(function(resolve, reject) {
+            transporter2.sendMail(mailOptions2, function(error, info) {
+              if (error) {
+                reject(error);
+              } else {
+                console.log('email sent')
+                resolve(info);
+              }
+            });
+          });
+        };
+
+        sendMail(mailOptions, transporter)
+
 
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
@@ -951,13 +1070,34 @@ app.post("/confirmationemail", function (req, res) {
         
 
 
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
+        // transporter.sendMail(mailOptions, function(error, info){
+        //   if (error) {
+        //     console.log(error);
+        //   } else {
+        //     console.log('Email sent: ' + info.response);
+        //   }
+        // });
+
+
+
+
+        const sendMail = function(mailOptions2, transporter2) {
+          console.log()
+          return new Promise(function(resolve, reject) {
+            transporter2.sendMail(mailOptions2, function(error, info) {
+              if (error) {
+                reject(error);
+              } else {
+                console.log('email sent')
+                resolve(info);
+              }
+            });
+          });
+        };
+
+        sendMail(mailOptions, transporter)
+
+
 
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
       let smsNumber = phoneUtil.format(number, PNF.E164);
@@ -1105,13 +1245,35 @@ console.log('send acceptance email')
     };
 
   
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    // transporter.sendMail(mailOptions, function(error, info){
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
+
+
+
+    const sendMail = function(mailOptions2, transporter2) {
+      console.log()
+      return new Promise(function(resolve, reject) {
+        transporter2.sendMail(mailOptions2, function(error, info) {
+          if (error) {
+            reject(error);
+          } else {
+            console.log('email sent')
+            resolve(info);
+          }
+        });
+      });
+    };
+
+    sendMail(mailOptions, transporter)
+
+
+
+
     
     const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
     let smsNumber = phoneUtil.format(number, PNF.E164);
@@ -1191,14 +1353,38 @@ console.log('sendemail')
     };
 
   
-    transporter.sendMail(mailOptions, function(error, info){
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    // transporter.sendMail(mailOptions, function(error, info){
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('Email sent: ' + info.response);
+    //   }
+    // });
     
+
+
+
+    const sendMail = function(mailOptions2, transporter2) {
+      console.log()
+      return new Promise(function(resolve, reject) {
+        transporter2.sendMail(mailOptions2, function(error, info) {
+          if (error) {
+            reject(error);
+          } else {
+            console.log('email sent')
+            resolve(info);
+          }
+        });
+      });
+    };
+
+    sendMail(mailOptions, transporter)
+
+
+
+
+
+
     const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
     let smsNumber = phoneUtil.format(number, PNF.E164);
 
@@ -1459,16 +1645,30 @@ async function postStreetOrder(req, res) {
           
           
   
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
+          // transporter.sendMail(mailOptions, function(error, info){
+          //   if (error) {
+          //     console.log(error);
+          //   } else {
+          //     console.log('Email sent: ' + info.response);
+          //   }
+          // });
   
   
-  
+          const sendMail = function(mailOptions, transporter) {
+            console.log()
+            return new Promise(function(resolve, reject) {
+              transporter.sendMail(mailOptions, function(error, info) {
+                if (error) {
+                  reject(error);
+                } else {
+                  console.log('email sent')
+                  resolve(info);
+                }
+              });
+            });
+          };
+
+          sendMail(mailOptions, transporter)
   
           const number = phoneUtil.parseAndKeepRawInput(req.fulfillment_info.customer.phone, 'US');
           let smsNumber = phoneUtil.format(number, PNF.E164);
