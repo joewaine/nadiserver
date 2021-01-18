@@ -514,12 +514,38 @@ console.log('send shipping confirmation')
       
       };
       
-      transporter5.sendMail(mailOptions5, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+      // transporter5.sendMail(mailOptions5, function(error, info){
+      //   if (error) {
+      //     console.log(error);
+      //   } else {
+      //     console.log('Email sent: ' + info.response);
+      //   }
+      // });
+
+
+
+
+      const sendMail = function(mailOptions, transporter) {
+        console.log()
+        return new Promise(function(resolve, reject) {
+          transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+              reject(error);
+            } else {
+              console.log('email sent')
+              resolve(info);
+            }
+          });
+        });
+      };
+
+      sendMail(mailOptions5, transporter5)
+
+
+
+
+
+
+
 
   }

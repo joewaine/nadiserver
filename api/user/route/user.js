@@ -30,6 +30,8 @@ router.get("/gettestimonials/:email", userController.getTestimonials);
 router.post("/submittestimonial", userController.submitTestimonial);
 router.get('/email/:email', userController.getUserInfo);
 router.post("/submitgiftcard", userController.submitGiftcard);
+router.post("/submitdeliveryaddress", userController.submitDeliveryAddress);
+router.post("/submitbillingaddress", userController.submitBillingAddress);
 router.post('/deletegiftcard', userController.deleteGiftcard);
 router.get("/getgiftcards/:email", userController.getGiftcards);
 router.post("/primarygiftcard", userController.primaryGiftCard);

@@ -377,3 +377,62 @@ console.log(err)
 }
 
    };
+
+
+   exports.submitDeliveryAddress = async (req, res) => {
+
+console.log(req.body)
+    
+    try {
+      // let doc = await Order.findById('5f97465eebb3b9108bc2a50b')
+      
+    let doc = await User.findOneAndUpdate(
+  { "email": req.body.email },
+  { 
+      "$set": {
+        "deliveryAddress": req.body.deliveryAddress
+      }
+  },
+  function(err,doc) {
+  
+  }
+  );
+  
+  
+  console.log('delivery address updated')
+  res.status(201).json({ doc });
+  } catch (err) {
+  console.log(err)
+  }
+  
+     };
+
+
+
+
+     exports.submitBillingAddress = async (req, res) => {
+      console.log(req.body)
+    
+      try {
+        // let doc = await Order.findById('5f97465eebb3b9108bc2a50b')
+        
+      let doc = await User.findOneAndUpdate(
+    { "email": req.body.email },
+    { 
+        "$set": {
+          "billingAddress": req.body.billingAddress
+        }
+    },
+    function(err,doc) {
+    
+    }
+    );
+    
+    
+    console.log('billing address updated')
+    res.status(201).json({ doc });
+    } catch (err) {
+    console.log(err)
+    }
+    
+       };

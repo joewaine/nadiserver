@@ -10,6 +10,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required: [true, "Please Include your email"]
   },
+  deliveryAddress: {
+    type: Object,
+    required: [false, 'not required']
+  },
+  billingAddress: {
+    type: Object,
+    required: [false, 'not required']
+  },
   password: {
     type: String,
     required: [true, "Please Include your password"]
