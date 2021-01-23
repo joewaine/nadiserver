@@ -1793,10 +1793,27 @@ cron.schedule('*/10 * * * * *', () => {
       "street1": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.address_line1,
       "city": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.city,
      "state": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.state,
-      "zip": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.zip_code,
+    //  "zip": "98112",
+     "zip": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.zip_code,
       "country": "US"
   };
 
+
+
+//   var addressTo = {
+//     "name": "Aidan Waine",
+//     "street1": "2412 West Lake Sammamish Parkway Northeast",
+//     "city": "Redmond",
+//     "state": "WA",
+//     "zip": "98052",
+//     "country": "US"
+// };
+
+
+
+//   console.log(addressTo)
+//   console.log(req.query.Pounds)
+// console.log(req.query.Ounces)
 
   JSON.parse(req.query.Pounds)
   let ounces = JSON.parse(req.query.Ounces)
@@ -1810,9 +1827,15 @@ let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
       "width": "5",
       "height": "5",
       "distance_unit": "in",
-      "weight": totalItems,
+      "weight": Number(totalItems).toFixed(2),
+      // "weight": 2.125,
       "mass_unit": "lb"
   };
+
+
+  console.log(addressFrom)
+  console.log(addressTo)
+  console.log(parcel)
   
   shippo.shipment.create({
       "address_from": addressFrom,
@@ -1821,7 +1844,7 @@ let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
       "async": false
   }, function(err, shipment){
 
-
+console.log(shipment)
       res.send(JSON.stringify(shipment));
 
   });
