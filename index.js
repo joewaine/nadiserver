@@ -1823,9 +1823,9 @@ cron.schedule('*/10 * * * * *', () => {
 let totalItems = JSON.parse(req.query.Pounds) + convertedToPounds
 
   var parcel = {
-      "length": "5",
-      "width": "5",
-      "height": "5",
+      "length": "8.75",
+      "width": "11.25",
+      "height": "6",
       "distance_unit": "in",
       "weight": Number(totalItems).toFixed(2),
       // "weight": 2.125,

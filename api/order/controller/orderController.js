@@ -220,7 +220,7 @@ console.log(req.params.email)
       console.log('no shipping')
     }
 
-   let amount = Number(req.body.charges.total) - Number(req.body.charges.tip.amount) + shipping
+   let amount = Number(req.body.charges.total) - Number(req.body.charges.tip.amount)
    let tipAmount = Number(req.body.charges.tip.amount)
 
 let toFixed = tipAmount/100
