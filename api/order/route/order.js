@@ -37,6 +37,7 @@ router.post("/issue-void", orderController.issueVoid)
 router.post("/mark-as-shipped", orderController.markAsShipped)
 router.get("/polling-request", orderController.pollingRequest)
 router.post("/start-transaction", orderController.startTransaction)
+router.post("/start-transaction-retail", orderController.startTransactionRetail)
 
 router.post("/void-transid", orderController.voidByTransID)
 

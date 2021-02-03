@@ -207,6 +207,77 @@ console.log(req.params.email)
    }
 
 
+   exports.startTransactionRetail = function (req, res) {
+
+    console.log(req.body)
+   
+    let shipping
+    if(req.body.charges.shipping){
+      shipping = Number(req.body.charges.shipping) * 100
+      console.log(Number(req.body.charges.shipping) * 100)
+    }else{
+      shipping = 0
+      console.log('no shipping')
+    }
+
+   let amount = Number(req.body.charges.total) + Number(shipping)
+  //  let tipAmount = Number(req.body.charges.tip.amount)
+
+  // let toFixed = tipAmount/100
+  // let formattedTipAmount = toFixed.toFixed(2)
+   
+  
+   let finalAmount = amount
+   let finalCash = finalAmount/100
+
+   let config = {
+       transactionType: sdk.TransactionType.CreditSale,
+       method: "modal",
+       fields: [
+           {
+               id: "base_amount",
+               value: finalCash.toString()
+           },
+           {
+             id: "billing_name",
+             value: req.body.billing.billing_name
+           },
+           {
+           id: "billing_address",
+           value: req.body.billing.billing_address
+           },
+           {
+               id: "billing_postal_code",
+               value: req.body.billing.billing_postal_code
+           },
+           {
+               id: "external_tran_id",
+               value: emergepay.getExternalTransactionId()
+           },
+           {
+             id: "tip_amount",
+            //  value: formattedTipAmount.toString(),
+             value: "0"
+           }
+       ]
+   };
+console.log(config)
+
+
+       emergepay.startTransaction(config)
+       .then(function (transactionToken) {
+         console.log(transactionToken)
+           res.send({
+               transactionToken: transactionToken
+           });
+       })
+       .catch(function (err) {
+         console.log('error')
+           res.send(err.message);
+       });
+   }
+
+
    exports.startTransaction = function (req, res) {
 
     console.log(req.body)
