@@ -52,6 +52,10 @@ const orderSchema = mongoose.Schema({
     type: Object,
     required: [false]
   },
+  acceptanceEmailSent: {
+    type: Boolean,
+    required: [true]
+  }
 });
 
 

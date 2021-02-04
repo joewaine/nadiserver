@@ -1170,8 +1170,10 @@ console.log('update to accepted')
 async function queryOrders(closedOrders) {
 console.log('queryorders')
 console.log(closedOrders)
+
+//goes through all of the items that are closed in upserve and updates the corresponding ones in our mongo data base
   try {
-    let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open" })
+    let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", acceptanceEmailSent: false })
 
     console.log('docs in query')
     console.log(docs)
@@ -1188,7 +1190,8 @@ console.log(closedOrders)
 async function queryOrdersToAccept(closedOrders) {
 
   try {
-    let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
+    // let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
+    let docs = await Order.find({ upserveId: { $in: closedOrders }})
     
     console.log('docs queryOrdersToAccept')
     console.log(docs)
@@ -1456,6 +1459,10 @@ async function checkCheckStatusStreet () {
 
 
 async function checkCheckStatus () {
+
+
+// checks all of the checks
+
   let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
   try {
     let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
@@ -1468,10 +1475,13 @@ async function checkCheckStatus () {
     if (request.ok) { 
       let body = await request.json();
 
-
+//filters out all checks that are closed and gets their ids
      let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
      console.log('closedOnlineOrders')
      console.log(closedOnlineOrders)
+
+
+    //  query order:
      queryOrders(closedOnlineOrders)
 
     }
@@ -1755,6 +1765,10 @@ async function acceptedOrderNotify() {
 
      let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     
+
+
+      console.log(accepted)
+
      queryOrdersToAccept(accepted)
 
     }
