@@ -772,7 +772,7 @@ app.post("/oloorder", function (req, res) {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+        subject: `Your Delivery Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -1152,15 +1152,34 @@ try {
 
 
 async function updateToStatusAccepted(idToAccept) {
-console.log('update to accepted')
+
   try {
-  
-    await Order.updateOne(
-        { upserveId: idToAccept },
+  console.log('update the order id to accepted in the database.')
+    await Order.updateOne({ upserveId: idToAccept },
         { $set: { orderAccepted: true } },
-        {multi: true}
+        {multi: true},
+        function (err, docs) { 
+          if (err){ 
+              console.log(err) 
+          } 
+          else{ 
+              console.log("Updated Docs : ", docs); 
+
+
+              console.log('send email of acceptance')
+              console.log(idToAccept)
+         sendAcceptanceEmail(idToAccept)
+
+
+
+          } 
+      }
      )
-    
+
+
+
+
+
   } catch (err) {
     console.log(err)
     }
@@ -1168,8 +1187,8 @@ console.log('update to accepted')
 
 
 async function queryOrders(closedOrders) {
-console.log('queryorders')
-console.log(closedOrders)
+// console.log('queryorders')
+// console.log(closedOrders)
 
 //goes through all of the items that are closed in upserve and updates the corresponding ones in our mongo data base
   try {
@@ -1186,19 +1205,39 @@ console.log(closedOrders)
   }
 }
 
-
-async function queryOrdersToAccept(closedOrders) {
+async function queryOrdersToAccept(ordersToAccept) {
+  
+  if(ordersToAccept.length > 0){
+    console.log('ordersToAccept - loop through these find the ones int he mongo that havent been accepted yet, and update to accepted')
+    console.log(ordersToAccept)
+  }else{
+    console.log('there are currently no generic orders to accept')
+  }
 
   try {
-    // let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", orderAccepted: false })
-    let docs = await Order.find({ upserveId: { $in: closedOrders }})
     
-    console.log('docs queryOrdersToAccept')
-    console.log(docs)
+    let docs = await Order.find({ upserveId: { $in: ordersToAccept }, status: "Open", orderAccepted: false })
+    
+    
 
-    for(let i = 0;i<docs.length;i++){
-      sendAcceptanceEmail(docs[i].upserveId)
+    if(docs.length > 0){
+      console.log('these are unaccepted orders')
+      console.log(docs)
+
+      for(let i = 0;i<docs.length;i++){
+        updateToStatusAccepted(docs[i].upserveId)
+      }
+
+    }else{
+      console.log('no unaccepted orders')
     }
+
+    
+
+
+
+
+
 
 } catch (err) {
   console.log(err)
@@ -1293,9 +1332,7 @@ console.log('send acceptance email')
       body: `Your order has been accepted and is now being prepared.`
     });
   }
-   
-updateToStatusAccepted(upserveId)
-    
+       
 } catch (err) {
 console.log(err)
 }
@@ -1439,13 +1476,15 @@ async function checkCheckStatusStreet () {
       let body = await request.json();
 
 
-     let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
+    //  let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
      
 
     //  let closedOnline = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' })
-    // console.log(closedOnline)
+    //// console.log('closedOnlineorders')
+    // console.log(closedOnlineorders)
+
     //get list of ids of checks from today, return all with status of closed
-     queryOrders(closedOnlineOrders)
+    //  queryOrders(closedOnlineOrders)
 
     }
   } catch (err) {
@@ -1459,7 +1498,6 @@ async function checkCheckStatusStreet () {
 
 
 async function checkCheckStatus () {
-
 
 // checks all of the checks
 
@@ -1475,14 +1513,35 @@ async function checkCheckStatus () {
     if (request.ok) { 
       let body = await request.json();
 
-//filters out all checks that are closed and gets their ids
-     let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
-     console.log('closedOnlineOrders')
-     console.log(closedOnlineOrders)
+   // closed online orders
+    // let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
+    // console.log(closedOnlineOrders)
+  
+
+    // //not accepted orders
+    let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
+    console.log('closed generic OnlineOrders')
+    console.log(closedOnlineOrders)
+   
+    
+
+    //not accepted orders
+    let notAcceptedOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return !x.hasOwnProperty('employee_name')}).filter(function(x){return !x.hasOwnProperty('employee_role_name')}).filter(function(x){return !x.hasOwnProperty('employee_id')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
+    console.log('not acceptedOrders')
+    console.log(notAcceptedOrders)
+
+    //accepted orders
+    let acceptedOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.hasOwnProperty('employee_role_name')}).filter(function(x){return x.hasOwnProperty('employee_id')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
+    console.log('acceptedOrders')
+    console.log(acceptedOrders)
 
 
     //  query order:
-     queryOrders(closedOnlineOrders)
+    // queryOrders(closedOnlineOrders)
+// send acceptance notification email
+      // acceptedOrderNotify(acceptedOrders)
+      queryOrdersToAccept(notAcceptedOrders)
+
 
     }
   } catch (err) {
@@ -1549,7 +1608,7 @@ let j = 0
                       from: 'orders@mamnoonrestaurant.com',
                       to: req.fulfillment_info.customer.email,
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-                      subject: `Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+                      subject: `Your Mamnoon Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
                       html: htmlBody 
                       
                       };
@@ -1710,6 +1769,7 @@ async function postStreetOrder(req, res) {
 
 
 async function placeScheduledOrders() {
+  console.log('place scheduled orderes')
   try {
 
 let docs = await Order.find({ "orderInfo.preorder" : true , "orderPosted" : false })
@@ -1724,13 +1784,20 @@ let outcome = docs.map(function(x){
 // console.log('outcome')
 // console.log(outcome)
 for(let i = 0; i < outcome.length; i++){
-  console.log(i)
+  // console.log(i)
   let date = new Date(outcome[i].scheduled_time); // some mock date
   let milliseconds = date.getTime();
 
+  // for test
+  // let arrival = milliseconds - Date.now() - 27000000
+
+
+  // use this
   let arrival = milliseconds - Date.now() - 2700000
 
+
   if(arrival < 0){
+    // console.log('is less')
     if(docs[i].orderPosted === false){
 
       if(docs[i].orderInfo.restaurant === 'Mamnoon'){
@@ -1740,6 +1807,8 @@ for(let i = 0; i < outcome.length; i++){
       }
 
     }
+  }else{
+    console.log('isnt less')
   }
 }
 
@@ -1749,7 +1818,7 @@ for(let i = 0; i < outcome.length; i++){
 }
 
 async function acceptedOrderNotify() {
-
+console.log('accepted order notify')
   let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
   try {
     let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
@@ -1763,13 +1832,14 @@ async function acceptedOrderNotify() {
       let body = await request.json();
 
 
-     let accepted = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
+     let openOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     
 
+     console.log('openOrders')
+     console.log(openOrders)
+      // console.log(accepted)
 
-      console.log(accepted)
-
-     queryOrdersToAccept(accepted)
+    //  queryOrdersToAccept(openOrders)
 
     }
   } catch (err) {
@@ -1782,7 +1852,7 @@ cron.schedule('*/10 * * * * *', () => {
   checkCheckStatus()
   checkCheckStatusStreet()
   placeScheduledOrders()
-  acceptedOrderNotify()
+  // acceptedOrderNotify()
 });
 
 
