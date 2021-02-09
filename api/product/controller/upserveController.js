@@ -21,7 +21,7 @@ let addMenuData = async (req,nameString) => {
       }
       );      
       // res.status(201).json({ product });
-console.log(product)
+// console.log(product)
 updateAll()
 
     } catch (err) {
@@ -247,7 +247,7 @@ exports.postOnlineOrder = async (req, res) => {
           
         let updateAll = async () => { 
           try{
-      console.log('update all')
+      // console.log('update all')
 
       await Product.updateMany(
         {}
@@ -294,10 +294,10 @@ exports.postOnlineOrder = async (req, res) => {
 
               exports.updateRetailItemLbs = async (req, res) => {
 
-                console.log('updateRetailItemLbs')
+                // console.log('updateRetailItemLbs')
 
                 try{
-                  console.log('update one')
+                  // console.log('update one')
                   await Product.findOneAndUpdate(
                     {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
                     {
@@ -315,10 +315,10 @@ exports.postOnlineOrder = async (req, res) => {
 
 
               exports.updateRetailItemOz = async (req, res) => {
-                console.log('updateRetailItemOz')
+                // console.log('updateRetailItemOz')
 
                 try{
-                  console.log('update one')
+                  // console.log('update one')
                   await Product.findOneAndUpdate(
                     {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
                     {
@@ -454,7 +454,7 @@ exports.postOnlineOrder = async (req, res) => {
               // router.get('/upserveolombar', upserveController.mamnoonItemsPullMenuMbar);
 
 
-
+    
               cron.schedule('*/30 * * * * *', () => {
                 // checkCheckStatus()
                 // checkCheckStatusStreet()
