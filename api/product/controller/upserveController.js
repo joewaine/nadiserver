@@ -2,7 +2,7 @@ const Product = require("../model/Product");
 const fetch = require("node-fetch");
 const axios = require('axios');
 
-
+const cron = require('node-cron');
 
 
 let addMenuData = async (req,nameString) => {
@@ -20,7 +20,7 @@ let addMenuData = async (req,nameString) => {
         upsert: true 
       }
       );      
-      res.status(201).json({ product });
+      // res.status(201).json({ product });
 console.log(product)
 updateAll()
 
@@ -71,6 +71,35 @@ exports.mamnoonItemsPullMenu = async (req, res) => {
 
 
 
+let mamnoonItemsPullMenuInit = async () => {
+  console.log('mamnoon pull menu')
+  
+  try {
+    const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
+      headers: {
+        'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+        'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+        'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`  
+      }
+    })
+    if (request.ok) { 
+      const body = await request.json();
+      // console.log(body)
+      // res.status(201).json({ body });
+
+      addMenuData(body,'mamnoon')
+
+      // upserveMongo('mamnoon')
+
+    }
+  } catch (err) {
+  //  res.status(400).json({ err: err });
+   console.log('error')
+  }
+}
+
+
+
 // pull menu from OLO
 // pull menu from OLO
 // pull menu from OLO
@@ -109,7 +138,7 @@ exports.mamnoonItemsPullMenuMbar = async (req, res) => {
 //pull items streeet
 
 
-exports.mamnoonItemsPullMenuStreet = async (req, res) => {
+exports.mamnoonItemsPullMenuStreet = async () => {
   console.log('mamnoon street pull menu')
   
   try {
@@ -123,17 +152,42 @@ exports.mamnoonItemsPullMenuStreet = async (req, res) => {
     if (request.ok) { 
       const body = await request.json();
       // console.log(body)
-      res.status(201).json({ body });
-  
+      // res.status(201).json({ body });
+      console.log('success')
       addMenuData(body,'mamnoonstreet')
-
       // upserveMongo('mamnoonstreet')
-
     }
   } catch (err) {
-   res.status(400).json({ err: err });
+  //  res.status(400).json({ err: err });
   }
 }
+
+
+ let mamnoonItemsPullMenuStreetInit = async () => {
+  console.log('mamnoon street pull menu')
+  
+  try {
+    const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
+      headers: {
+        'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-street`,
+        'X-Breadcrumb-Password': 'TJzwaP8uguyy',
+        'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`  
+      }
+    })
+    if (request.ok) { 
+      const body = await request.json();
+      // console.log(body)
+      // res.status(201).json({ body });
+  console.log('success')
+      addMenuData(body,'mamnoonstreet')
+
+  
+    }
+  } catch (err) {
+  //  res.status(400).json({ err: err });
+  }
+}
+
 //pull items street
 // post an online order
 // post an online order
@@ -391,3 +445,22 @@ exports.postOnlineOrder = async (req, res) => {
                   }
 
               }
+
+
+
+
+              // router.get('/upserveolo', upserveController.mamnoonItemsPullMenu);
+              // router.get('/upserveolostreet', upserveController.mamnoonItemsPullMenuStreet);
+              // router.get('/upserveolombar', upserveController.mamnoonItemsPullMenuMbar);
+
+
+
+              cron.schedule('*/30 * * * * *', () => {
+                // checkCheckStatus()
+                // checkCheckStatusStreet()
+                // placeScheduledOrders()
+                mamnoonItemsPullMenuStreetInit()
+                mamnoonItemsPullMenuInit()
+              
+              });
+

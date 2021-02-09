@@ -219,6 +219,9 @@ exports.lookUpGiftCard = async (req, res) => {
 };
 
 exports.useGiftCard = async (req, res) => {
+
+
+  console.log(req.body)
   console.log('use giftcard')
   var today = new Date();
   var dd = today.getDate();

@@ -89,21 +89,15 @@ let snipCartItems = null
 async function snipCarts () {
 
   try {
-
-
     let request = await fetch(`https://mamnoontogo.net/wp-json/acf/v3/restaurant/188/`)
-
 // console.log(request)
-
-
 
     if (request.ok) { 
       let body = await request.json();
 
-
-let correctSelect = body.acf.content_fields.filter(function(x){
-  return x.acf_fc_layout === 'online_shop'
-})
+      let correctSelect = body.acf.content_fields.filter(function(x){
+        return x.acf_fc_layout === 'online_shop'
+    })
 snipCartItems = correctSelect[0].online_shop.map((x)=> x.shop_item)
 // return correctSelect[0].online_shop
 
@@ -140,6 +134,11 @@ app.use("/product", productRoutes);
 
 const orderRoutes = require("./api/order/route/order"); //bring in our product routes
 app.use("/order", orderRoutes);
+
+
+// console.log(orderRoutes)
+
+
 
 const tockRoutes = require("./api/tock/route/tock"); //bring in our tock routes
 const e = require("express");
@@ -807,8 +806,6 @@ app.post("/oloorder", function (req, res) {
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
 
-
-
     // Send the text message.
     if(req.body.sms === true){
     client.messages.create({
@@ -817,9 +814,6 @@ app.post("/oloorder", function (req, res) {
       body: 'Your Mamnoon Pickup Order Has Been Placed! We will notify you when your food is being prepared. Thank You.'
     });
   }
-
-
-
 
       }
     })
@@ -834,7 +828,29 @@ app.post("/oloorder", function (req, res) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.post("/oloorderstreet", function (req, res) {
+console.log('123456')
+
   console.log(req.body)
   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
     {
@@ -851,13 +867,12 @@ app.post("/oloorderstreet", function (req, res) {
       if (resData.result === 'success') {
         res.send(req.body)
 
-
         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
         if(req.body.fulfillment_info.type === 'delivery'){
-          htmlBody = htmlBody + `Your Delivery Order Has Been Placed!</h1></div>`
+          htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
         }else{
-          htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
+          htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
         }
         
         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
@@ -865,20 +880,19 @@ app.post("/oloorderstreet", function (req, res) {
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
-        
-        
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
-                
+      
+        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><br><a href="https://nadimama.com">nadimama.com</p>'
         
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Mamnoon Street Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+        subject: `Your Delivery Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
         
+
         // transporter.sendMail(mailOptions, function(error, info){
         //   if (error) {
         //     console.log(error);
@@ -886,6 +900,7 @@ app.post("/oloorderstreet", function (req, res) {
         //     console.log('Email sent: ' + info.response);
         //   }
         // });
+
 
 
         const sendMail = function(mailOptions2, transporter2) {
@@ -906,23 +921,117 @@ app.post("/oloorderstreet", function (req, res) {
 
         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
         let smsNumber = phoneUtil.format(number, PNF.E164);
-     
-        console.log('send text message - mamnoon street order ready')
-        if(req.body.sms === true){
-          client.messages.create({
-            to: smsNumber,
-            from: '+12062087871',
-            body: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
-          });
-        }
+
+    // Send the text message.
+    if(req.body.sms === true){
+    client.messages.create({
+      to: smsNumber,
+      from: '+12062087871',
+      body: 'Your Mamnoon Street Pickup Order Has Been Placed! We will notify you when your food is being prepared. Thank You.'
+    });
+  }
 
       }
     })
     .catch(function (error) {
       console.log(error)
 
+
+
     });
+
 });
+
+
+
+// app.post("/oloorderstreet", function (req, res) {
+//   console.log(req.body)
+//   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
+//     {
+//       headers: {
+//         'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-street`,
+//         'X-Breadcrumb-Password': 'TJzwaP8uguyy',
+//         'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
+//       }
+//     })
+//     .then(function (response) {
+
+//       let resData = response.data
+//       // console.log(response)
+//       if (resData.result === 'success') {
+//         res.send(req.body)
+
+
+//         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
+
+//         if(req.body.fulfillment_info.type === 'delivery'){
+//           htmlBody = htmlBody + `Your Delivery Order Has Been Placed!</h1></div>`
+//         }else{
+//           htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
+//         }
+        
+//         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+//         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+//         for(let i = 0;i<req.body.charges.items.length;i++){
+//           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
+//         }
+        
+//         htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
+                
+        
+//         var mailOptions = {
+//         from: 'orders@mamnoonrestaurant.com',
+//         to: req.body.fulfillment_info.customer.email,
+//         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+//         subject: `Your Mamnoon Street Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+//         html: htmlBody 
+        
+//         };
+        
+//         // transporter.sendMail(mailOptions, function(error, info){
+//         //   if (error) {
+//         //     console.log(error);
+//         //   } else {
+//         //     console.log('Email sent: ' + info.response);
+//         //   }
+//         // });
+
+
+//         const sendMail = function(mailOptions2, transporter2) {
+//           console.log()
+//           return new Promise(function(resolve, reject) {
+//             transporter2.sendMail(mailOptions2, function(error, info) {
+//               if (error) {
+//                 reject(error);
+//               } else {
+//                 console.log('email sent')
+//                 resolve(info);
+//               }
+//             });
+//           });
+//         };
+
+//         sendMail(mailOptions, transporter)
+
+//         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
+//         let smsNumber = phoneUtil.format(number, PNF.E164);
+     
+//         console.log('send text message - mamnoon street order ready')
+//         if(req.body.sms === true){
+//           client.messages.create({
+//             to: smsNumber,
+//             from: '+12062087871',
+//             body: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
+//           });
+//         }
+
+//       }
+//     })
+//     .catch(function (error) {
+//       console.log(error)
+
+//     });
+// });
 
 
 
@@ -1153,9 +1262,11 @@ try {
 
 async function updateToStatusAccepted(idToAccept) {
 
+
+
   try {
-  console.log('update the order id to accepted in the database.')
-    await Order.updateOne({ upserveId: idToAccept },
+  // console.log('update the order id to accepted in the database.')
+    const doc = await Order.updateOne({ upserveId: idToAccept, orderAccepted: false },
         { $set: { orderAccepted: true } },
         {multi: true},
         function (err, docs) { 
@@ -1164,13 +1275,9 @@ async function updateToStatusAccepted(idToAccept) {
           } 
           else{ 
               console.log("Updated Docs : ", docs); 
-
-
               console.log('send email of acceptance')
-              console.log(idToAccept)
-         sendAcceptanceEmail(idToAccept)
-
-
+              // console.log(idToAccept)
+              sendAcceptanceEmail(idToAccept)
 
           } 
       }
@@ -1189,7 +1296,6 @@ async function updateToStatusAccepted(idToAccept) {
 async function queryOrders(closedOrders) {
 // console.log('queryorders')
 // console.log(closedOrders)
-
 //goes through all of the items that are closed in upserve and updates the corresponding ones in our mongo data base
   try {
     let docs = await Order.find({ upserveId: { $in: closedOrders }, status: "Open", acceptanceEmailSent: false })
@@ -1205,48 +1311,72 @@ async function queryOrders(closedOrders) {
   }
 }
 
-async function queryOrdersToAccept(ordersToAccept) {
-  
-  if(ordersToAccept.length > 0){
-    console.log('ordersToAccept - loop through these find the ones int he mongo that havent been accepted yet, and update to accepted')
-    console.log(ordersToAccept)
-  }else{
-    console.log('there are currently no generic orders to accept')
-  }
 
-  try {
-    
-    let docs = await Order.find({ upserveId: { $in: ordersToAccept }, status: "Open", orderAccepted: false })
-    
-    
 
-    if(docs.length > 0){
-      console.log('these are unaccepted orders')
-      console.log(docs)
 
-      for(let i = 0;i<docs.length;i++){
-        updateToStatusAccepted(docs[i].upserveId)
+
+
+
+
+
+
+
+
+
+async function queryOrdersToClose(ordersToClose) {
+  // console.log(ordersToAccept)
+  for(var closee in ordersToClose){
+  // if(acceptee === 0){
+   console.log(typeof(closee), closee)
+    Order.findOne({ upserveId: ordersToClose[closee], status: "Closed" }, (err, orders) => {
+      if (err) {
+          res.status(500).send(err)
+      } else {
+          console.log(orders);
+          // if(orders !== null){
+            // updateToStatusClosed(orders.upserveId)
+          // }
       }
-
-    }else{
-      console.log('no unaccepted orders')
-    }
-
-    
-
-
-
-
-
-
-} catch (err) {
-  console.log(err)
+  });
+  // }
   }
-}
+  
+  }
+
+
+
+
+async function queryOrdersToAccept(ordersToAccept) {
+  // console.log(ordersToAccept)
+  for(var acceptee in ordersToAccept){
+  // if(acceptee === 0){
+  //  console.log(typeof(acceptee), acceptee)
+    Order.findOne({ upserveId: ordersToAccept[acceptee], status: "Open", orderAccepted: false }, (err, orders) => {
+      if (err) {
+          res.status(500).send(err)
+      } else {
+        if(orders !== null){
+            console.log(orders.upserveId);
+            updateToStatusAccepted(orders.upserveId)
+          }
+      }
+  });
+  // }
+  }
+  
+  }
+  
+
+
+
+
+
+
 
 
 async function sendAcceptanceEmail(upserveId) {
 console.log('send acceptance email')
+console.log(upserveId)
   try {
 
   let doc = await Order.find({ "upserveId": upserveId });
@@ -1316,10 +1446,6 @@ console.log('send acceptance email')
 
     sendMail(mailOptions, transporter)
 
-
-
-
-    
     const number = phoneUtil.parseAndKeepRawInput(doc[0].orderInfo.fulfillment_info.customer.phone, 'US');
     let smsNumber = phoneUtil.format(number, PNF.E164);
 
@@ -1461,6 +1587,7 @@ console.log(err)
 
 async function checkCheckStatusStreet () {
   let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
+  // let order = 20210205
   try {
 
 
@@ -1499,9 +1626,8 @@ async function checkCheckStatusStreet () {
 
 async function checkCheckStatus () {
 
-// checks all of the checks
-
   let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
+
   try {
     let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
       headers: {
@@ -1513,36 +1639,22 @@ async function checkCheckStatus () {
     if (request.ok) { 
       let body = await request.json();
 
-   // closed online orders
-    // let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
-    // console.log(closedOnlineOrders)
-  
-
-    // //not accepted orders
     let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
     console.log('closed generic OnlineOrders')
     console.log(closedOnlineOrders)
-   
-    
-
     //not accepted orders
     let notAcceptedOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return !x.hasOwnProperty('employee_name')}).filter(function(x){return !x.hasOwnProperty('employee_role_name')}).filter(function(x){return !x.hasOwnProperty('employee_id')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     console.log('not acceptedOrders')
     console.log(notAcceptedOrders)
-
     //accepted orders
     let acceptedOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.hasOwnProperty('employee_role_name')}).filter(function(x){return x.hasOwnProperty('employee_id')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
     console.log('acceptedOrders')
     console.log(acceptedOrders)
 
-
-    //  query order:
-    // queryOrders(closedOnlineOrders)
-// send acceptance notification email
-      // acceptedOrderNotify(acceptedOrders)
-      queryOrdersToAccept(notAcceptedOrders)
-
-
+    //  query orders to close
+      // queryOrders(closedOnlineOrders)
+      // queryOrdersToClose(['445zcqsosna_m5l5fli0p47_8whkte4fyv4'])
+      queryOrdersToAccept(acceptedOrders)
     }
   } catch (err) {
   console.log(err)
@@ -1550,6 +1662,47 @@ async function checkCheckStatus () {
   }
 }
 
+
+
+
+async function checkCheckStatusStreet () {
+  // checks all of the checks
+    let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
+    try {
+      let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
+        headers: {
+          'X-Breadcrumb-Username': `joe-waine_mamnoon-street`,
+          'X-Breadcrumb-Password': 'H227s3CADgg4',
+          'X-Breadcrumb-API-Key': `6110e294b8984840d2c10472bbed3453`  
+        }
+      })
+      if (request.ok) { 
+        let body = await request.json();
+      // closed online orders
+
+      // //not accepted orders
+      let closedOnlineOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.status ==='Closed' }).map(function(x){return x.online_order.id })
+      console.log('closed generic OnlineOrders street')
+      console.log(closedOnlineOrders)
+      //not accepted orders
+      let notAcceptedOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return !x.hasOwnProperty('employee_name')}).filter(function(x){return !x.hasOwnProperty('employee_role_name')}).filter(function(x){return !x.hasOwnProperty('employee_id')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
+      console.log('not acceptedOrders street')
+      console.log(notAcceptedOrders)
+      //accepted orders
+      let acceptedOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.hasOwnProperty('employee_role_name')}).filter(function(x){return x.hasOwnProperty('employee_id')}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
+      console.log('acceptedOrders street')
+      console.log(acceptedOrders)
+  
+      //  query orders to close
+        // queryOrders(closedOnlineOrders)
+        // queryOrdersToClose(['445zcqsosna_m5l5fli0p47_8whkte4fyv4'])
+        queryOrdersToAccept(acceptedOrders)
+      }
+    } catch (err) {
+    console.log(err)
+    console.log('failure')
+    }
+  }
 
 
 
@@ -1769,7 +1922,7 @@ async function postStreetOrder(req, res) {
 
 
 async function placeScheduledOrders() {
-  console.log('place scheduled orderes')
+  // console.log('place scheduled orderes')
   try {
 
 let docs = await Order.find({ "orderInfo.preorder" : true , "orderPosted" : false })
@@ -1817,42 +1970,13 @@ for(let i = 0; i < outcome.length; i++){
   }
 }
 
-async function acceptedOrderNotify() {
-console.log('accepted order notify')
-  let order = moment().tz("America/Los_Angeles").format('YYYYMMDD');
-  try {
-    let request = await fetch(`https://api.breadcrumb.com/ws/v2/checks.json?date=${order}`, {
-      headers: {
-        'X-Breadcrumb-Username': `joe-waine_mamnoon-llc`,
-        'X-Breadcrumb-Password': 'sbkh_Qgs4HMB',
-        'X-Breadcrumb-API-Key': `6110e294b8984840d2c10472bbed3453`  
-      }
-    })
-    if (request.ok) { 
-      let body = await request.json();
 
-
-     let openOrders = body.objects.filter(function(x){return x.hasOwnProperty('online_order')}).filter(function(x){return x.online_order.source === "Generic Online Ordering"}).filter(function(x){return x.status ==='Open' }).map(function(x){return x.online_order.id })
-    
-
-     console.log('openOrders')
-     console.log(openOrders)
-      // console.log(accepted)
-
-    //  queryOrdersToAccept(openOrders)
-
-    }
-  } catch (err) {
-  console.log(err)
-  console.log('failure')
-  }
-}
 
 cron.schedule('*/10 * * * * *', () => {
   checkCheckStatus()
   checkCheckStatusStreet()
   placeScheduledOrders()
-  // acceptedOrderNotify()
+
 });
 
 
