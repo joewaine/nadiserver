@@ -207,6 +207,58 @@ var transporter2 = nodemailer2.createTransport({
       }
       });
 
+
+
+//  xxxxxxxxxxx
+
+
+
+// xxxxxxxxxxxxxx
+
+
+
+app.post("/sendbugstate", function (req, res) {
+  console.log(req.body)
+var mailOptions = {
+  from: 'orders@mamnoonrestaurant.com',
+  to: 'joe.waine@gmail.com',
+  subject: `new bug`,
+  html: JSON.stringify(req.body) 
+  };
+  const sendMailBug = function(mailOptions2, transporter2) {
+      console.log()
+      return new Promise(function(resolve, reject) {
+        transporter2.sendMail(mailOptions2, function(error, info) {
+          if (error) {
+            reject(error);
+          } else {
+              res.send('email sent')
+            console.log('email sent')
+            resolve(info);
+          }
+        });
+      });
+    };
+    sendMailBug(mailOptions, transporter)
+});
+
+
+
+// xxxxxxxxxxxxx
+
+
+// xxxxxxxxxxxxxx
+
+
+
+
+
+
+
+
+
+
+
   app.post("/oloorderretail", function (req, res) {
     console.log('oloorder retail')
     axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
