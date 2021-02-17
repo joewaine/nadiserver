@@ -31,6 +31,11 @@ router.get('/upserveolostreet', upserveController.mamnoonItemsPullMenuStreet);
 router.get('/upserveolombar', upserveController.mamnoonItemsPullMenuMbar);
 
 
+
+
+
+router.get('/newupdateditems', upserveController.upserveMongoRetail);
+
 router.get('/upserve_mongo/:name', upserveController.upserveMongo);
 
 router.post('/shippableedit', upserveController.shippableEdit);
@@ -45,6 +50,10 @@ router.post("/retaillength", upserveController.updateRetailItemLength);
 router.post("/retailgirth", upserveController.updateRetailItemGirth);
 
 router.post('/visibleedit', upserveController.visibleEdit);
+
+
+
+router.post('/deleteitem', upserveController.deleteItem);
 
 module.exports = router;
 

@@ -1,42 +1,90 @@
 const Product = require("../model/Product");
+const RetailProduct = require("../model/RetailProduct");
 const fetch = require("node-fetch");
 const axios = require('axios');
-
 const cron = require('node-cron');
+// const { delete } = require("../route/product");
+
+let newRetailItem = async(req) => {
+// console.log('new retail item')
+try{
+  var conditions = {
+    'menu.id': { $ne: req.id }
+};
+var update = {
+    $addToSet: { menu: req }
+}
+// console.log(req)
+await RetailProduct.findOneAndUpdate(conditions, update, function(err, doc) {
+
+// console.log('updates')
+// console.log(doc)
+
+});
+} catch (err){
+  console.log(err)
+}
 
 
-let addMenuData = async (req,nameString) => {
-  console.log('doing this')
-  // console.log(typeof req)
+
+}
+
+let addMenuData = async (req,nameString,retail) => {
+
   try {
-    let product = await Product.findOneAndUpdate(
-      { "name": nameString },
-      { 
-          "$set": {
-            "menu": req
-          }
-      },
-      {
-        upsert: true 
-      }
-      );      
-      // res.status(201).json({ product });
-// console.log(product)
-updateAll()
+              if(retail){
 
-    } catch (err) {
- 
+
+                  for(i in req){
+
+                    newRetailItem(req[i])
+                  }
+
+
+                // console.log('go check mongo')
+                // await RetailProduct.findOneAndUpdate(
+                //   { "name": nameString },
+                //   { 
+                //       "$set": {
+                //         "menu": req
+                //       }
+                //   },
+                //   {
+                //     upsert: true 
+                //   }
+                //   );      
+                  updateAll()
+              }else{
+                  await Product.findOneAndUpdate(
+                    { "name": nameString },
+                    { 
+                        "$set": {
+                          "menu": req
+                        }
+                    },
+                    {
+                      upsert: true 
+                    }
+                    );      
+                    updateAll()
+                    }
+
+      } catch (err) {
     }
 };
 
 exports.upserveMongo = async (req,res) => {
   
-  // console.log(req.params)
   try {
 
-    let doc = await Product.find({ "name": req.params.name });
-
-    res.status(201).json({ doc });
+      if(req.params.name === 'mamnoonretail'){
+      let doc = await RetailProduct.find({ "name": req.params.name });
+      res.status(201).json({ doc });
+      }else{
+      let doc = await Product.find({ "name": req.params.name });
+      res.status(201).json({ doc });
+      }
+ 
   } catch (err) {
     console.log('fail')
   }
@@ -62,6 +110,10 @@ exports.mamnoonItemsPullMenu = async (req, res) => {
       addMenuData(body,'mamnoon')
 
       // upserveMongo('mamnoon')
+
+
+
+
 
     }
   } catch (err) {
@@ -246,22 +298,30 @@ exports.postOnlineOrder = async (req, res) => {
           
           
         let updateAll = async () => { 
-          try{
-      // console.log('update all')
 
-      await Product.updateMany(
-        {}
-        , {
-        '$set': {
-              "menu.items.$[].lbs": 0,
-              "menu.items.$[].oz": 0,
-              "menu.items.$[].shippable": false
-        }
-      },{ multi: true });
 
-    }catch (err) {
-      console.log(err)
-      }
+console.log('update all')
+          // try{
+              // // console.log('update all')
+
+              // await RetailProduct.updateMany(
+              // {}
+              // , {
+              // '$set': {
+              // "menu.$[].lbs": 0,
+              // "menu.$[].oz": 0,
+              // "menu.$[].shippable": false,
+              // "menu.$[].visible": false,
+              // "menu.$[].height": 0,
+              // "menu.$[].width": 0,
+              // "menu.$[].length": 0,
+              // "menu.$[].girth": 0
+              // }
+              // },{ multi: true });
+
+              // }catch (err) {
+              // console.log(err)
+              // }
       }
       
 
@@ -271,13 +331,20 @@ exports.postOnlineOrder = async (req, res) => {
               exports.shippableEdit = async (req, res) => {
                 console.log('shippableEdit')
 
+
+
+
+
                 try{
+                    // let doc = await RetailProduct.find()
+                    // console.log(doc)
+
                   console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.shippable": req.body.tf
+                          "menu.$.shippable": req.body.tf
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -298,11 +365,11 @@ exports.postOnlineOrder = async (req, res) => {
 
                 try{
                   // console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.lbs": req.body.number
+                          "menu.$.lbs": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -319,11 +386,11 @@ exports.postOnlineOrder = async (req, res) => {
 
                 try{
                   // console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.oz": req.body.number
+                          "menu.$.oz": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -341,11 +408,11 @@ exports.postOnlineOrder = async (req, res) => {
             
                 try{
                   console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.height": req.body.number
+                          "menu.$.height": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -364,11 +431,11 @@ exports.postOnlineOrder = async (req, res) => {
             
                 try{
                   console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.width": req.body.number
+                          "menu.$.width": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -385,11 +452,11 @@ exports.postOnlineOrder = async (req, res) => {
             
                 try{
                   console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.length": req.body.number
+                          "menu.$.length": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -407,11 +474,11 @@ exports.postOnlineOrder = async (req, res) => {
             
                 try{
                   console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.girth": req.body.number
+                          "menu.$.girth": req.body.number
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -425,17 +492,53 @@ exports.postOnlineOrder = async (req, res) => {
 
 
 
+              exports.deleteItem = async (req,res) => {
+                // console.log('visibleEdit')
+                  console.log(req.body)
+
+                try{
+                  console.log('update one')
+    
+
+await RetailProduct.updateOne(
+  { name: 'mamnoonretail' },
+  { $pull: { menu: { id : req.body.id } } },
+  { safe: true },
+  function removeConnectionsCB(err, obj) {
+      console.log(err,obj)
+
+
+      res.status(200).json({ obj });
+  });
+
+  
+
+                 }catch (err) {
+                  console.log(err)
+                  res.send('error')
+                  res.status(400).json({ err: err });
+                  }
+
+        
+              
+
+
+
+
+              }
+
+
 
               exports.visibleEdit = async (req, res) => {
                 console.log('visibleEdit')
 
                 try{
                   console.log('update one')
-                  await Product.findOneAndUpdate(
-                    {name: "mamnoon", "menu.items": {$elemMatch: {id: req.body.id}}},
+                  await RetailProduct.findOneAndUpdate(
+                    {name: "mamnoonretail", "menu": {$elemMatch: {id: req.body.id}}},
                     {
                     $set: {
-                          "menu.items.$.visible": req.body.tf
+                          "menu.$.visible": req.body.tf
                     }
                   },{'new': true, 'safe': true, 'upsert': true});
                   res.send('success')
@@ -464,3 +567,79 @@ exports.postOnlineOrder = async (req, res) => {
               
               });
 
+
+
+              
+              exports.upserveMongoRetail = async (req,res) => {
+            console.log(req.body)
+              try {
+                  const request = await fetch('https://hq.breadcrumb.com/ws/v1/menus/online_ordering/', {
+                    headers: {
+                      'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-llc`,
+                      'X-Breadcrumb-Password': 'uQM8mseTvnTX',
+                      'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`  
+                    }
+                  })
+                  if (request.ok) { 
+                    const body = await request.json();
+              
+                    let retail = body.sections.filter(function(x){
+                      if(x.name === 'Spices' || x.name === 'Retail'){
+                        return x.item_ids
+                          }
+                    })
+
+                    console.log('retail log')
+                  console.log(retail)
+                  
+                    let betterArray = []
+
+   
+                    retail.forEach(function(x){
+
+
+                      betterArray.push(x.item_ids.map(function(y){
+                      return {
+                        category: x.name,
+                        id: y
+                      
+                      }}));
+                      
+                      
+                      });
+        
+                  let betterArrayFlat = betterArray.flat()
+
+                  let retailObjects = body.items.filter(function(x){
+                    if(retail.map(x => x.item_ids).flat().includes(x.id)){
+                      return x
+                    }
+                  })
+
+
+                let withCategory = retailObjects.map(function(x,i){
+                      x.category = betterArrayFlat[i].category
+                      return x
+                  })
+
+
+
+              
+                  addMenuData(withCategory,'mamnoonretail',true)
+              
+                  res.status(201).json({ withCategory });
+              
+                  }
+                } catch (err) {
+                 res.status(400).json({ err: err });
+                }
+              }
+              
+
+
+
+
+
+
+
+    
