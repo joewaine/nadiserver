@@ -305,7 +305,7 @@ for(let i = 0;i<req.body.charges.items.length;i++){
   htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
 }
 
-htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a><br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>'
+htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a><br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>'
         
 var mailOptions = {
 from: 'orders@mamnoonrestaurant.com',
@@ -393,7 +393,7 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
     htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
   }
   
-  htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a><br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>'
+  htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a><br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>'
           
  
   
@@ -825,7 +825,7 @@ app.post("/oloorder", function (req, res) {
 
 
 
-        let phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+        let phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
         
 
 
@@ -958,7 +958,7 @@ console.log('123456')
 
 
 
-          let phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+          let phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
         
 
 
@@ -1070,7 +1070,7 @@ app.post("/oloordermbar", function (req, res) {
         
         
       
-       let phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12064578287">(206) 457-8287</a>' 
+       let phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12064578287">(206) 457-8287</a>' 
 
         htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mbar.<br><br><i>400 Fairview Ave N 14th Floor, Seattle, WA 98109</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
                 
@@ -1161,17 +1161,17 @@ app.post("/confirmationemail", function (req, res) {
 
         if(req.body.restaurant === "Mamnoon Street"){
             addressToInsert = '2020 6th Ave, Seattle, WA 98121'
-            phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+            phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
         }
   
         if(req.body.restaurant === "Mamnoon"){
           addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
-          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+          phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
         }
 
         if(req.body.restaurant === "Mbar"){
           addressToInsert = '400 Fairview Ave N 14th Floor, Seattle, WA 98109'
-          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12064578287">(206) 457-8287</a>'
+          phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12064578287">(206) 457-8287</a>'
         }
 
   
@@ -1425,12 +1425,12 @@ console.log(upserveId)
     let phoneNumber = ''
     if(doc[0].orderInfo.restaurant === "Mamnoon Street"){
         addressToInsert = '2020 6th Ave, Seattle, WA 98121'
-        phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+        phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
     }
 
     if(doc[0].orderInfo.restaurant === "Mamnoon"){
       addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
-      phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+      phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
     }
 
 
@@ -1554,12 +1554,12 @@ console.log('sendemail')
 
       if(doc[0].orderInfo.restaurant === "Mamnoon Street"){
           addressToInsert = '2020 6th Ave, Seattle, WA 98121'
-          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+          phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
       }
 
       if(doc[0].orderInfo.restaurant === "Mamnoon"){
         addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
-        phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+        phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
       }
 
 
@@ -1815,12 +1815,12 @@ let j = 0
           
                       if(req.restaurant === "Mamnoon Street"){
                           addressToInsert = '2020 6th Ave, Seattle, WA 98121'
-                          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+                          phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
                       }
                 
                       if(req.restaurant === "Mamnoon"){
                         addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
-                        phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+                        phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
                       }
                 
               
@@ -1945,12 +1945,12 @@ async function postStreetOrder(req, res) {
           let phoneNumber = ''
           if(req.restaurant === "Mamnoon Street"){
               addressToInsert = '2020 6th Ave, Seattle, WA 98121'
-              phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+              phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
           }
     
           if(req.restaurant === "Mamnoon"){
             addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
-            phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+            phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
           }
 
   

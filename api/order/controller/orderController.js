@@ -583,7 +583,7 @@ console.log('send shipping confirmation')
 
 
 
-    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>'1508 Melrose Ave, Seattle, WA 98122'</i><br><a href="https://nadimama.com">nadimama.com</a><br/>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>`
+    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>'1508 Melrose Ave, Seattle, WA 98122'</i><br><a href="https://nadimama.com">nadimama.com</a><br/>for questions about your order,<br>please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>`
     
     var mailOptions5 = {
       from: 'orders@mamnoonrestaurant.com',
