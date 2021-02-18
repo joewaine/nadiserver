@@ -577,7 +577,13 @@ console.log('send shipping confirmation')
       htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.orderInfo.charges.items[i].quantity) +'</li>'
     }
     
-    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>'1508 Melrose Ave, Seattle, WA 98122'</i><br><a href="https://nadimama.com">nadimama.com</p>`
+
+
+
+
+
+
+    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>'1508 Melrose Ave, Seattle, WA 98122'</i><br><a href="https://nadimama.com">nadimama.com</a><br/>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>`
     
     var mailOptions5 = {
       from: 'orders@mamnoonrestaurant.com',

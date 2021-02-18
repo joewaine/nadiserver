@@ -305,7 +305,7 @@ for(let i = 0;i<req.body.charges.items.length;i++){
   htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
 }
 
-htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
+htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a><br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>'
         
 var mailOptions = {
 from: 'orders@mamnoonrestaurant.com',
@@ -393,9 +393,10 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
     htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
   }
   
-  htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
+  htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a><br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a></p>'
           
  
+  
           
 
   var mailOptions = {
@@ -817,7 +818,27 @@ app.post("/oloorder", function (req, res) {
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
       
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</p>'
+
+
+
+
+
+
+
+        let phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
+        
+
+
+
+
+
+
+
+
+
+
+        
+        htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon.<br><br><i>1508 Melrose Ave, Seattle WA 98122</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
         
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
@@ -933,7 +954,25 @@ console.log('123456')
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
       
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><br><a href="https://nadimama.com">nadimama.com</p>'
+
+
+
+
+          let phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+        
+
+
+
+
+
+        htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
+        
+
+
+
+
+
+
         
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
@@ -996,97 +1035,6 @@ console.log('123456')
 
 
 
-// app.post("/oloorderstreet", function (req, res) {
-//   console.log(req.body)
-//   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
-//     {
-//       headers: {
-//         'X-Breadcrumb-Username': `generic-online-ordering_mamnoon-street`,
-//         'X-Breadcrumb-Password': 'TJzwaP8uguyy',
-//         'X-Breadcrumb-API-Key': `e2ebc4d1af04b3e5e213085be842acaa`
-//       }
-//     })
-//     .then(function (response) {
-
-//       let resData = response.data
-//       // console.log(response)
-//       if (resData.result === 'success') {
-//         res.send(req.body)
-
-
-//         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
-
-//         if(req.body.fulfillment_info.type === 'delivery'){
-//           htmlBody = htmlBody + `Your Delivery Order Has Been Placed!</h1></div>`
-//         }else{
-//           htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
-//         }
-        
-//         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
-//         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 10 - 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
-//         for(let i = 0;i<req.body.charges.items.length;i++){
-//           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
-//         }
-        
-//         htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>2020 6th Ave, Seattle, WA 98121</i><br><a href="https://nadimama.com">nadimama.com</p>'
-                
-        
-//         var mailOptions = {
-//         from: 'orders@mamnoonrestaurant.com',
-//         to: req.body.fulfillment_info.customer.email,
-//         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-//         subject: `Your Mamnoon Street Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
-//         html: htmlBody 
-        
-//         };
-        
-//         // transporter.sendMail(mailOptions, function(error, info){
-//         //   if (error) {
-//         //     console.log(error);
-//         //   } else {
-//         //     console.log('Email sent: ' + info.response);
-//         //   }
-//         // });
-
-
-//         const sendMail = function(mailOptions2, transporter2) {
-//           console.log()
-//           return new Promise(function(resolve, reject) {
-//             transporter2.sendMail(mailOptions2, function(error, info) {
-//               if (error) {
-//                 reject(error);
-//               } else {
-//                 console.log('email sent')
-//                 resolve(info);
-//               }
-//             });
-//           });
-//         };
-
-//         sendMail(mailOptions, transporter)
-
-//         const number = phoneUtil.parseAndKeepRawInput(req.body.fulfillment_info.customer.phone, 'US');
-//         let smsNumber = phoneUtil.format(number, PNF.E164);
-     
-//         console.log('send text message - mamnoon street order ready')
-//         if(req.body.sms === true){
-//           client.messages.create({
-//             to: smsNumber,
-//             from: '+12062087871',
-//             body: `Your Mamnoon Street Pickup Order Has Been Placed! Estimated pickup time is 10 - 20 minutes.`
-//           });
-//         }
-
-//       }
-//     })
-//     .catch(function (error) {
-//       console.log(error)
-
-//     });
-// });
-
-
-
 
 app.post("/oloordermbar", function (req, res) {
   console.log(req.body)
@@ -1121,7 +1069,10 @@ app.post("/oloordermbar", function (req, res) {
         }
         
         
-        htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mbar.<br><br><i>400 Fairview Ave N 14th Floor, Seattle, WA 98109</i><br><a href="https://nadimama.com">nadimama.com</p>'
+      
+       let phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12064578287">(206) 457-8287</a>' 
+
+        htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mbar.<br><br><i>400 Fairview Ave N 14th Floor, Seattle, WA 98109</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
                 
         
         var mailOptions = {
@@ -1210,20 +1161,40 @@ app.post("/confirmationemail", function (req, res) {
 
         if(req.body.restaurant === "Mamnoon Street"){
             addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+            phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
         }
   
         if(req.body.restaurant === "Mamnoon"){
           addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
         }
 
         if(req.body.restaurant === "Mbar"){
           addressToInsert = '400 Fairview Ave N 14th Floor, Seattle, WA 98109'
+          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12064578287">(206) 457-8287</a>'
         }
 
   
-      htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${req.body.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+      htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${req.body.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
               
             
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
@@ -1451,17 +1422,47 @@ console.log(upserveId)
     }
     
     let addressToInsert = ''
-
+    let phoneNumber = ''
     if(doc[0].orderInfo.restaurant === "Mamnoon Street"){
         addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+        phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
     }
 
     if(doc[0].orderInfo.restaurant === "Mamnoon"){
       addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+      phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
     }
 
-    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
-       
+
+
+
+
+    
+
+
+  htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var mailOptions = {
     from: 'orders@mamnoonrestaurant.com',
     to: doc[0].orderInfo.fulfillment_info.customer.email,
@@ -1549,20 +1550,29 @@ console.log('sendemail')
     
     
       let addressToInsert = ''
+      let phoneNumber = ''
 
       if(doc[0].orderInfo.restaurant === "Mamnoon Street"){
           addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
       }
 
       if(doc[0].orderInfo.restaurant === "Mamnoon"){
         addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+        phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
       }
 
 
 
 
-    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+    htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${doc[0].orderInfo.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
             
+
+
+
+
+
+
 
     var mailOptions = {
     from: 'orders@mamnoonrestaurant.com',
@@ -1793,22 +1803,57 @@ let j = 0
                         htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.charges.items[i].quantity) +'</li>'
                       }
                       
+    
+
+
+
+
+
 
                       let addressToInsert = ''
-
+                      let phoneNumber = ''
+          
                       if(req.restaurant === "Mamnoon Street"){
                           addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+                          phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
                       }
                 
                       if(req.restaurant === "Mamnoon"){
                         addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+                        phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
                       }
                 
+              
+                      
+                      htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${req.restaurant}.<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
 
-                      
-                      htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
-                              
-                      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                       var mailOptions2 = {
                       from: 'orders@mamnoonrestaurant.com',
                       to: req.fulfillment_info.customer.email,
@@ -1897,18 +1942,20 @@ async function postStreetOrder(req, res) {
           
   
           let addressToInsert = ''
-  
+          let phoneNumber = ''
           if(req.restaurant === "Mamnoon Street"){
               addressToInsert = '2020 6th Ave, Seattle, WA 98121'
+              phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
           }
     
           if(req.restaurant === "Mamnoon"){
             addressToInsert = '1508 Melrose Ave, Seattle, WA 98122'
+            phoneNumber = '<br>for questions about your order, please call us at <a href="tel:+12069069606">(206) 906-9606</a>'
           }
-    
+
   
           
-          htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</p>`
+          htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
                   
           
           var mailOptions = {
