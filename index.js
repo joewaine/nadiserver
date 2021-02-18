@@ -1714,7 +1714,7 @@ async function checkCheckStatus () {
     console.log(acceptedOrders)
 
     //  query orders to close
-      // queryOrders(closedOnlineOrders)
+      queryOrders(closedOnlineOrders)
       // queryOrdersToClose(['445zcqsosna_m5l5fli0p47_8whkte4fyv4'])
       queryOrdersToAccept(acceptedOrders)
     }
@@ -1756,7 +1756,7 @@ async function checkCheckStatusStreet () {
       console.log(acceptedOrders)
   
       //  query orders to close
-        // queryOrders(closedOnlineOrders)
+        queryOrders(closedOnlineOrders)
         // queryOrdersToClose(['445zcqsosna_m5l5fli0p47_8whkte4fyv4'])
         queryOrdersToAccept(acceptedOrders)
       }
@@ -1962,7 +1962,7 @@ async function postStreetOrder(req, res) {
           from: 'orders@mamnoonrestaurant.com',
           to: req.fulfillment_info.customer.email,
           // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-          subject: `Your Mamnoon Street Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
+          subject: `Your Mamnoon Street Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
           html: htmlBody 
           
           };
