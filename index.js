@@ -922,7 +922,7 @@ app.post("/oloorder", function (req, res) {
 
 
 app.post("/oloorderstreet", function (req, res) {
-console.log('123456')
+// console.log('123456')
 
   console.log(req.body)
   axios.post('https://hq.breadcrumb.com/ws/v1/orders', req.body,
@@ -954,31 +954,15 @@ console.log('123456')
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
         }
       
-
-
-
-
-          let phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'
+          let phoneNumber = '<br>for questions about your order,<br>please call us at <a href="tel:+12063279121">(206) 327-9121</a>'        
+          htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
         
-
-
-
-
-
-        htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at Mamnoon Street.<br><br><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
-        
-
-
-
-
-
-
         
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Delivery Order Has Been Received! We will notify you when your food is being prepared.`,
+        subject: `Your Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -1177,22 +1161,6 @@ app.post("/confirmationemail", function (req, res) {
   
       htmlBody = htmlBody + `</ul><br><p style="text-align: center;margin: 0 auto;width: 100%;">Thank you, Your friends at ${req.body.restaurant}<br><br><i>${addressToInsert}</i><br><a href="https://nadimama.com">nadimama.com</a>${phoneNumber}</p>`
               
-            
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
 
 
         var mailOptions = {
@@ -1203,8 +1171,6 @@ app.post("/confirmationemail", function (req, res) {
         
         };
         
-
-
         // transporter.sendMail(mailOptions, function(error, info){
         //   if (error) {
         //     console.log(error);
@@ -1212,9 +1178,6 @@ app.post("/confirmationemail", function (req, res) {
         //     console.log('Email sent: ' + info.response);
         //   }
         // });
-
-
-
 
         const sendMail = function(mailOptions2, transporter2) {
           console.log()
