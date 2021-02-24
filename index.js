@@ -1792,9 +1792,9 @@ let j = 0
                       let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
                       if(req.fulfillment_info.type === 'delivery'){
-                        htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
+                        htmlBody = htmlBody + `Your Scheduled Delivery Order Has Been Placed!</h1></div>`
                       }else{
-                        htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
+                        htmlBody = htmlBody + `Your Scheduled Pickup Order Has Been Placed!</h1></div>`
                       }
                       
                       htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
@@ -1929,9 +1929,9 @@ async function postStreetOrder(req, res) {
           let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
   
           if(req.fulfillment_info.type === 'delivery'){
-            htmlBody = htmlBody + `Your Mamnoon Street Delivery Order Has Been Received!</h1></div>`
+            htmlBody = htmlBody + `Your Scheduled Mamnoon Street Delivery Order Has Been Placed!</h1></div>`
           }else{
-            htmlBody = htmlBody + `Your Mamnoon Street Pickup Order Has Been Received!</h1></div>`
+            htmlBody = htmlBody + `Your Scheduled Mamnoon Street Pickup Order Has Been Placed!</h1></div>`
           }
           
           htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
@@ -2104,23 +2104,6 @@ cron.schedule('*/10 * * * * *', () => {
      "zip": JSON.parse(req.query.orderInfo).fulfillment_info.delivery_info.address.zip_code,
       "country": "US"
   };
-
-
-
-//   var addressTo = {
-//     "name": "Aidan Waine",
-//     "street1": "2412 West Lake Sammamish Parkway Northeast",
-//     "city": "Redmond",
-//     "state": "WA",
-//     "zip": "98052",
-//     "country": "US"
-// };
-
-
-
-//   console.log(addressTo)
-//   console.log(req.query.Pounds)
-// console.log(req.query.Ounces)
 
   JSON.parse(req.query.Pounds)
   let ounces = JSON.parse(req.query.Ounces)
