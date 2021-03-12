@@ -210,7 +210,7 @@ console.log(req.params.email)
 
    exports.startTransactionRetail = function (req, res) {
 
-    console.log(req.body)
+    // console.log(req.body)
    
     let shipping
     if(req.body.charges.shipping){
@@ -230,6 +230,9 @@ console.log(req.params.email)
   
    let finalAmount = amount
    let finalCash = finalAmount/100
+
+
+console.log(finalCash)
 
    let config = {
        transactionType: sdk.TransactionType.CreditSale,
