@@ -310,7 +310,7 @@ htmlBody = htmlBody + '</ul><br><p style="text-align: center;margin: 0 auto;widt
 var mailOptions = {
 from: 'orders@mamnoonrestaurant.com',
 to: req.body.fulfillment_info.customer.email,
-// to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
+bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
 subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when the order is being prepared.`,
 html: htmlBody 
 };
@@ -402,6 +402,7 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
   var mailOptions = {
   from: 'orders@mamnoonrestaurant.com',
   to: req.body.fulfillment_info.customer.email,
+  bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
   // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
   subject: `Your Mamnoon Retail Order Has Been Placed! We will notify you when the order is being prepared.`,
   html: htmlBody 
@@ -843,6 +844,7 @@ app.post("/oloorder", function (req, res) {
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
+        bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
         subject: `Your Delivery Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
@@ -961,6 +963,7 @@ app.post("/oloorderstreet", function (req, res) {
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
+        bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
         subject: `Your Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
@@ -1062,6 +1065,7 @@ app.post("/oloordermbar", function (req, res) {
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
+        bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
         subject: `Your Mbar Pickup Order Has Been Placed! We will notify you when your food is being prepared.`,
         html: htmlBody 
@@ -1166,6 +1170,7 @@ app.post("/confirmationemail", function (req, res) {
         var mailOptions = {
         from: 'orders@mamnoonrestaurant.com',
         to: req.body.fulfillment_info.customer.email,
+        bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
         subject: `Your Order Has Been Scheduled! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
@@ -1429,6 +1434,7 @@ console.log(upserveId)
     var mailOptions = {
     from: 'orders@mamnoonrestaurant.com',
     to: doc[0].orderInfo.fulfillment_info.customer.email,
+    bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
     // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
     subject: `Your order has been accepted.`,
     html: htmlBody
@@ -1540,6 +1546,7 @@ console.log('sendemail')
     var mailOptions = {
     from: 'orders@mamnoonrestaurant.com',
     to: doc[0].orderInfo.fulfillment_info.customer.email,
+    bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
     // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
     subject: `Your ${doc[0].orderInfo.restaurant} Order Is Ready!`,
     html: htmlBody
@@ -1820,6 +1827,7 @@ let j = 0
                       var mailOptions2 = {
                       from: 'orders@mamnoonrestaurant.com',
                       to: req.fulfillment_info.customer.email,
+                      bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
                       // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
                       subject: `Your Mamnoon Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
                       html: htmlBody 
@@ -1924,6 +1932,7 @@ async function postStreetOrder(req, res) {
           var mailOptions = {
           from: 'orders@mamnoonrestaurant.com',
           to: req.fulfillment_info.customer.email,
+          bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
           // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
           subject: `Your Mamnoon Street Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
           html: htmlBody 
