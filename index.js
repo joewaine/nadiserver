@@ -299,7 +299,7 @@ if(req.body.fulfillment_info.type === 'delivery'){
   htmlBody = htmlBody + `Your Retail Order Has Been Received!</h1></div>`
 }
 
-htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.fulfillment_info.customer.first_name}<br>
 <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
 for(let i = 0;i<req.body.charges.items.length;i++){
   htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
@@ -388,7 +388,7 @@ body: 'Your Mamnoon Retail Order Has Been Placed! We will notify you when the or
     htmlBody = htmlBody + `Your Retail Order Has Been Received!</h1></div>`
   }
   
-  htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br><br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>We are getting your order ready to ship!<br>Your shipment will be sent to ${req.body.fulfillment_info.delivery_info.address.address_line1}, ${req.body.fulfillment_info.delivery_info.address.address_line2}, ${req.body.fulfillment_info.delivery_info.address.city}, ${req.body.fulfillment_info.delivery_info.address.state}, ${req.body.fulfillment_info.delivery_info.address.zip_code}</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
+  htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br><br><span style="font-size: 20px !important;"><br>name: ${req.body.fulfillment_info.customer.first_name}<br>confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>We are getting your order ready to ship!<br>Your shipment will be sent to ${req.body.fulfillment_info.delivery_info.address.address_line1}, ${req.body.fulfillment_info.delivery_info.address.address_line2}, ${req.body.fulfillment_info.delivery_info.address.city}, ${req.body.fulfillment_info.delivery_info.address.state}, ${req.body.fulfillment_info.delivery_info.address.zip_code}</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
   for(let i = 0;i<req.body.charges.items.length;i++){
     htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
   }
@@ -813,7 +813,7 @@ app.post("/oloorder", function (req, res) {
           htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
         }
         
-        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
@@ -950,7 +950,7 @@ app.post("/oloorderstreet", function (req, res) {
           htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
         }
         
-        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
@@ -1049,7 +1049,7 @@ app.post("/oloordermbar", function (req, res) {
           htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
         }
         
-        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>Estimated pickup time is 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
@@ -1137,7 +1137,7 @@ app.post("/confirmationemail", function (req, res) {
           htmlBody = htmlBody + `Your Pickup Order Has Been Scheduled!</h1></div>`
         }
         
-        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+        htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
         <br><span style="font-size: 20px !important;">confirmation code: <b>${req.body.confirmation_code}</b></span><br/><br/>It will be ready on ${ moment(String(req.body.scheduled_time)).tz('America/Los_Angeles').format('llll').replace(', 2020', ', at') }</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
         for(let i = 0;i<req.body.charges.items.length;i++){
           htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.body.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.body.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.body.charges.items[i].quantity) +'</li>'
@@ -1383,7 +1383,7 @@ console.log(upserveId)
       htmlBody = htmlBody + `Your Order Has Been Accepted.</h1></div>`
     }
     
-    htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Your ticket has been opened and your food is being prepared.<br>
+    htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Your ticket has been opened and your food is being prepared.<br>name: ${doc[0].orderInfo.fulfillment_info.customer.first_name}<br>
     <br><span style="font-size: 20px !important;">confirmation code: <b>${doc[0].orderInfo.confirmation_code}</b></span><br/><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
     for(let i = 0;i<doc[0].orderInfo.charges.items.length;i++){
       htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(doc[0].orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(doc[0].orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(doc[0].orderInfo.charges.items[i].quantity) +'</li>'
@@ -1511,7 +1511,7 @@ console.log('sendemail')
 
       htmlBody = htmlBody + `Your ${doc[0].orderInfo.restaurant} Order Is Ready!</h1></div>`
     
-    htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+    htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>customer name: ${doc[0].orderInfo.fulfillment_info.customer.first_name}<br>
     <br><span style="font-size: 20px !important;">confirmation code: <b>${doc[0].orderInfo.confirmation_code}</b></span><br/><br/></p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
     for(let i = 0;i<doc[0].orderInfo.charges.items.length;i++){
       htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(doc[0].orderInfo.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(doc[0].orderInfo.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(doc[0].orderInfo.charges.items[i].quantity) +'</li>'
@@ -1767,7 +1767,7 @@ let j = 0
                         htmlBody = htmlBody + `Your Scheduled Pickup Order Has Been Placed!</h1></div>`
                       }
                       
-                      htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+                      htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>${req.fulfillment_info.customer.first_name}<br>
                       <br><span style="font-size: 20px !important;">confirmation code: <b>${req.confirmation_code}</b></span><br/><br/>Estimated pickup time is 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
                       for(let i = 0;i<req.charges.items.length;i++){
                         htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.charges.items[i].quantity) +'</li>'
@@ -1905,7 +1905,7 @@ async function postStreetOrder(req, res) {
             htmlBody = htmlBody + `Your Scheduled Mamnoon Street Pickup Order Has Been Placed!</h1></div>`
           }
           
-          htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>
+          htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.fulfillment_info.customer.first_name}<br>
           <br><span style="font-size: 20px !important;">confirmation code: <b>${req.confirmation_code}</b></span><br/><br/>Estimated pickup time is 20 minutes.</p><br/><ul style="padding-left: 0 !important;margin-left:0 !important;list-style-type:none !important;"">`
           for(let i = 0;i<req.charges.items.length;i++){
             htmlBody = htmlBody + '<li style="padding-left: 0 !important;margin-left:0 !important;text-align: center;width: 100%;list-style-type:none !important;">' + JSON.stringify(req.charges.items[i].name) + '&nbsp;<b>$'+ JSON.stringify(req.charges.items[i].price)/100 +'</b>&nbsp;x&nbsp;'+ JSON.stringify(req.charges.items[i].quantity) +'</li>'
