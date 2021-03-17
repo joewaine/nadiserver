@@ -808,9 +808,9 @@ app.post("/oloorder", function (req, res) {
         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
         if(req.body.fulfillment_info.type === 'delivery'){
-          htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Received!</h1></div>`
         }else{
-          htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Received!</h1></div>`
         }
         
         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
@@ -945,9 +945,9 @@ app.post("/oloorderstreet", function (req, res) {
         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
         if(req.body.fulfillment_info.type === 'delivery'){
-          htmlBody = htmlBody + `Your Delivery Order Has Been Received!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Received!</h1></div>`
         }else{
-          htmlBody = htmlBody + `Your Pickup Order Has Been Received!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Received!</h1></div>`
         }
         
         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
@@ -965,7 +965,7 @@ app.post("/oloorderstreet", function (req, res) {
         to: req.body.fulfillment_info.customer.email,
         bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Pickup Order Has Been Received! We will notify you when your food is being prepared.`,
+        subject: `Your Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
@@ -1044,9 +1044,9 @@ app.post("/oloordermbar", function (req, res) {
         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
         if(req.body.fulfillment_info.type === 'delivery'){
-          htmlBody = htmlBody + `Your Delivery Order Has Been Placed!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Placed!</h1></div>`
         }else{
-          htmlBody = htmlBody + `Your Pickup Order Has Been Placed!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Placed!</h1></div>`
         }
         
         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
@@ -1132,9 +1132,9 @@ app.post("/confirmationemail", function (req, res) {
         let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
         if(req.body.fulfillment_info.type === 'delivery'){
-          htmlBody = htmlBody + `Your Delivery Order Has Been Scheduled!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Scheduled!</h1></div>`
         }else{
-          htmlBody = htmlBody + `Your Pickup Order Has Been Scheduled!</h1></div>`
+          htmlBody = htmlBody + `Your Order Has Been Scheduled!</h1></div>`
         }
         
         htmlBody = htmlBody + `<p style="text-align: center;margin: 0 auto;width: 100%;"><br>Thanks for your order!<br>name: ${req.body.fulfillment_info.customer.first_name}<br>
@@ -1762,7 +1762,7 @@ let j = 0
                       let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
 
                       if(req.fulfillment_info.type === 'delivery'){
-                        htmlBody = htmlBody + `Your Scheduled Delivery Order Has Been Placed!</h1></div>`
+                        htmlBody = htmlBody + `Your Scheduled Order Has Been Placed!</h1></div>`
                       }else{
                         htmlBody = htmlBody + `Your Scheduled Pickup Order Has Been Placed!</h1></div>`
                       }
@@ -1900,7 +1900,7 @@ async function postStreetOrder(req, res) {
           let htmlBody = `<div style="background-color: #f05d5b;padding: 20px 0 15px;text-align: center;"><h1 style="color: #fff367 !important;font-size: 1.5rem;text-align: center;">`;
   
           if(req.fulfillment_info.type === 'delivery'){
-            htmlBody = htmlBody + `Your Scheduled Mamnoon Street Delivery Order Has Been Placed!</h1></div>`
+            htmlBody = htmlBody + `Your Scheduled Mamnoon Street Order Has Been Placed!</h1></div>`
           }else{
             htmlBody = htmlBody + `Your Scheduled Mamnoon Street Pickup Order Has Been Placed!</h1></div>`
           }
