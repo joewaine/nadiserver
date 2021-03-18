@@ -846,7 +846,7 @@ app.post("/oloorder", function (req, res) {
         to: req.body.fulfillment_info.customer.email,
         bcc: 'jen@mamnoonrestaurant.com, joe@mamnoonrestaurant.com',
         // to: 'wassef@mamnoonrestaurant.com, sofien@mamnoonrestaurant.com, joe.waine@gmail.com',
-        subject: `Your Delivery Order Has Been Received! We will notify you when your food is being prepared.`,
+        subject: `Your Order Has Been Received! We will notify you when your food is being prepared.`,
         html: htmlBody 
         
         };
