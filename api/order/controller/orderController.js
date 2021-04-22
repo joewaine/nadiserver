@@ -632,3 +632,54 @@ console.log('send shipping confirmation')
 
 
   }
+
+
+
+  exports.startCreditSave = async (req, res) => {
+
+    console.log(req.body.billing)
+    
+        let config = {
+           transactionType: sdk.TransactionType.CreditSaveCard,
+            method: "modal",
+            fields: [
+              {
+                id: "billing_name",
+                value: req.body.billing.billing_name
+              },
+              {
+              id: "billing_address",
+              value: req.body.billing.billing_address
+              },
+              {
+                  id: "billing_postal_code",
+                  value: req.body.billing.billing_postal_code
+              },
+              {
+                    id: "external_tran_id",
+                    value: emergepay.getExternalTransactionId()
+                }
+            ]
+        };
+     
+    
+    
+    
+    
+    
+     
+     emergepay.startTransaction(config)
+     .then(function (transactionToken) {
+     
+         res.send({
+             transactionToken: transactionToken
+         });
+         console.log('credit save')
+         console.log(transactionToken)
+     })
+     .catch(function (err) {
+         res.send(err.message);
+     });  
+     
+     
+        }

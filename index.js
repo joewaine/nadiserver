@@ -136,6 +136,12 @@ const orderRoutes = require("./api/order/route/order"); //bring in our product r
 app.use("/order", orderRoutes);
 
 
+
+
+const creditRoutes = require("./api/credit/route/credit"); //bring in our product routes
+app.use("/credit", creditRoutes);
+
+
 // console.log(orderRoutes)
 
 
@@ -2116,4 +2122,125 @@ console.log(shipment)
 
 
 
+   async function allClients () {
 
+
+
+    try {
+      let request = await fetch(`https://api.sevenrooms.com/2_4/clients/export?venue_group_id=ahNzfnNldmVucm9vbXMtc2VjdXJlciELEhRuaWdodGxvb3BfVmVudWVHcm91cBiAgPC5uamvCAw&limit=400`, {
+        headers: {
+          'Authorization': `725ab33034d426fd8a643ff4a53be92ec2dcc4e77d399194b1a00f7a95b6923027025c1469ac1b0f69d7c7efff223538ac2e7bc720d648326f11a85e805a4cdd`  
+        }
+      })
+      if (request.ok) { 
+        let body = await request.json();
+  
+  let lastNames = body.data.results.map(function(x){
+  
+  return {
+    // lastname: x.last_name,
+    phone_number: x.phone_number.replace(/\D/g,''),
+    email: x.email,
+    user: x.user
+  }
+  
+  });
+  
+  console.log(lastNames)
+  
+      }
+    } catch (err) {
+    console.log(err)
+    console.log('failure')
+    }
+  }
+  
+  
+  
+  // allClients();
+
+  
+  async function getAuthToken () {
+
+console.log('get auth toke')
+
+
+      axios.post('https://api.sevenrooms.com/2_4/auth',
+      {
+        client_id: `352a44099079735ee3776dc79f203a85bfecc3854ca20a4981d33a7810e592f790d1a9c562aa737ed6517179382a845a8a3081c0b5eff7a4e44b58d897f8bd7a`,
+        client_secret: `9649ff70cfa0bcc9e370c3954e2d5b1eb118977d2c8435128f04590aec8ec755e1921ecf5e7492d220076c4cb3770ad2fbfda08c3e72a87a08b74615437ab760`
+      },
+      {
+        headers: {
+          'Content-Type': `application/x-www-form-urlencoded`,
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Accept': `*/*`
+        }
+      })
+         .then(function (res) {
+          console.log('auth token') 
+          console.log(res)
+         })
+         .catch(function (error) {
+           console.log(error)
+         });
+  
+
+
+
+
+  }
+
+
+
+  
+  
+  async function allReservations () {
+  
+  
+    try {
+      let request = await fetch(`https://api.sevenrooms.com/2_4/reservations`, {
+        headers: {
+          'Authorization': `40dad36bbaee0abfe69eca4cf55fa893a101b55c17e6b7fc3463884d576f52c8e418e8f09ba836351e05b21b291b1d0081504d7d4acf7283e9aa023c0fb864e3`  
+        }
+      })
+      if (request.ok) { 
+        let body = await request.json();
+  
+  
+  
+        console.log(body.data.results)
+  let resData = body.data.results.map(function(x){
+  
+  
+  let split = x.phone_number.replace(/\D/g,'')
+  console.log(split)
+  
+  if(split.split('').length === 11){
+  
+  
+    return split
+  }else{
+    return 
+  }
+  // return {
+  //   // lastname: x.last_name,
+  //   phone_number: x.phone_number.replace(/\D/g,''),
+  //   email: x.email,
+  //   user: x.user
+  // }
+  
+  });
+  
+  console.log(resData)
+  
+      }
+    } catch (err) {
+    console.log(err)
+    console.log('failure')
+    }
+  }
+  
+  
+  getAuthToken();
+  // allReservations();
