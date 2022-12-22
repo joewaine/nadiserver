@@ -24,7 +24,7 @@
     "express-cors-anywhere": "0.0.1-alpha.3",
     "google-libphonenumber": "^3.2.15",
     "http-proxy-middleware": "^1.0.5",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
